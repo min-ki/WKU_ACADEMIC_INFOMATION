@@ -1,2 +1,4 @@
 Django==2.0.7
 pytz==2018.5
+selenium==3.13.0
+beautifulsoup4==4.6.0
