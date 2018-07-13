@@ -19,19 +19,20 @@ def check_sum_of_list(data):
 
 def index(request):
     
-    data = None
-    value = 0
 
-    if request.method == 'POST':
-        id = request.POST['id']
-        pw = request.POST['pw']
-        data = parsed_subject(id, pw)
-        # 교필, 교선 일때의 점수의 합
-        value = check_sum_of_list(data[0])
-    else:
-        id = pw = None
+    if request.session.get('intranet_id', False):
+        intranet_id = request.session['intranet_id']
     
-    context = {'id':id, 'pw':pw, 'data': data, 'value': value} # data를 분할해서 여러개의 context로 넘기기
+    if request.session.get('intranet_pw', False):
+        intranet_pw = request.session['intranet_pw']
+        
+    if intranet_id and intranet_pw:
+        data = parsed_subject(intranet_id, intranet_pw)
+
+        # 교필, 교선 일때의 점수의 합
+    value = check_sum_of_list(data[0])
+
+    context = {'data': data, 'value': value} # data를 분할해서 여러개의 context로 넘기기
 
     return render(request, 'webcrawler/index.html', context)
 

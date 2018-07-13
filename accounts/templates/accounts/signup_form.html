@@ -4,10 +4,14 @@
 <div class="container">
     <form action="" method="post">
         {% csrf_token %}
+        <div class="form-group">
+            <label for="intra_id">인트라넷 아이디</label>
+            <input class="form-control" type="text" id="intra_id" name="intra_id" placeholder="본인의 인트라넷 아이디를 입력하세요.">
+        </div>
         <table>
             {{ form.as_table }}
         </table>
-        <input class="form-control"type="submit">
+        <button class="btn btn-primary" type="submit">Submit </button>
     </form>
 </div>
 {% endblock %}

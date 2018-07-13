@@ -37,11 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'django_extensions',
     'webcrawler', 
     'accounts',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,6 +127,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# MEDIA 설정
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # LOGIN 설정
 LOGIN_REDIRECT_URL = '/home/'
+
+
+# Session 
+SESSION_COOKIE_AGE = 1200
+SESSION_SAVE_EVERY_REQUEST = True
+
+# debug toolbar
+INTERNAL_IPS = ['127.0.0.1']

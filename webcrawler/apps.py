@@ -1,4 +1,4 @@
-from django.apps import AppConfig
+mfrom django.apps import AppConfig
 
 
 class WebcrawlerConfig(AppConfig):
