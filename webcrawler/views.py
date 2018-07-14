@@ -28,18 +28,25 @@ def index(request):
         
     if intranet_id and intranet_pw:
         try:
-            data = parsed_subject(intranet_id, intranet_pw)
+            if not request.session.get('data', False):
+                data = parsed_subject(intranet_id, intranet_pw)
+                request.session['data'] = data
+            else:
+                data = request.session['data']
+
+
+            if data:
+                point_culture_subject = check_sum_of_list(data[0]) # 교필, 교선 일때의 점수의 합
+                subject_list = data[0] # 과목 리스트
+                total_point = data[1]['sum_of_grade_point']  # 전체 학점            
+            else:
+                # 로그인 에러 출력
+                messages.error(request, '로그인에 실패했습니다.')
+                return redirect('accounts:login')
         except NameError:
             print("NameError 발생")
 
-        if data:
-            point_culture_subject = check_sum_of_list(data[0]) # 교필, 교선 일때의 점수의 합
-            subject_list = data[0] # 과목 리스트
-            total_point = data[1]['sum_of_grade_point']  # 전체 학점            
-        else:
-            # 로그인 에러 출력
-            messages.error(request, '로그인에 실패했습니다.')
-            return redirect('accounts:login')
+        
 
     context = {'point_culture_subject': point_culture_subject, 'subject_list': subject_list,
             'total_point': total_point}  # data를 분할해서 여러개의 context로 넘기기
@@ -47,8 +54,37 @@ def index(request):
     return render(request, 'webcrawler/index.html', context)
 
 
+def completed_list(request):
+    
+    
+    if request.session.get('data', False):
+        completed_list = request.session['data'][0] # 이수과목 리스트
+        completed_list_count = len(completed_list.keys()) # 이수과목 개수
+        completed_list_point_count = int(sum([float(i[1]) for i in completed_list.values() ])) # 이수과목 학점 총점
+    else:
+        completed_list = None
 
+    return render(request, 'webcrawler/completed_list.html', {'completed_list' : completed_list ,
+                                                              'completed_list_count': completed_list_count,
+                                                              'completed_list_point_count': completed_list_point_count})
 
+def major_list(request):
+    
+    if request.session.get('data', False):
+        major_list = select_major_subject(request.session['data'][0])
+    else:
+        major_list = None
 
+    return render(request, 'webcrawler/major_list.html', {'major_list' : major_list})
 
+def select_major_subject(subject):
 
+    ''' subject는 dict '''
+
+    major_subject = {}
+
+    for title, item in subject.items():
+        if item[0] == '기전' or item[0] == '선전':
+            major_subject[title] =  item
+
+    return major_subject

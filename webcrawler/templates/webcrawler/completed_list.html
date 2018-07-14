@@ -1,0 +1,31 @@
+{% extends 'webcrawler/layout.html' %}
+
+{% block content %}
+<div class="table-responsive">
+    {% if completed_list %}
+    <table class="table table-sm">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">과목명</th>
+                <th scope="col">이수구분</th>
+                <th scope="col">학점</th>
+                <th scope="col">점수</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for title, item in completed_list.items %}
+            <tr>
+                <td> {{ title }} </td>
+                <td> {{ item.0 }}</td>
+                <td> {{ item.1 }}</td>
+                <td> {{ item.2 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+   
+    {% endif %}
+
+    {{ completed_list_count }} 과목 이수 // 총 : {{ completed_list_point_count }} 학점
+</div>
+{% endblock %}
