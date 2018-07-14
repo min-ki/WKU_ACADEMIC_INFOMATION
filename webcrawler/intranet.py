@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, UnexpectedAlertPresentException
@@ -30,20 +31,26 @@ def parsed_subject(id, pw):
     except TimeoutException:
         print("no alert")
 
+    # 로그인 실패
+    if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg": 
+        return False
 
     # 전체 성적 리스트 주소
     driver.get(
         "http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreAll.jsp?sm=3")
 
     # 페이지 로드 대기
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(3)
+
 
     try:
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
     except selenium.common.exceptions.UnexpectedAlertPresentException:
         pass
-
+  
+    driver.implicitly_wait(3)
+    
     select_year = soup.select(
         'body > table > tbody > tr > td:nth-of-type(6) > a')
 
@@ -84,5 +91,4 @@ def parsed_subject(id, pw):
     information.append({'sum_of_grade_point' : sum_of_grade_point})
 
     driver.close()
-
     return information

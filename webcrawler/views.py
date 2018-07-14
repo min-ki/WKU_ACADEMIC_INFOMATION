@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from .intranet import parsed_subject
 
 
@@ -19,7 +20,6 @@ def check_sum_of_list(data):
 
 def index(request):
     
-
     if request.session.get('intranet_id', False):
         intranet_id = request.session['intranet_id']
     
@@ -27,14 +27,28 @@ def index(request):
         intranet_pw = request.session['intranet_pw']
         
     if intranet_id and intranet_pw:
-        data = parsed_subject(intranet_id, intranet_pw)
+        try:
+            data = parsed_subject(intranet_id, intranet_pw)
+        except NameError:
+            print("NameError 발생")
 
-        # 교필, 교선 일때의 점수의 합
-    value = check_sum_of_list(data[0])
+        if data:
+            point_culture_subject = check_sum_of_list(data[0]) # 교필, 교선 일때의 점수의 합
+            subject_list = data[0] # 과목 리스트
+            total_point = data[1]['sum_of_grade_point']  # 전체 학점            
+        else:
+            # 로그인 에러 출력
+            messages.error(request, '로그인에 실패했습니다.')
+            return redirect('accounts:login')
 
-    context = {'data': data, 'value': value} # data를 분할해서 여러개의 context로 넘기기
+    context = {'point_culture_subject': point_culture_subject, 'subject_list': subject_list,
+            'total_point': total_point}  # data를 분할해서 여러개의 context로 넘기기
 
     return render(request, 'webcrawler/index.html', context)
+
+
+
+
 
 
 

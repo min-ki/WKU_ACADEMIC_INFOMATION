@@ -142,3 +142,8 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 # debug toolbar
 INTERNAL_IPS = ['127.0.0.1']
+
+# Messages custom
+from django.contrib.messages import constants as messages_constants
+MESSAGE_LEVEL = messages_constants.DEBUG
+MESSAGE_TAGS = {messages_constants.ERROR: 'danger'}  # error를 danger로 출력하도록 지정
