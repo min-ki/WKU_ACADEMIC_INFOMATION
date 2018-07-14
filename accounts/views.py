@@ -10,3 +10,10 @@ def login(request):
         return redirect('home:index')
         
     return render(request, 'accounts/login.html', {})
+
+
+def logout(request):
+
+    request.session.flush()
+    messages.success(request, '로그아웃이 성공적으로 되었습니다.')
+    return redirect('accounts:login')

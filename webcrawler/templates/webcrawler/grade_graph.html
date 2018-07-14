@@ -1,9 +1,7 @@
-{% extends 'webcrawler/layout.html' %}
-
+{% extends 'webcrawler/layout.html' %} 
 {% block content %}
-
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">전공과목 리스트</h1>
+    <h1 class="h2">성적 그래프</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
             <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -22,29 +20,5 @@
     </div>
 </div>
 
-<div class="table-responsive">
-    {% if major_list %}
-    <table class="table table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">과목명</th>
-                <th scope="col">이수구분</th>
-                <th scope="col">학점</th>
-                <th scope="col">점수</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for title, item in major_list.items %}
-            <tr>
-                <td> {{ title }} </td>
-                <td> {{ item.0 }}</td>
-                <td> {{ item.1 }}</td>
-                <td> {{ item.2 }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    {% endif %}
-</div>
+<canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="2038" height="860" style="display: block; height: 430px; width: 1019px;"></canvas>
 {% endblock %}

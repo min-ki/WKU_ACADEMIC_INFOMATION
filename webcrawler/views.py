@@ -2,22 +2,6 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parsed_subject
 
-
-def check_sum_of_list(data):
-    '''
-        전공 총 학점, 선택전공 총 학점, 기본전공 총 학점
-        교양 필수 학점, 교양 선택학점, 계열 필수 학점
-        item은 사전 형태로 전달 됨
-        subject[title.text] = [kind.text, point.text, grade.text]
-    '''
-    sum = 0
-
-    for title, arr in data.items():
-        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
-            sum = sum + float(arr[1])
-
-    return sum
-
 def index(request):
     
     if request.session.get('intranet_id', False):
@@ -68,19 +52,20 @@ def completed_list(request):
                                                               'completed_list_count': completed_list_count,
                                                               'completed_list_point_count': completed_list_point_count})
 
+
+## 전공과목 리스트 뷰
 def major_list(request):
     
     if request.session.get('data', False):
-        major_list = select_major_subject(request.session['data'][0])
+        major_list = get_major_subject(request.session['data'][0])
     else:
         major_list = None
 
     return render(request, 'webcrawler/major_list.html', {'major_list' : major_list})
 
-def select_major_subject(subject):
-
-    ''' subject는 dict '''
-
+## 전공과목 반환해주는 함수
+def get_major_subject(subject):
+    
     major_subject = {}
 
     for title, item in subject.items():
@@ -88,3 +73,41 @@ def select_major_subject(subject):
             major_subject[title] =  item
 
     return major_subject
+
+
+## 교양과목 리스트 뷰
+def culture_list(request):
+
+    if request.session.get('data', False):
+        culture_list = get_culture_list(request.session['data'][0])
+    else:
+        culture_list = None
+
+    return render(request, 'webcrawler/culture_list.html', {'culture_list': culture_list})
+
+## 교양과목 반환해주는 함수
+def get_culture_list(subject):
+
+    culture_subject = {}
+
+    for title, item in subject.items():
+        if item[0] == '교필' or item[0] == '교선':
+            culture_subject[title] =  item
+
+    return culture_subject
+
+
+def check_sum_of_list(data):
+    '''
+        전공 총 학점, 선택전공 총 학점, 기본전공 총 학점
+        교양 필수 학점, 교양 선택학점, 계열 필수 학점
+        item은 사전 형태로 전달 됨
+        subject[title.text] = [kind.text, point.text, grade.text]
+    '''
+    sum = 0
+
+    for title, arr in data.items():
+        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
+            sum = sum + float(arr[1])
+
+    return sum
