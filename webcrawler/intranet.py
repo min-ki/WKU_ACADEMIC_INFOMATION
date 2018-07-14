@@ -35,7 +35,66 @@ def parsed_subject(id, pw):
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg": 
         return False
 
+
+
+    ### 사용자 정보 크롤링 
+    ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
+    
+    driver.get('http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Resume/resume.jsp?sm=3')
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    
+    user_name = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(4)')
+    user_number = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2)')
+    user_image = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(1) > table > tbody > tr > td > img')
+    user_grade = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(3) > td:nth-of-type(2)')
+    user_college = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(4) > td:nth-of-type(2)')
+    user_completed_semester = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(3) > td:nth-of-type(4)')
+    user_major = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(4) > td:nth-of-type(4)')
+
+    user_name = user_name[0].text
+    user_number = user_number[0].text
+    user_image = user_image[0]['src']
+    user_grade = user_grade[0].text
+    user_college = user_college[0].text
+    user_completed_semester = user_completed_semester[0].text
+    user_major = user_major[0].text
+
+    # 사용자 정보 : 이름, 학번, 이미지경로, 학년, 단과대학명, 이수학기, 전공
+    user_info = [user_name, user_number, user_image, user_grade, user_college, user_completed_semester, user_major]
+
+
+    ### 장학 이력 정보 크롤링
+    ### 년도, 학기, 장학명, 장학입학금, 장학수업료, 계
+
+    driver.get('http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Search/scholarResume.jsp?sm=3')
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    scholar_ship = []
+
+    year = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
+    semester = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
+    scholar_name = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
+    scholar_money1 = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(4)')
+    scholar_money2 = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(5)')
+    scholar_total = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
+
+    for t_year, t_semester, t_scholar_name, t_scholar_money1, t_scholar_money2, t_scholar_total in zip(year, semester, scholar_name, scholar_money1, scholar_money2, scholar_total):
+        scholar_ship.append([
+            t_year.text,
+            t_semester.text,
+            t_scholar_name.text,
+            t_scholar_money1.text,
+            t_scholar_money2.text,
+            t_scholar_total.text
+        ])        
+
+    print(scholar_ship)
+
     # 전체 성적 리스트 주소
+
     driver.get(
         "http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreAll.jsp?sm=3")
 
@@ -89,6 +148,9 @@ def parsed_subject(id, pw):
 
     information.append(subject)
     information.append({'sum_of_grade_point' : sum_of_grade_point})
+    information.append(user_info)
+    information.append(scholar_ship)
 
     driver.close()
+    
     return information

@@ -126,6 +126,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'intra_crawling', 'static'),
+]
 
 # MEDIA 설정
 MEDIA_URL = '/media/'
@@ -137,7 +141,7 @@ LOGIN_REDIRECT_URL = '/home/'
 
 
 # Session 
-SESSION_COOKIE_AGE = 1200
+# SESSION_COOKIE_AGE = 1200
 SESSION_SAVE_EVERY_REQUEST = True
 
 # debug toolbar

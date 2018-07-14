@@ -2,6 +2,10 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parsed_subject
 
+graduated_point = {
+    '컴퓨터공학과': 136,
+}
+
 def index(request):
     
     if request.session.get('intranet_id', False):
@@ -20,9 +24,11 @@ def index(request):
 
 
             if data:
-                point_culture_subject = check_sum_of_list(data[0]) # 교필, 교선 일때의 점수의 합
                 subject_list = data[0] # 과목 리스트
-                total_point = data[1]['sum_of_grade_point']  # 전체 학점            
+                total_point = data[1]['sum_of_grade_point']  # 전체 학점
+                subject_point = get_sum_of_subject(data[0]) # 전공학점, 교양학점
+                user_info = data[2]  # 사용자 정보    
+                scholar_ship = data[3]       
             else:
                 # 로그인 에러 출력
                 messages.error(request, '로그인에 실패했습니다.')
@@ -30,10 +36,11 @@ def index(request):
         except NameError:
             print("NameError 발생")
 
-        
-
-    context = {'point_culture_subject': point_culture_subject, 'subject_list': subject_list,
-            'total_point': total_point}  # data를 분할해서 여러개의 context로 넘기기
+    context = {'subject_point': subject_point, 'subject_list': subject_list,
+               'total_point': total_point,
+               'user_info': user_info,
+               'graduated_point': graduated_point,
+               'scholar_ship': scholar_ship,}  # data를 분할해서 여러개의 context로 넘기기
 
     return render(request, 'webcrawler/index.html', context)
 
@@ -91,23 +98,26 @@ def get_culture_list(subject):
     culture_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '교필' or item[0] == '교선':
+        if item[0] == '교필' or item[0] == '교선' or item[0] == '계필':
             culture_subject[title] =  item
 
     return culture_subject
 
+## 전공과목 총 학점, 교양과목 총 학점 
+def get_sum_of_subject(subject):
+    
+    sum = {}
 
-def check_sum_of_list(data):
-    '''
-        전공 총 학점, 선택전공 총 학점, 기본전공 총 학점
-        교양 필수 학점, 교양 선택학점, 계열 필수 학점
-        item은 사전 형태로 전달 됨
-        subject[title.text] = [kind.text, point.text, grade.text]
-    '''
-    sum = 0
+    culture_subject_sum = 0
+    major_subject_sum = 0
 
-    for title, arr in data.items():
+    for title, arr in subject.items():
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
-            sum = sum + float(arr[1])
+            culture_subject_sum = culture_subject_sum + float(arr[1])
+        elif arr[0] == "기전" or arr[0] == "선전":
+            major_subject_sum = major_subject_sum + float(arr[1])
+
+    sum['major_subject_sum'] = int(major_subject_sum)
+    sum['culture_subject_sum'] = int(culture_subject_sum)
 
     return sum

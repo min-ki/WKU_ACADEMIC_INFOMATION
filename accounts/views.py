@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 
 def login(request):
     
@@ -8,6 +8,8 @@ def login(request):
         request.session['intranet_pw'] = request.POST['password']
         
         return redirect('home:index')
+    else:
+        request.session.flush()
         
     return render(request, 'accounts/login.html', {})
 

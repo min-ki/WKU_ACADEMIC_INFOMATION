@@ -1,393 +1,344 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>정보서비스</title>
+    
+    <!-- VENDOR CSS -->
+	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/bootstrap/css/bootstrap.min.css' %}" >
+	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/font-awesome/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/linearicons/style.css' %}">
+	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/chartist/css/chartist-custom.css' %}">
+	<!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'webcrawler/assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'webcrawler/style.css' %}">
+	<!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 
-    <style>
-        body {
-            font-size: .875rem;
-        }
-
-        .feather {
-            width: 16px;
-            height: 16px;
-            vertical-align: text-bottom;
-        }
-
-        /*
-        * Sidebar
-        */
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            /* Behind the navbar */
-            padding: 48px 0 0;
-            /* Height of navbar */
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-        }
-
-        .sidebar-sticky {
-            position: relative;
-            top: 0;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-            /* Scrollable contents if viewport is shorter than content. */
-        }
-
-        @supports ((position: -webkit-sticky) or (position: sticky)) {
-            .sidebar-sticky {
-                position: -webkit-sticky;
-                position: sticky;
-            }
-        }
-
-        .sidebar .nav-link {
-            font-weight: 500;
-            color: #333;
-        }
-
-        .sidebar .nav-link .feather {
-            margin-right: 4px;
-            color: #999;
-        }
-
-        .sidebar .nav-link.active {
-            color: #007bff;
-        }
-
-        .sidebar .nav-link:hover .feather,
-        .sidebar .nav-link.active .feather {
-            color: inherit;
-        }
-
-        .sidebar-heading {
-            font-size: .75rem;
-            text-transform: uppercase;
-        }
-
-        /*
-        * Content
-        */
-
-        [role="main"] {
-            padding-top: 48px;
-            /* Space for fixed navbar */
-        }
-
-        /*
-        * Navbar
-        */
-
-        .navbar-brand {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: 1rem;
-            background-color: rgba(0, 0, 0, .25);
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-        }
-
-        .navbar .form-control {
-            padding: .75rem 1rem;
-            border-width: 0;
-            border-radius: 0;
-        }
-
-        .form-control-dark {
-            color: #fff;
-            background-color: rgba(255, 255, 255, .1);
-            border-color: rgba(255, 255, 255, .1);
-        }
-
-        .form-control-dark:focus {
-            border-color: transparent;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-        }
-
-        /*
-        * Utilities
-        */
-
-        .border-top {
-            border-top: 1px solid #e5e5e5;
-        }
-
-        .border-bottom {
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .sidebar-heading {
-            font-size: .75rem;
-            text-transform: uppercase;
-        }
-
-        /* * Content */
-
-        [role="main"] {
-            padding-top: 48px;
-            /* Space for fixed navbar */
-        }
-
-        /* * Navbar */
-
-        .navbar-brand {
-            padding-top: .75rem;
-            padding-bottom: .75rem;
-            font-size: 1rem;
-            background-color: rgba(0, 0, 0, .25);
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-        }
-
-        .navbar .form-control {
-            padding: .75rem 1rem;
-            border-width: 0;
-            border-radius: 0;
-        }
-
-        .form-control-dark {
-            color: #fff;
-            background-color: rgba(255, 255, 255,
-            .1);
-            border-color: rgba(255, 255, 255, .1);
-        }
-
-        .form-control-dark:focus {
-            border-color: transparent;
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
-        }
-
-        /* * Utilities */
-
-        .border-top {
-            border-top: 1px solid #e5e5e5;
-        }
-
-        .border-bottom {
-            border-bottom: 1px solid #e5e5e5;
-        }
-    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">웹정보서비스 간편 확인</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{% url 'accounts:logout' %}">Sign out</a>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{% url 'home:index' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
-                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                </svg>
-                                Dashboard
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home:completed' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
-                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                                    <polyline points="13 2 13 9 20 9"></polyline>
-                                </svg>
-                                이수과목 목록
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home:major' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                                </svg>
-                                전공과목 목록
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home:culture' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                교양과목 목록
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2">
-                                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                                    <line x1="6" y1="20" x2="6" y2="14"></line>
-                                </svg>
-                                성적 그래프
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers">
-                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                    <polyline points="2 17 12 22 22 17"></polyline>
-                                    <polyline points="2 12 12 17 22 12"></polyline>
-                                </svg>
-                                W-POINT
-                            </a>
-                        </li>
-                    </ul>
-
-                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-                        <span>Saved reports</span>
-                        <a class="d-flex align-items-center text-muted" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                            </svg>
-                        </a>
-                    </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                Current month
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                Last quarter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                    <polyline points="14 2 14 8 20 8"></polyline>
-                                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                                    <polyline points="10 9 9 9 8 9"></polyline>
-                                </svg>
-                                Year-end sale
-                            </a>
-                        </li>
-                    </ul>
+<!-- WRAPPER -->
+<div id="wrapper">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="brand">
+            {% comment %} <a href="index.html">
+                <img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo">
+            </a> {% endcomment %}
+            <p>원광대 웹정보 간편보기 서비스</p>
+        </div>
+        <div class="container-fluid">
+            <div class="navbar-btn">
+                <button type="button" class="btn-toggle-fullwidth">
+                    <i class="lnr lnr-arrow-left-circle"></i>
+                </button>
+            </div>
+            <form class="navbar-form navbar-left">
+                <div class="input-group">
+                    <input type="text" value="" class="form-control" placeholder="Search dashboard...">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary">Go</button>
+                    </span>
                 </div>
+            </form>
+            <div class="navbar-btn navbar-btn-right">
+                <a class="btn btn-success" href="{% url 'accounts:logout' %}"
+                    title="logout">
+                    <i class="fa fa-rocket"></i>
+                    <span>로그아웃</span>
+                </a>
+            </div>
+            <div id="navbar-menu">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
+                            <i class="lnr lnr-alarm"></i>
+                            <span class="badge bg-danger">5</span>
+                        </a>
+                        <ul class="dropdown-menu notifications">
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span class="dot bg-warning"></span>System space is almost full</a>
+                            </li>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span class="dot bg-danger"></span>You have 9 unfinished tasks</a>
+                            </li>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span class="dot bg-success"></span>Monthly report is available</a>
+                            </li>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span class="dot bg-warning"></span>Weekly meeting in 1 hour</a>
+                            </li>
+                            <li>
+                                <a href="#" class="notification-item">
+                                    <span class="dot bg-success"></span>Your request has been approved</a>
+                            </li>
+                            <li>
+                                <a href="#" class="more">See all notifications</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="lnr lnr-question-circle"></i>
+                            <span>Help</span>
+                            <i class="icon-submenu lnr lnr-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">Basic Use</a>
+                            </li>
+                            <li>
+                                <a href="#">Working With Data</a>
+                            </li>
+                            <li>
+                                <a href="#">Security</a>
+                            </li>
+                            <li>
+                                <a href="#">Troubleshooting</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {% comment %} <img src="assets/img/user.png" class="img-circle" alt="Avatar"> {% endcomment %}
+                            <span>Samuel</span>
+                            <i class="icon-submenu lnr lnr-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">
+                                    <i class="lnr lnr-user"></i>
+                                    <span>My Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="lnr lnr-envelope"></i>
+                                    <span>Message</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="lnr lnr-cog"></i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="lnr lnr-exit"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+    <!-- LEFT SIDEBAR -->
+    <div id="sidebar-nav" class="sidebar">
+        <div class="sidebar-scroll">
+            <nav>
+                <ul class="nav">
+                    <li>
+                        <a href="{% url 'home:index' %}" class="active">
+                            <i class="lnr lnr-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:completed' %}" class="">
+                            <i class="lnr lnr-code"></i>
+                            <span>이수과목 목록</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:major' %}" class="">
+                            <i class="lnr lnr-chart-bars"></i>
+                            <span>전공과목 목록</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:culture' %}" class="">
+                            <i class="lnr lnr-cog"></i>
+                            <span>교양과목 목록</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:culture' %}" class="">
+                            <i class="lnr lnr-alarm"></i>
+                            <span>성적 그래프</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="">
+                            <i class="lnr lnr-alarm"></i>
+                            <span>W - POINT</span>
+                        </a>
+                    </li>
+                </ul>
             </nav>
-
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-           
-            {% block content %}
-            {% endblock %}
-            </main>
         </div>
     </div>
+    <!-- END LEFT SIDEBAR -->
+    <!-- MAIN -->
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+               {% block content %}
+               {% endblock %}
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017
+                <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+</div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script>
-        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')
-    </script>
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script src="{% static 'webcrawler/assets/vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'webcrawler/assets/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'webcrawler/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+	<script src="{% static 'webcrawler/assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js' %}"></script>
+	<script src="{% static 'webcrawler/assets/vendor/chartist/js/chartist.min.js' %}"></script>
+    <script src="{% static 'webcrawler/assets/scripts/klorofil-common.js' %}"></script>
+    
     <script>
-        feather.replace()
-    </script>
+        $(function() {
+            var data, options;
 
-    <!-- Graphs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-    <script>
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["1학년 1학기", "1학년 2학기", "2학년 1학기", "2학년 2학기", "3학년 1학기", "3학년 2학기", "4학년 1학기", "4학년 2학기"],
-                datasets: [{
-                    data: [4.39, 4.46, 4.48, 4.44, 4.5, 3.5, 2.5, 0],
-                    lineTension: 0,
-                    backgroundColor: 'transparent',
-                    borderColor: '#007bff',
-                    borderWidth: 4,
-                    pointBackgroundColor: '#007bff'
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: false
-                        }
-                    }]
+            // headline charts
+            data = {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                series: [
+                    [23, 29, 24, 40, 25, 24, 35],
+                    [14, 25, 18, 34, 29, 38, 44],
+                ]
+            };
+
+            options = {
+                height: 300,
+                showArea: true,
+                showLine: false,
+                showPoint: false,
+                fullWidth: true,
+                axisX: {
+                    showGrid: false
                 },
-                legend: {
-                    display: false,
+                lineSmooth: false,
+            };
+
+            new Chartist.Line('#headline-chart', data, options);
+
+
+            // visits trend charts
+            data = {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                series: [{
+                    name: 'series-real',
+                    data: [200, 380, 350, 320, 410, 450, 570, 400, 555, 620, 750, 900],
+                }, {
+                    name: 'series-projection',
+                    data: [240, 350, 360, 380, 400, 450, 480, 523, 555, 600, 700, 800],
+                }]
+            };
+
+            options = {
+                fullWidth: true,
+                lineSmooth: false,
+                height: "270px",
+                low: 0,
+                high: 'auto',
+                series: {
+                    'series-projection': {
+                        showArea: true,
+                        showPoint: false,
+                        showLine: false
+                    },
+                },
+                axisX: {
+                    showGrid: false,
+
+                },
+                axisY: {
+                    showGrid: false,
+                    onlyInteger: true,
+                    offset: 0,
+                },
+                chartPadding: {
+                    left: 20,
+                    right: 20
                 }
+            };
+
+            new Chartist.Line('#visits-trends-chart', data, options);
+
+
+            // visits chart
+            data = {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                series: [
+                    [6384, 6342, 5437, 2764, 3958, 5068, 7654]
+                ]
+            };
+
+            options = {
+                height: 300,
+                axisX: {
+                    showGrid: false
+                },
+            };
+
+            new Chartist.Bar('#visits-chart', data, options);
+
+
+            // real-time pie chart
+            var sysLoad = $('#system-load').easyPieChart({
+                size: 130,
+                barColor: function(percent) {
+                    return "rgb(" + Math.round(200 * percent / 100) + ", " + Math.round(200 * (1.1 - percent / 100)) + ", 0)";
+                },
+                trackColor: 'rgba(245, 245, 245, 0.8)',
+                scaleColor: false,
+                lineWidth: 5,
+                lineCap: "square",
+                animate: 800
+            });
+
+            var updateInterval = 3000; // in milliseconds
+
+            setInterval(function() {
+                var randomVal;
+                randomVal = getRandomInt(0, 100);
+
+                sysLoad.data('easyPieChart').update(randomVal);
+                sysLoad.find('.percent').text(randomVal);
+            }, updateInterval); 
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
             }
+
         });
-    </script>
-
-
-    <iframe id="blockbyte-bs-sidebar" data-pos="left"></iframe>
-    <div id="blockbyte-bs-indicator" class="blockbyte-bs-fullHeight" style="width: 2px; height: 100%; top: 0%;"></div>
+	</script>
 </body>
 
 </html>

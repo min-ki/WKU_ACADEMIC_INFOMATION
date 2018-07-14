@@ -1,56 +1,143 @@
 {% extends 'webcrawler/layout.html' %}
+{% load get_graduated_point %}
 
 {% block content %}
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Dashboard</h1>
-  <div class="btn-toolbar mb-2 mb-md-0">
+<h3 class="page-title">Dashboard</h3>
+
+<div class="btn-toolbar mb-2 mb-md-0" style="padding: 10px;">
     <div class="btn-group mr-2">
       <button class="btn btn-sm btn-outline-secondary">Share</button>
       <button class="btn btn-sm btn-outline-secondary">Export</button>
-    </div>
-    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-      This week
-    </button>
   </div>
 </div>
 
-<div class="table-responsive">
-
-    {% if subject_list %}
-    <table class="table table-sm">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">과목명</th>
-                <th scope="col">이수구분</th>
-                <th scope="col">학점</th>
-                <th scope="col">점수</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for title, item in subject_list.items %}
-            <tr>
-                <td> {{ title }} </td>
-                <td> {{ item.0 }}</td>
-                <td> {{ item.1 }}</td>
-                <td> {{ item.2 }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <table class="table table-sm">
-        <thead class="thead-dark">
-          <tr>
-            <th>전체학점</th>
-            <th>교양학점</th>
-          </tr>
-        </thead>
-        <tbody>
-          <td>{{ total_point }} </td>
-          <td>{{ point_culture_subject }} </td>
-        </tbody>
-    </table>
-    {% endif %}
+<div class="row">
+  <div class="col-md-8">
+    <!-- PANEL HEADLINE -->
+    <div class="panel panel-headline">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-3">
+            <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="100" style="height: 120px; margin: 0; vertical-align: bottom;">
+          </div>
+          <div class="col-md-5">
+          <p class="panel-title">이름 : {{ user_info.0 }}</p>
+          <p>학번 : {{ user_info.1 }}</p>
+          <p>소속 : {{ user_info.4 }}</p>
+          </div>
+          <div class="col-md-4">
+            <p>학년 : {{ user_info.3 }}</p>
+            <p>이수학기 :{{ user_info.5 }}</p>
+            <p>학과 : {{ user_info.6 }}</p>
+          </div>
+        </div>
+        
+      </div>
+      <div class="panel-body">
+        <h4>세부 사항</h4>
+        <p> 이수학점 : {{ total_point }} 학점 </p>
+        <p> 졸업학점 : {{ graduated_point|keyvalue:user_info.6 }} 학점 </p>
+        <p> 남은학점 : 29 학점 </p>
+        <p> 전공학점 : {{ subject_point.major_subject_sum }} 학점 </p>
+        <p> 교양학점 : {{ subject_point.culture_subject_sum }} 학점 </p>
+      </div>
+    </div>
+    <!-- END PANEL HEADLINE -->
+  </div>
+  <div class="col-md-4">
+    <!-- PANEL NO CONTROLS -->
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">장학금 현황</h3>
+      </div>
+      <div class="panel-body">
+        {% for a,b,c,d,e,f in scholar_ship %}
+          <p>{{a}}년 - {{ b }}학기</p>
+          <p><a class="badge badge-info">{{c}}</a> {{ f }}원</p>
+        {% endfor %}
+      </div>
+    </div>
+    <!-- END PANEL NO CONTROLS -->
+  </div>
+  <div class="col-md-4">
+    <!-- PANEL NO PADDING -->
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">Panel No Padding</h3>
+        <div class="right">
+          <button type="button" class="btn-toggle-collapse">
+            <i class="lnr lnr-chevron-up"></i>
+          </button>
+          <button type="button" class="btn-remove">
+            <i class="lnr lnr-cross"></i>
+          </button>
+        </div>
+      </div>
+      <div class="panel-body no-padding bg-primary text-center">
+        <div class="padding-top-30 padding-bottom-30">
+          <i class="fa fa-thumbs-o-up fa-5x"></i>
+          <h3>No Content Padding</h3>
+        </div>
+      </div>
+    </div>
+    <!-- END PANEL NO PADDING -->
+  </div>
 </div>
+<div class="row">
+  <div class="col-md-4">
+    <!-- PANEL DEFAULT -->
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">Panel Default</h3>
+        <div class="right">
+          <button type="button" class="btn-toggle-collapse">
+            <i class="lnr lnr-chevron-up"></i>
+          </button>
+          <button type="button" class="btn-remove">
+            <i class="lnr lnr-cross"></i>
+          </button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <p>Objectively network visionary methodologies via best-of-breed users. Phosfluorescently initiate go forward
+          leadership skills before an expanded array of infomediaries. Monotonectally incubate web-enabled communities
+          rather than process-centric.</p>
+      </div>
+    </div>
+    <!-- END PANEL DEFAULT -->
+  </div>
+  <div class="col-md-4">
+    <!-- PANEL WITH FOOTER -->
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">Panel With Footer</h3>
+        <div class="right">
+          <button type="button" class="btn-toggle-collapse">
+            <i class="lnr lnr-chevron-up"></i>
+          </button>
+          <button type="button" class="btn-remove">
+            <i class="lnr lnr-cross"></i>
+          </button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <p>Objectively network visionary methodologies via best-of-breed users. Phosfluorescently initiate go forward
+          leadership skills before an expanded array.</p>
+      </div>
+      <div class="panel-footer">
+        <h5>Panel Footer</h5>
+      </div>
+    </div>
+    <!-- END PANEL WITH FOOTER -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <!-- PANEL SCROLLING -->
+ 
+    <!-- END PANEL SCROLLING -->
+  </div>
+</div>
+
 {% endblock %}
