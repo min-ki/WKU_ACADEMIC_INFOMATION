@@ -108,39 +108,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {% comment %} <img src="assets/img/user.png" class="img-circle" alt="Avatar"> {% endcomment %}
-                            <span>Samuel</span>
-                            <i class="icon-submenu lnr lnr-chevron-down"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">
-                                    <i class="lnr lnr-user"></i>
-                                    <span>My Profile</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="lnr lnr-envelope"></i>
-                                    <span>Message</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="lnr lnr-cog"></i>
-                                    <span>Settings</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="lnr lnr-exit"></i>
-                                    <span>Logout</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -159,25 +127,25 @@
                     </li>
                     <li>
                         <a href="{% url 'home:completed' %}" class="">
-                            <i class="lnr lnr-code"></i>
-                            <span>이수과목 목록</span>
+                            <i class="lnr lnr-list"></i>
+                            <span>이수과목 리스트</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'home:major' %}" class="">
+                            <i class="lnr lnr-list"></i>
+                            <span>전공과목 리스트</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:culture' %}" class="">
+                            <i class="lnr lnr-list"></i>
+                            <span>교양과목 리스트</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:culture' %}" class="">
                             <i class="lnr lnr-chart-bars"></i>
-                            <span>전공과목 목록</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'home:culture' %}" class="">
-                            <i class="lnr lnr-cog"></i>
-                            <span>교양과목 목록</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'home:culture' %}" class="">
-                            <i class="lnr lnr-alarm"></i>
                             <span>성적 그래프</span>
                         </a>
                     </li>

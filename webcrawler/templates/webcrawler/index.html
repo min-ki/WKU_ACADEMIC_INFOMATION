@@ -67,9 +67,17 @@
         <h3 class="panel-title">W-POINT</h3>
       </div>
       <div class="panel-body">
+          <div class="row">
+
           {% for a, b, c, d in wpoint %}
-            <p> <span class="badge badge-primary">인정</span>  {{ a }}  {{ b }}  <span class="badge badge-danger">초과</span>  {{ c }} : {{ d }}</p>
+              <div class="col-md-6">
+                <p> <span class="badge badge-primary">인정</span>  {{ a }}  {{ b }}
+              </div>
+              <div class="col-md-6">
+                <span class="badge badge-danger">초과</span>  {{ c }} : {{ d }}</p>
+              </div>
           {% endfor %}
+          </div>
       </div>
     </div>
     <!-- END PANEL NO PADDING -->
