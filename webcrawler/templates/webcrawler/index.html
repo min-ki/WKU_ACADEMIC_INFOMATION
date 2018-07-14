@@ -60,25 +60,16 @@
     </div>
     <!-- END PANEL NO CONTROLS -->
   </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
     <!-- PANEL NO PADDING -->
     <div class="panel">
       <div class="panel-heading">
-        <h3 class="panel-title">Panel No Padding</h3>
-        <div class="right">
-          <button type="button" class="btn-toggle-collapse">
-            <i class="lnr lnr-chevron-up"></i>
-          </button>
-          <button type="button" class="btn-remove">
-            <i class="lnr lnr-cross"></i>
-          </button>
-        </div>
+        <h3 class="panel-title">W-POINT</h3>
       </div>
-      <div class="panel-body no-padding bg-primary text-center">
-        <div class="padding-top-30 padding-bottom-30">
-          <i class="fa fa-thumbs-o-up fa-5x"></i>
-          <h3>No Content Padding</h3>
-        </div>
+      <div class="panel-body">
+          {% for a, b, c, d in wpoint %}
+            <p> <span class="badge badge-primary">인정</span>  {{ a }}  {{ b }}  <span class="badge badge-danger">초과</span>  {{ c }} : {{ d }}</p>
+          {% endfor %}
       </div>
     </div>
     <!-- END PANEL NO PADDING -->

@@ -1,0 +1,41 @@
+{% extends 'webcrawler/layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- TABLE HOVER -->
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">WPOINT - 사업참여 내역</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>사업명칭</th>
+                            <th>사업일자</th>
+                            <th>활동내역</th>
+                            <th>인정점수</th>
+                            <th>초과점수</th>
+                            <th>승인구분</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for w_name, w_date, w_info, w_accept_point, w_over_point, w_accepted in detail_wpoint %}
+                            <tr>
+                                <td>{{ w_name }}</td>
+                                <td>{{ w_date }}</td>
+                                <td>{{ w_info }}</td>
+                                <td>{{ w_accept_point }}</td>
+                                <td>{{ w_over_point }}</td>
+                                <td>{{ w_accepted }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

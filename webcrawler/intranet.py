@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, UnexpectedAlertPresentException
 from bs4 import BeautifulSoup
+import time
 
 def parsed_subject(id, pw):
     
@@ -93,6 +94,55 @@ def parsed_subject(id, pw):
 
     print(scholar_ship)
 
+
+
+    ### W - POINT 크롤링
+    ### 도덕성, 창의성, 소통력, 실천력, 포인트 합계
+    ### 사업참여 내역
+
+    driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
+    time.sleep(2)
+
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    wpoint = []
+
+    ### 인정 포인트, 현재 포인트
+    accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
+    accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
+    over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
+    over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
+    
+    for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
+        wpoint.append([
+            t_accept_table.text,
+            t_accept_point.text,
+            t_over_table.text,
+            t_over_point.text,
+        ])
+
+    ### 사업참여 내역
+
+    detail_wpoint = []
+
+    industry_name = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(1) > a > strong')
+    industry_duration = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(2)')
+    industry_info = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(3)')
+    industry_accept_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(4)')
+    industry_over_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(5)')
+    industry_accepted = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(6)')
+
+    for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
+        detail_wpoint.append([
+            t_industry_name.text, 
+            t_industry_duration.text, 
+            t_industry_info.text, 
+            t_industry_accept_point.text, 
+            t_industry_over_point.text, 
+            t_industry_accepted.text,
+        ])        
+
+    print(detail_wpoint)
     # 전체 성적 리스트 주소
 
     driver.get(
@@ -150,7 +200,8 @@ def parsed_subject(id, pw):
     information.append({'sum_of_grade_point' : sum_of_grade_point})
     information.append(user_info)
     information.append(scholar_ship)
-
+    information.append(wpoint)
+    information.append(detail_wpoint)
     driver.close()
     
     return information

@@ -28,25 +28,42 @@ def index(request):
                 total_point = data[1]['sum_of_grade_point']  # 전체 학점
                 subject_point = get_sum_of_subject(data[0]) # 전공학점, 교양학점
                 user_info = data[2]  # 사용자 정보    
-                scholar_ship = data[3]       
+                scholar_ship = data[3] # 장학정보
+                wpoint = data[4] # WPOINT  
+                detail_wpoint = data[5] # WPOINT Detail
+
+
+                ### 세션 데이터 설정
+                request.session['subject_list'] = subject_list
+                request.session['total_point'] = total_point 
+                request.session['subject_point'] = subject_point 
+                request.session['user_info'] = user_info
+                request.session['scholar_ship'] =  scholar_ship
+                request.session['detail_wpoint'] = detail_wpoint 
+
             else:
                 # 로그인 에러 출력
                 messages.error(request, '로그인에 실패했습니다.')
                 return redirect('accounts:login')
+                
         except NameError:
             print("NameError 발생")
 
-    context = {'subject_point': subject_point, 'subject_list': subject_list,
-               'total_point': total_point,
-               'user_info': user_info,
-               'graduated_point': graduated_point,
-               'scholar_ship': scholar_ship,}  # data를 분할해서 여러개의 context로 넘기기
+        finally:
+            context = {
+                'subject_point': subject_point,
+                'subject_list': subject_list,
+                'total_point': total_point,
+                'user_info': user_info,
+                'graduated_point': graduated_point,
+                'scholar_ship': scholar_ship,
+                'wpoint': wpoint,
+                'detail_wpoint': detail_wpoint,
+            }
 
     return render(request, 'webcrawler/index.html', context)
 
-
 def completed_list(request):
-    
     
     if request.session.get('data', False):
         completed_list = request.session['data'][0] # 이수과목 리스트
@@ -121,3 +138,13 @@ def get_sum_of_subject(subject):
     sum['culture_subject_sum'] = int(culture_subject_sum)
 
     return sum
+
+
+
+## W - POINT 상세페이지
+def wpoint_detail(request):
+    
+    if request.session.get('detail_wpoint', False):
+        detail_wpoint = request.session['detail_wpoint']
+
+    return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
