@@ -2,13 +2,14 @@
 {% load get_graduated_point %}
 {% block content %}
 
-<button class="btn btn-sm btn-outline-secondary">Share</button>
-<button class="btn btn-sm btn-outline-secondary">Export</button>
 
-<div style="margin: 10px"></div>
+<div style="margin: 10px">
+    <button class="btn btn-sm btn-outline-secondary">Share</button>
+    <button class="btn btn-sm btn-outline-secondary">Export</button>
+</div>
 
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-12">
         <!-- TABLE HOVER -->
         <div class="panel">
             <div class="panel-heading">
@@ -44,6 +45,8 @@
                                         <span class="label label-info"> {{ certification_list_info|keyvalue:title }} </span>
                                     {% elif "인필BSM" == certification_list_info|keyvalue:title %}
                                         <span class="label label-danger"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% elif "인선전" == certification_list_info|keyvalue:title %}
+                                        <span class="label label-success"> {{ certification_list_info|keyvalue:title }} </span>
                                     {% endif %}
                                 {% endif %}
                             </td>
@@ -58,5 +61,7 @@
         </div>
     </div>
 </div>
- {{ completed_list_count }} 과목 이수 // 총 : {{ completed_list_point_count }} 학점
+
+{{ completed_list_count }} 과목 이수 // 총 : {{ completed_list_point_count }} 학점
+
 {% endblock %}
