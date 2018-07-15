@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parsed_subject
+from .models import Subject, Major
 
 graduated_point = {
     '컴퓨터공학과': 136,
+    '컴퓨터·소프트웨어공학과': 136,
     '영어영문학과': 130,
 }
 
@@ -73,6 +75,18 @@ def index(request):
 ## 이수과목 리스트 뷰
 def completed_list(request):
     
+    if request.session.get('user_info', False):
+        user_info = request.session['user_info']
+
+    certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
+    certification_list_title = [item.title for item in certification_list] # 공학인증 과목
+    certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
+    certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+
+    print(certification_list_title)
+    print(certification_list_info)
+    print(certification_list_necessary)
+
     if request.session.get('data', False):
         completed_list = request.session['data'][0] # 이수과목 리스트
         completed_list_count = len(completed_list.keys()) # 이수과목 개수
@@ -82,7 +96,10 @@ def completed_list(request):
 
     return render(request, 'webcrawler/completed_list.html', {'completed_list' : completed_list ,
                                                               'completed_list_count': completed_list_count,
-                                                              'completed_list_point_count': completed_list_point_count})
+                                                              'completed_list_point_count': completed_list_point_count,
+                                                              'certification_list_title': certification_list_title,
+                                                              'certification_list_info': certification_list_info,
+                                                              'certification_list_necessary': certification_list_necessary})
 
 
 ## 전공과목 리스트 뷰

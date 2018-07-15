@@ -1,5 +1,5 @@
 {% extends 'webcrawler/layout.html' %} 
-
+{% load get_graduated_point %}
 {% block content %}
 
 <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -8,7 +8,7 @@
 <div style="margin: 10px"></div>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-10">
         <!-- TABLE HOVER -->
         <div class="panel">
             <div class="panel-heading">
@@ -19,23 +19,37 @@
                     <thead>
                         <tr>
                             <th>과목명</th>
-                            <th>공학인증</th>
-                            <th>이수구분</th>
-                            <th>학점</th>
-                            <th>점수</th>
+                            <th class="text-center">필수여부</th>
+                            <th class="text-center">공학인증</th>
+                            <th class="text-center">타입</th>
+                            <th class="text-center">학점</th>
+                            <th class="text-center">점수</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for title, item in completed_list.items %}
                         <tr>
                             <td>{{ title }}</td>
-                            <td>
-                                <span class="badge badge-info"> 인필전 </span>
-                                <span class="badge badge-success"> 계열필수</span>
+                            
+                            <td class="text-center">
+                                {% if title in certification_list_title %}
+                                    {% if certification_list_necessary|keyvalue:title %}
+                                        <span class="label label-primary"> 필수 </span>
+                                    {% endif %}
+                                {% endif %}
                             </td>
-                            <td>{{ item.0 }}</td>
-                            <td>{{ item.1 }}</td>
-                            <td>{{ item.2 }}</td>
+                            <td class="text-center">
+                                {% if title in certification_list_title %}
+                                    {% if "인필교" == certification_list_info|keyvalue:title  %}
+                                        <span class="label label-info"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% elif "인필BSM" == certification_list_info|keyvalue:title %}
+                                        <span class="label label-danger"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td class="text-center">{{ item.0 }}</td>
+                            <td class="text-center">{{ item.1 }}</td>
+                            <td class="text-center">{{ item.2 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
