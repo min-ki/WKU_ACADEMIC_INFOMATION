@@ -31,3 +31,12 @@
     color: #fff;
     background-color: #343a40;
 }
+
+.user_info {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.user_info_container {
+    margin-top: 25px;
+}

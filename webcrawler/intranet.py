@@ -36,7 +36,13 @@ def parsed_subject(id, pw):
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg": 
         return False
 
-
+    try:
+        WebDriverWait(driver, 1).until(EC.alert_is_present(), "test")
+        alert = driver.switch_to_alert()
+        alert.accept()
+        print("alert accepted")
+    except TimeoutException:
+        print("no alert")
 
     ### 사용자 정보 크롤링 
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
@@ -142,7 +148,6 @@ def parsed_subject(id, pw):
             t_industry_accepted.text,
         ])        
 
-    print(detail_wpoint)
     # 전체 성적 리스트 주소
 
     driver.get(
@@ -162,6 +167,32 @@ def parsed_subject(id, pw):
     
     select_year = soup.select(
         'body > table > tbody > tr > td:nth-of-type(6) > a')
+
+    ## 평균 학점
+    ## 년도, 학년, 학기, 평균학점
+
+    average_point_year = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
+    average_point_grade = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
+    average_point_semester = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
+    average_point = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(7)')
+
+    # average_point_year = average_point_year[0]
+    # average_point_grade = average_point_grade[0]
+    # average_point_semester = average_point_semester[0]
+    # average_point = average_point[0]
+
+    average_point_year = [item for item in average_point_year]
+    average_point_grade = [item for item in average_point_grade]
+    average_point_semester = [item for item in average_point_semester]
+    average_point = [item for item in average_point]
+    
+    print(average_point_year, average_point_grade,
+          average_point_semester, average_point)
+
+    average_point_info = []
+
+    for year, grade ,semester, point in zip(average_point_year, average_point_grade, average_point_semester, average_point):
+        average_point_info.append([year.text, grade.text, semester.text, point.text])
 
     year_list = []
 
@@ -202,6 +233,8 @@ def parsed_subject(id, pw):
     information.append(scholar_ship)
     information.append(wpoint)
     information.append(detail_wpoint)
+    information.append(average_point_info)
+
     driver.close()
     
     return information

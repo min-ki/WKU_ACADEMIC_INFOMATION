@@ -1,6 +1,5 @@
 {% extends 'webcrawler/layout.html' %}
 {% load get_graduated_point %}
-
 {% block content %}
 
 <h3 class="page-title">Dashboard</h3>
@@ -15,32 +14,86 @@
 <div class="row">
   <div class="col-md-8">
     <!-- PANEL HEADLINE -->
-    <div class="panel panel-headline">
+    <div class="panel">
       <div class="panel-heading">
         <div class="row">
-          <div class="col-md-3">
-            <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="100" style="height: 120px; margin: 0; vertical-align: bottom;">
-          </div>
-          <div class="col-md-5">
-          <p class="panel-title">이름 : {{ user_info.0 }}</p>
-          <p>학번 : {{ user_info.1 }}</p>
-          <p>소속 : {{ user_info.4 }}</p>
-          </div>
           <div class="col-md-4">
-            <p>학년 : {{ user_info.3 }}</p>
-            <p>이수학기 :{{ user_info.5 }}</p>
-            <p>학과 : {{ user_info.6 }}</p>
+            <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="120" style="height: 140px; margin: 10px; vertical-align: bottom;">
+          </div>
+          <div class="col-md-4 user_info_container">
+          <p class="user_info">이름 : <strong>{{ user_info.0 }} </strong></p>
+          <p class="user_info">학번 : {{ user_info.1 }}</p>
+          <p class="user_info">소속 : {{ user_info.4 }}</p>
+          </div>
+          <div class="col-md-4 user_info_container">
+            <p class="user_info">학년 : {{ user_info.3 }}</p>
+            <p class="user_info">이수학기 :{{ user_info.5 }}</p>
+            <p class="user_info">학과 : {{ user_info.6 }}</p>
           </div>
         </div>
-        
       </div>
+
       <div class="panel-body">
-        <h4>세부 사항</h4>
-        <p> 이수학점 : {{ total_point }} 학점 </p>
-        <p> 졸업학점 : {{ graduated_point|keyvalue:user_info.6 }} 학점 </p>
-        <p> 남은학점 : 29 학점 </p>
-        <p> 전공학점 : {{ subject_point.major_subject_sum }} 학점 </p>
-        <p> 교양학점 : {{ subject_point.culture_subject_sum }} 학점 </p>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel">
+								<div class="panel-heading">
+									<h3 class="panel-title">학점 현황</h3>
+								</div>
+								<div class="panel-body">
+									<table class="table table-condensed">
+										<thead>
+											<tr>
+                        <th class="text-center">이수학점</th>
+                        <th class="text-center">졸업학점</th>
+												<th class="text-center">남은학점</th>
+												<th class="text-center">전공학점</th>
+												<th class="text-center">교양학점</th>
+											</tr>
+										</thead>
+										<tbody>
+                      <tr>
+												<td class="text-center"> {{ total_point }} </td>
+												<td class="text-center"> {{ graduated_point|keyvalue:user_info.6 }} </td>
+												<td class="text-center"> {{ remain_graduated_point }}</td>
+                        <td class="text-center"> {{ subject_point.major_subject_sum }} </td>
+                        <td class="text-center"> {{ subject_point.culture_subject_sum }} </td>
+                      </tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+          </div>
+          <div class="col-md-12">
+            <div class="panel">
+								<div class="panel-heading">
+									<h3 class="panel-title">성적 현황</h3>
+								</div>
+								<div class="panel-body">
+									<table class="table table-condensed">
+										<thead>
+											<tr>
+												<th class="text-center">년도</th>
+												<th class="text-center">학년</th>
+												<th class="text-center">학기</th>
+												<th class="text-center">평균학점</th>
+											</tr>
+										</thead>
+										<tbody>
+                      {% for point in average_point_info %}
+                      <tr>
+												<td class="text-center">{{ point.0 }}</td>
+												<td class="text-center">{{ point.1 }}</td>
+												<td class="text-center">{{ point.2 }}</td>
+												<td class="text-center">{{ point.3 }}</td>
+                      </tr>
+                      {% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+          </div>
+        </div>
       </div>
     </div>
     <!-- END PANEL HEADLINE -->
@@ -54,7 +107,7 @@
       <div class="panel-body">
         {% for a,b,c,d,e,f in scholar_ship %}
           <p>{{a}}년 - {{ b }}학기</p>
-          <p><a class="badge badge-info">{{c}}</a> {{ f }}원</p>
+          <p><span class="label label-info">{{c}}</span>  {{ f }}원</p>
         {% endfor %}
       </div>
     </div>
@@ -81,61 +134,6 @@
       </div>
     </div>
     <!-- END PANEL NO PADDING -->
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-    <!-- PANEL DEFAULT -->
-    <div class="panel">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel Default</h3>
-        <div class="right">
-          <button type="button" class="btn-toggle-collapse">
-            <i class="lnr lnr-chevron-up"></i>
-          </button>
-          <button type="button" class="btn-remove">
-            <i class="lnr lnr-cross"></i>
-          </button>
-        </div>
-      </div>
-      <div class="panel-body">
-        <p>Objectively network visionary methodologies via best-of-breed users. Phosfluorescently initiate go forward
-          leadership skills before an expanded array of infomediaries. Monotonectally incubate web-enabled communities
-          rather than process-centric.</p>
-      </div>
-    </div>
-    <!-- END PANEL DEFAULT -->
-  </div>
-  <div class="col-md-4">
-    <!-- PANEL WITH FOOTER -->
-    <div class="panel">
-      <div class="panel-heading">
-        <h3 class="panel-title">Panel With Footer</h3>
-        <div class="right">
-          <button type="button" class="btn-toggle-collapse">
-            <i class="lnr lnr-chevron-up"></i>
-          </button>
-          <button type="button" class="btn-remove">
-            <i class="lnr lnr-cross"></i>
-          </button>
-        </div>
-      </div>
-      <div class="panel-body">
-        <p>Objectively network visionary methodologies via best-of-breed users. Phosfluorescently initiate go forward
-          leadership skills before an expanded array.</p>
-      </div>
-      <div class="panel-footer">
-        <h5>Panel Footer</h5>
-      </div>
-    </div>
-    <!-- END PANEL WITH FOOTER -->
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-4">
-    <!-- PANEL SCROLLING -->
- 
-    <!-- END PANEL SCROLLING -->
   </div>
 </div>
 

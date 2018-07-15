@@ -4,6 +4,7 @@ from .intranet import parsed_subject
 
 graduated_point = {
     '컴퓨터공학과': 136,
+    '영어영문학과': 130,
 }
 
 def index(request):
@@ -31,15 +32,19 @@ def index(request):
                 scholar_ship = data[3] # 장학정보
                 wpoint = data[4] # WPOINT  
                 detail_wpoint = data[5] # WPOINT Detail
-
+                average_point_info = data[6]
+                remain_graduated_point = graduated_point[user_info[6]] - total_point
 
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
-                request.session['total_point'] = total_point 
+                request.session['total_point'] = total_point
+                request.session['graduated_point'] = graduated_point
                 request.session['subject_point'] = subject_point 
                 request.session['user_info'] = user_info
                 request.session['scholar_ship'] =  scholar_ship
-                request.session['detail_wpoint'] = detail_wpoint 
+                request.session['detail_wpoint'] = detail_wpoint
+                request.session['average_point_info'] = average_point_info
+                request.session['remain_graduated_point'] = remain_graduated_point
 
             else:
                 # 로그인 에러 출력
@@ -49,20 +54,23 @@ def index(request):
         except NameError:
             print("NameError 발생")
 
-        finally:
-            context = {
-                'subject_point': subject_point,
-                'subject_list': subject_list,
-                'total_point': total_point,
-                'user_info': user_info,
-                'graduated_point': graduated_point,
-                'scholar_ship': scholar_ship,
-                'wpoint': wpoint,
-                'detail_wpoint': detail_wpoint,
-            }
+        
+    context = {
+        'subject_point': subject_point,
+        'subject_list': subject_list,
+        'total_point': total_point,
+        'user_info': user_info,
+        'graduated_point': graduated_point,
+        'scholar_ship': scholar_ship,
+        'wpoint': wpoint,
+        'detail_wpoint': detail_wpoint,
+        'average_point_info': average_point_info,
+        'remain_graduated_point': remain_graduated_point,
+    }
 
     return render(request, 'webcrawler/index.html', context)
 
+## 이수과목 리스트 뷰
 def completed_list(request):
     
     if request.session.get('data', False):
@@ -93,7 +101,7 @@ def get_major_subject(subject):
     major_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '기전' or item[0] == '선전':
+        if item[0] == '기전' or item[0] == '선전' or item[0] == '응전' or item[0] == '복수':
             major_subject[title] =  item
 
     return major_subject
@@ -131,7 +139,7 @@ def get_sum_of_subject(subject):
     for title, arr in subject.items():
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
             culture_subject_sum = culture_subject_sum + float(arr[1])
-        elif arr[0] == "기전" or arr[0] == "선전":
+        elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전":
             major_subject_sum = major_subject_sum + float(arr[1])
 
     sum['major_subject_sum'] = int(major_subject_sum)
@@ -148,3 +156,12 @@ def wpoint_detail(request):
         detail_wpoint = request.session['detail_wpoint']
 
     return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
+
+
+def chart(request):
+
+    if request.session.get('average_point_info', False):
+        average_point_info = request.session['average_point_info']
+
+    return render(request, 'webcrawler/grade_graph.html', {'average_point_info': average_point_info})
+    
