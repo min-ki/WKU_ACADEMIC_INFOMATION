@@ -26,14 +26,14 @@ def index(request):
 
             if data:
                 subject_list = data[0] # 과목 리스트
-                total_point = data[1]['sum_of_grade_point']  # 전체 학점
+                total_point = int(data[1]['sum_of_grade_point'])  # 전체 학점
                 subject_point = get_sum_of_subject(data[0]) # 전공학점, 교양학점
                 user_info = data[2]  # 사용자 정보    
                 scholar_ship = data[3] # 장학정보
                 wpoint = data[4] # WPOINT  
                 detail_wpoint = data[5] # WPOINT Detail
                 average_point_info = data[6]
-                remain_graduated_point = graduated_point[user_info[6]] - total_point
+                remain_graduated_point = int(graduated_point[user_info[6]] - total_point)
 
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
