@@ -45,6 +45,7 @@
                     <i class="lnr lnr-arrow-left-circle"></i>
                 </button>
             </div>
+            {% comment %} 
             <form class="navbar-form navbar-left">
                 <div class="input-group">
                     <input type="text" value="" class="form-control" placeholder="Search dashboard...">
@@ -53,10 +54,12 @@
                     </span>
                 </div>
             </form>
+            {% endcomment %}
+            
             <div class="navbar-btn navbar-btn-right">
                 <a class="btn btn-success" href="{% url 'accounts:logout' %}"
                     title="logout">
-                    <i class="fa fa-rocket"></i>
+                    {% comment %} <i class="fa fa-rocket"></i> {% endcomment %}
                     <span>로그아웃</span>
                 </a>
             </div>
@@ -174,8 +177,8 @@
 
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{message.tags}}">
-                            [{{ message.tags }}] {# 메세지 Level #} {{ message.message }} {# 실제 메세지 내용 #}
+                        <div class="alert alert-{{message.tags}}" id="message">
+                            {{ message.message }} {# 실제 메세지 내용 #}
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -197,7 +200,11 @@
 
 
 <script>
-   
+    setTimeout(fade_out, 5000);
+
+    function fade_out() {
+        $("#message").fadeOut().empty();
+    }
 </script>
 
 </body>

@@ -7,7 +7,7 @@
     
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{message.tags}}">
+            <div class="alert alert-{{message.tags}}" id="message">
                 [{{ message.tags }}] {# 메세지 Level #} {{ message.message }} {# 실제 메세지 내용 #}
             </div>
         {% endfor %}
@@ -27,4 +27,12 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+<script>
+    setTimeout(fade_out, 5000);
+
+    function fade_out() {
+        $("#message").fadeOut().empty();
+    }
+</script>
 {% endblock %}
