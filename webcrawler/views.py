@@ -16,10 +16,6 @@ def index(request):
         intranet_pw = request.session['intranet_pw']
     else:
         return redirect('accounts:login')
-
-    # if request.session.get('intranet_pw', False):
-    #     else:
-    #     redirect('accounts:login')
         
     if intranet_id and intranet_pw:
         try:
@@ -60,7 +56,6 @@ def index(request):
         except NameError:
             print("NameError 발생")
 
-        
     context = {
         'subject_point': subject_point,
         'subject_list': subject_list,
@@ -89,17 +84,16 @@ def completed_list(request):
         certification_list_title = [item.title for item in certification_list] # 공학인증 과목
         certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
         certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+        certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부
+        print(certification_major)
+
     except UnboundLocalError:
         return redirect('accounts:login')
-
-    print(certification_list_title)
-    print(certification_list_info)
-    print(certification_list_necessary)
 
     if request.session.get('data', False):
         completed_list = request.session['data'][0] # 이수과목 리스트
         completed_list_count = len(completed_list.keys()) # 이수과목 개수
-        completed_list_point_count = int(sum([float(i[1]) for i in completed_list.values() ])) # 이수과목 학점 총점
+        completed_list_point_count = int(sum([float(i[2]) for i in completed_list.values() ])) # 이수과목 학점 총점
     else:
         completed_list = None
 
@@ -108,7 +102,8 @@ def completed_list(request):
                                                               'completed_list_point_count': completed_list_point_count,
                                                               'certification_list_title': certification_list_title,
                                                               'certification_list_info': certification_list_info,
-                                                              'certification_list_necessary': certification_list_necessary})
+                                                              'certification_list_necessary': certification_list_necessary,
+                                                              'certification_major': certification_major})
 
 
 ## 전공과목 리스트 뷰
@@ -164,9 +159,9 @@ def get_sum_of_subject(subject):
 
     for title, arr in subject.items():
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
-            culture_subject_sum = culture_subject_sum + float(arr[1])
+            culture_subject_sum = culture_subject_sum + float(arr[2])
         elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전":
-            major_subject_sum = major_subject_sum + float(arr[1])
+            major_subject_sum = major_subject_sum + float(arr[2])
 
     sum['major_subject_sum'] = int(major_subject_sum)
     sum['culture_subject_sum'] = int(culture_subject_sum)

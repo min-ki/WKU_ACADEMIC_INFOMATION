@@ -205,6 +205,9 @@ def parsed_subject(id, pw):
         # 이수구분
         subject_kind = soup.select(
             'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
+        # 학수번호
+        subject_number = soup.select(
+            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
         # 과목명
         subject_list = soup.select(
             'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
@@ -215,8 +218,8 @@ def parsed_subject(id, pw):
         subject_grade = soup.select(
             'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
 
-        for kind, title, point, grade in zip(subject_kind, subject_list, subject_grade_point, subject_grade):
-            subject[title.text] = [kind.text, point.text, grade.text]
+        for kind, number, title, point, grade in zip(subject_kind, subject_number, subject_list, subject_grade_point, subject_grade):
+            subject[title.text] = [kind.text, number.text, point.text, grade.text]
             sum_of_grade_point += float(point.text)
 
 
