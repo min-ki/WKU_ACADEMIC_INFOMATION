@@ -27,9 +27,9 @@ class Subject(models.Model):
     )
 
     title = models.CharField(max_length=25) # 제목
-    major = models.ForeignKey(Major, on_delete=models.CASCADE) # 학과
+    major = models.ManyToManyField(Major) # 학과
     subject_type =  models.CharField(max_length=25, choices=SUBJECT_TYPE_CHOICES) # 수업유형
-    certification_type = models.CharField(max_length=25, choices=CERTIFICATION_TYPE_CHOICES) # 공학인증 유형
+    certification_type = models.CharField(max_length=25, choices=CERTIFICATION_TYPE_CHOICES, blank=True) # 공학인증 유형
     subject_number = models.IntegerField() # 학수번호
     point = models.IntegerField() # 학점
     necessary = models.BooleanField(default=False) # 필수과목 여부

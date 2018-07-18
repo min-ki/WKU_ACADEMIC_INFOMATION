@@ -148,14 +148,12 @@ def parsed_subject(id, pw):
             t_industry_accepted.text,
         ])        
 
+    
     # 전체 성적 리스트 주소
-
-    driver.get(
-        "http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreAll.jsp?sm=3")
+    driver.get("http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreAll.jsp?sm=3")
 
     # 페이지 로드 대기
     driver.implicitly_wait(3)
-
 
     try:
         html = driver.page_source
@@ -165,8 +163,8 @@ def parsed_subject(id, pw):
   
     driver.implicitly_wait(3)
     
-    select_year = soup.select(
-        'body > table > tbody > tr > td:nth-of-type(6) > a')
+    # 각 년도별 성적 리스트 주소 추출
+    select_year = soup.select('body > table > tbody > tr > td:nth-of-type(6) > a')
 
     ## 평균 학점
     ## 년도, 학년, 학기, 평균학점
@@ -175,11 +173,6 @@ def parsed_subject(id, pw):
     average_point_grade = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
     average_point_semester = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
     average_point = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(7)')
-
-    # average_point_year = average_point_year[0]
-    # average_point_grade = average_point_grade[0]
-    # average_point_semester = average_point_semester[0]
-    # average_point = average_point[0]
 
     average_point_year = [item for item in average_point_year]
     average_point_grade = [item for item in average_point_grade]
@@ -227,14 +220,14 @@ def parsed_subject(id, pw):
             sum_of_grade_point += float(point.text)
 
 
-    information.append(subject)
-    information.append({'sum_of_grade_point' : sum_of_grade_point})
-    information.append(user_info)
-    information.append(scholar_ship)
-    information.append(wpoint)
-    information.append(detail_wpoint)
-    information.append(average_point_info)
+    information.append(subject) # 교과목 정보
+    information.append({'sum_of_grade_point' : sum_of_grade_point}) # 전체 이수학점
+    information.append(user_info) # 사용자 정보
+    information.append(scholar_ship) # 장학금 정보
+    information.append(wpoint) # WPOINT 정보
+    information.append(detail_wpoint) # WPOINT 상세정보
+    information.append(average_point_info) # 평균 학점 정보
 
-    driver.close()
+    driver.close() # 크롤링 끝
     
     return information

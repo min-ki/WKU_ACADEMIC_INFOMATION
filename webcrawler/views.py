@@ -11,11 +11,15 @@ graduated_point = {
 
 def index(request):
     
-    if request.session.get('intranet_id', False):
+    if request.session.get('intranet_id', False) and request.session.get('intranet_pw', False):
         intranet_id = request.session['intranet_id']
-    
-    if request.session.get('intranet_pw', False):
         intranet_pw = request.session['intranet_pw']
+    else:
+        return redirect('accounts:login')
+
+    # if request.session.get('intranet_pw', False):
+    #     else:
+    #     redirect('accounts:login')
         
     if intranet_id and intranet_pw:
         try:
@@ -77,11 +81,16 @@ def completed_list(request):
     
     if request.session.get('user_info', False):
         user_info = request.session['user_info']
+    else:
+        return redirect('accounts:login')
 
-    certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
-    certification_list_title = [item.title for item in certification_list] # 공학인증 과목
-    certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
-    certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+    try:
+        certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
+        certification_list_title = [item.title for item in certification_list] # 공학인증 과목
+        certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
+        certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+    except UnboundLocalError:
+        return redirect('accounts:login')
 
     print(certification_list_title)
     print(certification_list_info)

@@ -17,15 +17,15 @@
     <div class="panel">
       <div class="panel-heading">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-sm-4 col-md-4">
             <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="120" style="height: 140px; margin: 10px; vertical-align: bottom;">
           </div>
-          <div class="col-md-4 user_info_container">
+          <div class="col-sm-4 col-md-4 user_info_container">
           <p class="user_info">이름 : <strong>{{ user_info.0 }} </strong></p>
           <p class="user_info">학번 : {{ user_info.1 }}</p>
           <p class="user_info">소속 : {{ user_info.4 }}</p>
           </div>
-          <div class="col-md-4 user_info_container">
+          <div class="col-sm-4 col-md-4 user_info_container">
             <p class="user_info">학년 : {{ user_info.3 }}</p>
             <p class="user_info">이수학기 :{{ user_info.5 }}</p>
             <p class="user_info">학과 : {{ user_info.6 }}</p>
@@ -123,10 +123,10 @@
           <div class="row">
 
           {% for a, b, c, d in wpoint %}
-              <div class="col-md-6">
+              <div class="col-sm-6 col-md-6">
                 <p> <span class="badge badge-primary">인정</span>  {{ a }}  {{ b }}
               </div>
-              <div class="col-md-6">
+              <div class="col-sm-6 col-md-6">
                 <span class="badge badge-danger">초과</span>  {{ c }} : {{ d }}</p>
               </div>
           {% endfor %}
