@@ -1,4 +1,5 @@
 {% extends "accounts/layout.html" %} 
+{% load static %}
 
 {% block content %}
 <div class="container">
@@ -8,7 +9,7 @@
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{message.tags}}" id="message">
-                [{{ message.tags }}] {# 메세지 Level #} {{ message.message }} {# 실제 메세지 내용 #}
+                {{ message.message }} {# 실제 메세지 내용 #}
             </div>
         {% endfor %}
     {% endif %}
@@ -27,6 +28,8 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
+
+<script src="{% static 'webcrawler/assets/vendor/jquery/jquery.min.js' %}"></script>
 
 <script>
     setTimeout(fade_out, 5000);

@@ -85,7 +85,6 @@ def completed_list(request):
         certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
         certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
         certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부
-        print(certification_major)
 
     except UnboundLocalError:
         return redirect('accounts:login')
