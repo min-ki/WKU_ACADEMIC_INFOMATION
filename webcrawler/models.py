@@ -8,7 +8,7 @@ class Major(models.Model):
         return self.name
 
 class Subject(models.Model):
-    
+
     SUBJECT_TYPE_CHOICES = (
         ("교필", "교양필수"),
         ("교선", "교양선택"),
@@ -17,6 +17,9 @@ class Subject(models.Model):
         ("응전", "응용전공"),
         ("계필", "계열필수"),
         ('일선', '일반선택'),
+        ('전필', '전공필수'),
+        ('전선', '전공선택'),
+        ('교직', '교직'),
     )
 
     CERTIFICATION_TYPE_CHOICES = (
@@ -27,17 +30,18 @@ class Subject(models.Model):
         ('인필BSM', '인필BSM'),
     )
 
-    title = models.CharField(max_length=30) # 제목
-    major = models.ForeignKey(Major, on_delete=True) # 학과
-    subject_type =  models.CharField(max_length=25, choices=SUBJECT_TYPE_CHOICES) # 수업유형
-    certification_type = models.CharField(max_length=25, choices=CERTIFICATION_TYPE_CHOICES, blank=True) # 공학인증 유형
-    subject_grade = models.CharField(max_length=10) # 학년
-    subject_number = models.IntegerField() # 학수번호
-    subject_point = models.IntegerField() # 학점
-    subject_theory = models.CharField(max_length=10)  # 이론
-    subject_training = models.CharField(max_length=10)  # 실습
-    necessary = models.BooleanField(default=False) # 필수과목 여부
-    subject_detail_major = models.CharField(max_length=30, blank=True) # 세부전공
+    title = models.CharField(max_length=30, verbose_name='제목') # 제목
+    major = models.ForeignKey(Major, on_delete=True, verbose_name='학과')  # 학과
+    subject_type =  models.CharField(max_length=25, choices=SUBJECT_TYPE_CHOICES, verbose_name='과목 유형') # 과목유형
+    subject_semester = models.IntegerField(verbose_name='학기')
+    certification_type = models.CharField(max_length=25, choices=CERTIFICATION_TYPE_CHOICES, blank=True, verbose_name='공학인증 타입') # 공학인증 유형
+    subject_grade = models.CharField(max_length=10, verbose_name='학년')  # 학년
+    subject_number = models.IntegerField(verbose_name='학수번호')  # 학수번호
+    subject_point = models.IntegerField(verbose_name='학점')  # 학점
+    subject_theory = models.CharField(max_length=10, verbose_name='이론')  # 이론
+    subject_training = models.CharField(max_length=10, verbose_name='실습')  # 실습
+    necessary = models.BooleanField(default=False, verbose_name='필수과목') # 필수과목 여부
+    subject_detail_major = models.CharField(max_length=30, blank=True, verbose_name='세부전공') # 세부전공
 
     def __str__(self):
         return self.title

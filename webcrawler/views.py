@@ -47,7 +47,6 @@ def index(request):
                 request.session['detail_wpoint'] = detail_wpoint
                 request.session['average_point_info'] = average_point_info
                 request.session['remain_graduated_point'] = remain_graduated_point
-
             else:
                 # 로그인 에러 출력
                 messages.error(request, '로그인에 실패했습니다.')
