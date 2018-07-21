@@ -113,6 +113,84 @@
     </div>
     <!-- END PANEL NO CONTROLS -->
   </div>
+  <div class="col-md-4">
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title">Progress</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="table project-table">
+          <thead>
+            <tr>
+              <th class="text-center">유형</th>
+              <th class="text-center">진행도</th>
+              <th class="text-center">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-center">
+                졸업학점
+              </td>
+              <td class="text-center" class="text-center">
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ graduated_point_percentage }}%;">
+                    <span>{{ graduated_point_percentage }}%</span>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                {% if graduated_point_percentage == 100 %}
+                  <span class="label label-success">달성</span>
+                {% else %}
+                   <span class="label label-warning">진행 중</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center">
+                전공학점
+              </td>
+              <td class="text-center">
+                <div class="progress">
+<div class="progress-bar" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: {{ major_point_percentage }}%;">
+                    <span>{{ major_point_percentage }}%</span>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                {% if major_point_percentage == 100 %}
+                  <span class="label label-success">달성</span>
+                {% else %}
+                   <span class="label label-warning">진행 중</span>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-center">
+                교양학점
+              </td>
+              <td class="text-center">
+                <div class="progress">
+<div class="progress-bar" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: {{ culture_point_percentage }}%;">
+                    <span> {{ culture_point_percentage }}%</span>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                {% if culture_point_percentage == 100 %}
+                  <span class="label label-success">달성</span>
+                {% else %}
+                   <span class="label label-warning">진행 중</span>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-6">
     <!-- PANEL NO PADDING -->
     <div class="panel">
