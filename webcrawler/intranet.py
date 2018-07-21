@@ -5,15 +5,23 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, UnexpectedAlertPresentException
 from bs4 import BeautifulSoup
 import time
+from datetime import datetime
 
-def parsed_subject(id, pw):
-    
+def parser(id, pw):
+
+    start = datetime.now()
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
+
     # webdriver 정보
-    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver")
-    driver.implicitly_wait(3)
+    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2", chrome_options=options)
+    # driver.implicitly_wait(3)
 
     # 웹정보서비스 로그인 URL
-    driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp") 
+    driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
     # 로그인을 위한 id, pw 정보
     driver.find_element_by_name('userid').send_keys(id)
@@ -33,7 +41,7 @@ def parsed_subject(id, pw):
         print("no alert")
 
     # 로그인 실패
-    if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg": 
+    if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg":
         return False
 
     try:
@@ -44,14 +52,14 @@ def parsed_subject(id, pw):
     except TimeoutException:
         print("no alert")
 
-    ### 사용자 정보 크롤링 
+    ### 사용자 정보 크롤링
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
-    
+
     driver.get('http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Resume/resume.jsp?sm=3')
 
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    
+
     user_name = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(4)')
     user_number = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(3) > form > table > tbody > tr:nth-of-type(1) > td:nth-of-type(2)')
     user_image = soup.select('body > table:nth-of-type(1) > tbody > tr > td:nth-of-type(1) > table > tbody > tr > td > img')
@@ -96,7 +104,7 @@ def parsed_subject(id, pw):
             t_scholar_money1.text,
             t_scholar_money2.text,
             t_scholar_total.text
-        ])        
+        ])
 
     print(scholar_ship)
 
@@ -107,18 +115,18 @@ def parsed_subject(id, pw):
     ### 사업참여 내역
 
     driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
-    time.sleep(2)
+    time.sleep(1)
 
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
     wpoint = []
 
-    ### 인정 포인트, 현재 포인트
+    # ### 인정 포인트, 현재 포인트
     accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
     accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
     over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
     over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
-    
+
     for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
         wpoint.append([
             t_accept_table.text,
@@ -140,29 +148,28 @@ def parsed_subject(id, pw):
 
     for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
         detail_wpoint.append([
-            t_industry_name.text, 
-            t_industry_duration.text, 
-            t_industry_info.text, 
-            t_industry_accept_point.text, 
-            t_industry_over_point.text, 
+            t_industry_name.text,
+            t_industry_duration.text,
+            t_industry_info.text,
+            t_industry_accept_point.text,
+            t_industry_over_point.text,
             t_industry_accepted.text,
-        ])        
+        ])
 
-    
+
     # 전체 성적 리스트 주소
     driver.get("http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreAll.jsp?sm=3")
-
     # 페이지 로드 대기
-    driver.implicitly_wait(3)
+    # driver.implicitly_wait(3)
 
     try:
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
     except selenium.common.exceptions.UnexpectedAlertPresentException:
         pass
-  
-    driver.implicitly_wait(3)
-    
+
+    # driver.implicitly_wait(3)
+
     # 각 년도별 성적 리스트 주소 추출
     select_year = soup.select('body > table > tbody > tr > td:nth-of-type(6) > a')
 
@@ -178,7 +185,7 @@ def parsed_subject(id, pw):
     average_point_grade = [item for item in average_point_grade]
     average_point_semester = [item for item in average_point_semester]
     average_point = [item for item in average_point]
-    
+
     print(average_point_year, average_point_grade,
           average_point_semester, average_point)
 
@@ -232,5 +239,8 @@ def parsed_subject(id, pw):
     information.append(average_point_info) # 평균 학점 정보
 
     driver.close() # 크롤링 끝
-    
+
+    finish = datetime.now() - start
+    print(finish)
+
     return information
