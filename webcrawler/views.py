@@ -1,7 +1,9 @@
+from django.core import serializers
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from .intranet import parsed_subject
+from .intranet import parser
 from .models import Subject, Major
+from collections import Counter
 
 graduated_point = {
     '컴퓨터공학과': 136,
@@ -20,7 +22,7 @@ def index(request):
     if intranet_id and intranet_pw:
         try:
             if not request.session.get('data', False):
-                data = parsed_subject(intranet_id, intranet_pw)
+                data = parser(intranet_id, intranet_pw)
                 request.session['data'] = data
             else:
                 data = request.session['data']
@@ -36,17 +38,25 @@ def index(request):
                 detail_wpoint = data[5] # WPOINT Detail
                 average_point_info = data[6]
                 remain_graduated_point = int(graduated_point[user_info[6]] - total_point)
+                
+                graduated_point_percentage = int(get_percentage(total_point, graduated_point[user_info[6]])) # 졸업학점 퍼센티지
+                major_point_percentage = int(get_percentage(subject_point['major_subject_sum'], 72)) # 전공학점 퍼센티지
+                culture_point_percentage = int(get_percentage(subject_point['culture_subject_sum'], 60)) # 교양학점 퍼센티지
 
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
                 request.session['total_point'] = total_point
-                request.session['graduated_point'] = graduated_point
-                request.session['subject_point'] = subject_point 
-                request.session['user_info'] = user_info
-                request.session['scholar_ship'] =  scholar_ship
-                request.session['detail_wpoint'] = detail_wpoint
-                request.session['average_point_info'] = average_point_info
-                request.session['remain_graduated_point'] = remain_graduated_point
+                request.session['graduated_point'] = graduated_point # 졸업 포인트
+                request.session['subject_point'] = subject_point  # 과목 학점 정보
+                request.session['user_info'] = user_info  # 유저정보
+                request.session['scholar_ship'] =  scholar_ship # 장학금 정보
+                request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
+                request.session['average_point_info'] = average_point_info # 평균 학점 정보
+                request.session['remain_graduated_point'] = remain_graduated_point # 남은 졸업 학점
+                request.session['graduated_point_percentage'] = graduated_point_percentage
+                request.session['major_point_percentage'] = major_point_percentage
+                request.session['culture_point_percentage'] = culture_point_percentage
+
             else:
                 # 로그인 에러 출력
                 messages.error(request, '로그인에 실패했습니다.')
@@ -66,6 +76,9 @@ def index(request):
         'detail_wpoint': detail_wpoint,
         'average_point_info': average_point_info,
         'remain_graduated_point': remain_graduated_point,
+        'graduated_point_percentage': graduated_point_percentage,
+        'major_point_percentage': major_point_percentage,
+        'culture_point_percentage': culture_point_percentage,
     }
 
     return render(request, 'webcrawler/index.html', context)
@@ -84,6 +97,7 @@ def completed_list(request):
         certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
         certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
         certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부
+
     except Major.DoesNotExist:
         certification_major = False
     except UnboundLocalError:
@@ -108,12 +122,41 @@ def completed_list(request):
 ## 전공과목 리스트 뷰
 def major_list(request):
     
+    if request.session.get('user_info', False):
+        user_info = request.session['user_info']
+    else:
+        return redirect('accounts:login')
+
+    try:
+        certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
+        certification_list_title = [item.title for item in certification_list] # 공학인증 과목
+        certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
+        certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+        certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부
+    except Major.DoesNotExist:
+        certification_major = False
+    except UnboundLocalError:
+        return redirect('accounts:login')
+
     if request.session.get('data', False):
         major_list = get_major_subject(request.session['data'][0])
+        count_grade = get_count_grade_point(major_list)
+        count_type = get_count_type(major_list)
+        major_list_count = len(major_list.keys()) # 전공과목 개수
+        major_list_point_count = int(sum([float(i[2]) for i in major_list.values() ])) # 전공과목 학점 총점
     else:
         major_list = None
 
-    return render(request, 'webcrawler/major_list.html', {'major_list' : major_list})
+
+    return render(request, 'webcrawler/major_list.html', {'major_list' : major_list ,
+                                                          'major_list_count': major_list_count,
+                                                          'major_list_point_count': major_list_point_count,
+                                                          'certification_list_title': certification_list_title,
+                                                          'certification_list_info': certification_list_info,
+                                                          'certification_list_necessary': certification_list_necessary,
+                                                          'certification_major': certification_major,
+                                                          'count_grade': count_grade,
+                                                          'count_type': count_type})
 
 ## 전공과목 반환해주는 함수
 def get_major_subject(subject):
@@ -127,18 +170,69 @@ def get_major_subject(subject):
     return major_subject
 
 
+def get_percentage(point, grade_point):
+    
+    percentage = (point / grade_point) * 100
+    return percentage
+
+## 타입 카운팅
+def get_count_type(subject):
+    
+    type_count = Counter()
+
+    for title, item in subject.items():
+        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선']:
+            type_count[item[0]] += 1
+    
+    return type_count
+
+## 점수 카운팅
+def get_count_grade_point(subject):
+    
+    grade_point = Counter()
+
+    for title, item in subject.items():
+        if item[3] in ['A+', 'A0', 'B+', 'B0', 'C+', 'C0', 'D+','D0', 'P']:
+            grade_point[item[3]] += 1
+    
+    return grade_point
+
 ## 교양과목 리스트 뷰
 def culture_list(request):
 
+    if request.session.get('user_info', False):
+        user_info = request.session['user_info']
+    else:
+        return redirect('accounts:login')
+    
+    try:
+        certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
+        certification_list_title = [item.title for item in certification_list] # 공학인증 과목
+        certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
+        certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
+        certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부
+    except Major.DoesNotExist:
+        certification_major = False
+    except UnboundLocalError:
+        return redirect('accounts:login')
+
     if request.session.get('data', False):
-        culture_list = get_culture_list(request.session['data'][0])
+        culture_list = get_culture_subject(request.session['data'][0])
+        culture_list_count = len(culture_list.keys()) # 전공과목 개수
+        culture_list_point_count = int(sum([float(i[2]) for i in culture_list.values() ])) # 전공과목 학점 총점
     else:
         culture_list = None
 
-    return render(request, 'webcrawler/culture_list.html', {'culture_list': culture_list})
+    return render(request, 'webcrawler/culture_list.html', {'culture_list': culture_list,
+                                                            'culture_list_count': culture_list_count,
+                                                            'culture_list_point_count': culture_list_point_count,
+                                                            'certification_list_title': certification_list_title,
+                                                            'certification_list_info': certification_list_info,
+                                                            'certification_list_necessary': certification_list_necessary,
+                                                            'certification_major': certification_major})
 
 ## 교양과목 반환해주는 함수
-def get_culture_list(subject):
+def get_culture_subject(subject):
 
     culture_subject = {}
 
@@ -157,7 +251,7 @@ def get_sum_of_subject(subject):
     major_subject_sum = 0
 
     for title, arr in subject.items():
-        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":
+        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
         elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전":
             major_subject_sum = major_subject_sum + float(arr[2])
@@ -185,3 +279,7 @@ def chart(request):
 
     return render(request, 'webcrawler/grade_graph.html', {'average_point_info': average_point_info})
     
+
+### 졸업 학점 로직 구현하기
+def get_graduate_point():
+    pass
