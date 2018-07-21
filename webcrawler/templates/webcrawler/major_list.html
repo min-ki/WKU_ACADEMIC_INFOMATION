@@ -1,5 +1,5 @@
 {% extends 'webcrawler/layout.html' %}
-
+{% load get_graduated_point %}
 
 {% block content %}
 
@@ -19,19 +19,48 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>과목명</th>
-                            <th>이수구분</th>
-                            <th>학점</th>
-                            <th>점수</th>
+                           <th>과목명</th>
+                            <th class="text-center">학수번호</th>
+                            <th class="text-center">필수여부</th>
+                            {% if certification_major %}
+                            <th class="text-center">공학인증</th>
+                            {% endif %}
+                            <th class="text-center">타입</th>
+                            <th class="text-center">학점</th>
+                            <th class="text-center">점수</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for title, item in major_list.items %}
                         <tr>
                             <td>{{ title }}</td>
-                            <td>{{ item.0 }}</td>
-                            <td>{{ item.1 }}</td>
-                            <td>{{ item.2 }}</td>
+                            <td class="text-center">{{ item.1 }}</td>
+                            <td class="text-center">
+                                {% if title in certification_list_title %}
+                                    {% if certification_list_necessary|keyvalue:title %}
+                                        <span class="label label-primary"> 필수 </span>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            {% if certification_major %}
+                            <td class="text-center">
+                            {% if title in certification_list_title %}
+                                    {% if "인필교" == certification_list_info|keyvalue:title  %}
+                                        <span class="label label-info"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% elif "인필BSM" == certification_list_info|keyvalue:title %}
+                                        <span class="label label-danger"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% elif "인선전" == certification_list_info|keyvalue:title %}
+                                        <span class="label label-success"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% elif "인필전" == certification_list_info|keyvalue:title %}
+                                        <span class="label label-warning"> {{ certification_list_info|keyvalue:title }} </span>
+                                    {% endif %}
+                            {% endif %}
+                            </td>
+                            {% endif %}
+                            <td class="text-center">{{ item.0 }}</td>
+                           
+                            <td class="text-center">{{ item.2 }}</td>
+                            <td class="text-center">{{ item.3 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -40,4 +69,55 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">전공과목 현황</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">이수과목</th>
+                            <th class="text-center">전체학점</th>
+                            <th class="text-center">기전</th>
+                            <th class="text-center">선전</th>
+                            <th class="text-center">응전</th>
+                            <th class="text-center">복전</th>
+                            <th class="text-center">A+</th>
+                            <th class="text-center">A0</th>
+                            <th class="text-center">B+</th>
+                            <th class="text-center">B0</th>
+                            <th class="text-center">C+</th>
+                            <th class="text-center">C0</th>
+                            <th class="text-center">D+</th>
+                            <th class="text-center">D0</th>
+                            <th class="text-center">P</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td class="text-center">{{ major_list_count }}</td>
+                        <td class="text-center">{{ major_list_point_count }}</td>
+                        <td class="text-center">{{ count_type|keyvalue:"기전"}}</td>
+                        <td class="text-center">{{ count_type|keyvalue:"선전"}}</td>
+                        <td class="text-center">{{ count_type|keyvalue:"응전"}}</td>
+                        <td class="text-center">{{ count_type|keyvalue:"복전"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"A+"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"A0"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"B+"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"B0"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"C+"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"C0"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"D+"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"D0"}}</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"P"}}</td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
