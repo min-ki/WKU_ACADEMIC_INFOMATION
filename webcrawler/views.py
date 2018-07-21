@@ -105,6 +105,7 @@ def completed_list(request):
 
     if request.session.get('data', False):
         completed_list = request.session['data'][0] # 이수과목 리스트
+        count_grade = get_count_grade_point(completed_list)
         completed_list_count = len(completed_list.keys()) # 이수과목 개수
         completed_list_point_count = int(sum([float(i[2]) for i in completed_list.values() ])) # 이수과목 학점 총점
     else:
@@ -116,7 +117,8 @@ def completed_list(request):
                                                               'certification_list_title': certification_list_title,
                                                               'certification_list_info': certification_list_info,
                                                               'certification_list_necessary': certification_list_necessary,
-                                                              'certification_major': certification_major})
+                                                              'certification_major': certification_major,
+                                                              'count_grade': count_grade})
 
 
 ## 전공과목 리스트 뷰
@@ -169,34 +171,6 @@ def get_major_subject(subject):
 
     return major_subject
 
-
-def get_percentage(point, grade_point):
-    
-    percentage = (point / grade_point) * 100
-    return percentage
-
-## 타입 카운팅
-def get_count_type(subject):
-    
-    type_count = Counter()
-
-    for title, item in subject.items():
-        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선']:
-            type_count[item[0]] += 1
-    
-    return type_count
-
-## 점수 카운팅
-def get_count_grade_point(subject):
-    
-    grade_point = Counter()
-
-    for title, item in subject.items():
-        if item[3] in ['A+', 'A0', 'B+', 'B0', 'C+', 'C0', 'D+','D0', 'P']:
-            grade_point[item[3]] += 1
-    
-    return grade_point
-
 ## 교양과목 리스트 뷰
 def culture_list(request):
 
@@ -218,6 +192,8 @@ def culture_list(request):
 
     if request.session.get('data', False):
         culture_list = get_culture_subject(request.session['data'][0])
+        count_grade = get_count_grade_point(culture_list)
+        count_type = get_count_type(culture_list)
         culture_list_count = len(culture_list.keys()) # 전공과목 개수
         culture_list_point_count = int(sum([float(i[2]) for i in culture_list.values() ])) # 전공과목 학점 총점
     else:
@@ -229,7 +205,9 @@ def culture_list(request):
                                                             'certification_list_title': certification_list_title,
                                                             'certification_list_info': certification_list_info,
                                                             'certification_list_necessary': certification_list_necessary,
-                                                            'certification_major': certification_major})
+                                                            'certification_major': certification_major,
+                                                            'count_grade': count_grade,
+                                                            'count_type': count_type})
 
 ## 교양과목 반환해주는 함수
 def get_culture_subject(subject):
@@ -283,3 +261,31 @@ def chart(request):
 ### 졸업 학점 로직 구현하기
 def get_graduate_point():
     pass
+
+## 백분위
+def get_percentage(point, grade_point):
+
+    percentage = (point / grade_point) * 100
+    return percentage
+
+## 타입 카운팅
+def get_count_type(subject):
+
+    type_count = Counter()
+
+    for title, item in subject.items():
+        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선']:
+            type_count[item[0]] += 1
+
+    return type_count
+
+## 점수 카운팅
+def get_count_grade_point(subject):
+
+    grade_point = Counter()
+
+    for title, item in subject.items():
+        if item[3] in ['A+', 'A0', 'B+', 'B0', 'C+', 'C0', 'D+', 'D0', 'P']:
+            grade_point[item[3]] += 1
+
+    return grade_point

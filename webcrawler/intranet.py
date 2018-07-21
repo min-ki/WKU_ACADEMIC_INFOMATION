@@ -106,9 +106,6 @@ def parser(id, pw):
             t_scholar_total.text
         ])
 
-    print(scholar_ship)
-
-
 
     ### W - POINT 크롤링
     ### 도덕성, 창의성, 소통력, 실천력, 포인트 합계
@@ -185,10 +182,6 @@ def parser(id, pw):
     average_point_grade = [item for item in average_point_grade]
     average_point_semester = [item for item in average_point_semester]
     average_point = [item for item in average_point]
-
-    print(average_point_year, average_point_grade,
-          average_point_semester, average_point)
-
     average_point_info = []
 
     for year, grade ,semester, point in zip(average_point_year, average_point_grade, average_point_semester, average_point):
