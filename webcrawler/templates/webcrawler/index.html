@@ -16,12 +16,13 @@
     <!-- PANEL HEADLINE -->
     <div class="panel">
       <div class="panel-heading">
+        <h3 class="panel-title">사용자 정보</h3>
         <div class="row">
           <div class="col-sm-4 col-md-4">
             <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="120" style="height: 140px; margin: 10px; vertical-align: bottom;">
           </div>
           <div class="col-sm-4 col-md-4 user_info_container">
-          <p class="user_info">이름 : <strong>{{ user_info.0 }} </strong></p>
+          <p class="user_info">이름 : {{ user_info.0 }}</p>
           <p class="user_info">학번 : {{ user_info.1 }}</p>
           <p class="user_info">소속 : {{ user_info.4 }}</p>
           </div>
@@ -47,17 +48,19 @@
                         <th class="text-center">이수학점</th>
                         <th class="text-center">졸업학점</th>
 												<th class="text-center">남은학점</th>
-												<th class="text-center">전공학점</th>
+												<th class="text-center">기본전공</th>
+												<th class="text-center">전체전공</th>
 												<th class="text-center">교양학점</th>
 											</tr>
 										</thead>
 										<tbody>
                       <tr>
 												<td class="text-center"> {{ total_point }} </td>
-												<td class="text-center"> {{ graduated_point|keyvalue:user_info.6 }} </td>
+												<td class="text-center"> {{ graduated_point }} </td>
 												<td class="text-center"> {{ remain_graduated_point }}</td>
-                        <td class="text-center"> {{ subject_point.major_subject_sum }} </td>
-                        <td class="text-center"> {{ subject_point.culture_subject_sum }} </td>
+                        <td class="text-center"> {{ subject_point.basic_major_subject_sum }} / {{ basic_major_point }} </td>
+                        <td class="text-center"> {{ subject_point.major_subject_sum }} / {{ major_point }} </td>
+                        <td class="text-center"> {{ subject_point.culture_subject_sum }}/ {{ culture_point }} </td>
                       </tr>
 										</tbody>
 									</table>
