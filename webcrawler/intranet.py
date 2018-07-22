@@ -217,9 +217,13 @@ def parser(id, pw):
         # 점수
         subject_grade = soup.select(
             'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
+        # 학년
+        subject_year = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(1)')[0].text
+        # 학기
+        subject_semester = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(2)')[0].text
 
         for kind, number, title, point, grade in zip(subject_kind, subject_number, subject_list, subject_grade_point, subject_grade):
-            subject[title.text] = [kind.text, number.text, point.text, grade.text]
+            subject[title.text] = [kind.text, number.text, point.text, grade.text, subject_year, subject_semester]
             sum_of_grade_point += float(point.text)
 
 
