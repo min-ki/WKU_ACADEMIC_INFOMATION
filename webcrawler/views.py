@@ -5,12 +5,6 @@ from .intranet import parser
 from .models import Subject, Major
 from collections import Counter
 
-graduated_point = {
-    '컴퓨터공학과': 136,
-    '컴퓨터·소프트웨어공학과': 136,
-    '영어영문학과': 130,
-}
-
 def index(request):
     
     if request.session.get('intranet_id', False) and request.session.get('intranet_pw', False):
@@ -37,16 +31,23 @@ def index(request):
                 wpoint = data[4] # WPOINT  
                 detail_wpoint = data[5] # WPOINT Detail
                 average_point_info = data[6]
-                remain_graduated_point = int(graduated_point[user_info[6]] - total_point)
+                graduated_point = get_graduated_point(user_info[1], user_info[4], user_info[6]) # 졸업학점
+                major_point, basic_major_point = get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
+                culture_point = get_culture_point(user_info[1]) # 교양학점 
+                remain_graduated_point = int(graduated_point - total_point) # 남은학점
                 
-                graduated_point_percentage = int(get_percentage(total_point, graduated_point[user_info[6]])) # 졸업학점 퍼센티지
-                major_point_percentage = int(get_percentage(subject_point['major_subject_sum'], 72)) # 전공학점 퍼센티지
-                culture_point_percentage = int(get_percentage(subject_point['culture_subject_sum'], 60)) # 교양학점 퍼센티지
+                graduated_point_percentage = int(get_percentage(total_point, graduated_point))  # 졸업학점 퍼센티지
+                major_point_percentage = int(get_percentage(
+                    subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
+                culture_point_percentage = int(get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
 
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
                 request.session['total_point'] = total_point
-                request.session['graduated_point'] = graduated_point # 졸업 포인트
+                request.session['graduated_point'] = graduated_point # 졸업 학점
+                request.session['basic_major_point'] = basic_major_point # 기본 전공 학점
+                request.session['major_point'] = major_point # 전체 전공 학점
+                request.session['culture_point'] = culture_point # 교양 학점
                 request.session['subject_point'] = subject_point  # 과목 학점 정보
                 request.session['user_info'] = user_info  # 유저정보
                 request.session['scholar_ship'] =  scholar_ship # 장학금 정보
@@ -71,6 +72,9 @@ def index(request):
         'total_point': total_point,
         'user_info': user_info,
         'graduated_point': graduated_point,
+        'basic_major_point': basic_major_point,
+        'major_point' : major_point,
+        'culture_point' : culture_point,
         'scholar_ship': scholar_ship,
         'wpoint': wpoint,
         'detail_wpoint': detail_wpoint,
@@ -111,14 +115,18 @@ def completed_list(request):
     else:
         completed_list = None
 
-    return render(request, 'webcrawler/completed_list.html', {'completed_list' : completed_list ,
-                                                              'completed_list_count': completed_list_count,
-                                                              'completed_list_point_count': completed_list_point_count,
-                                                              'certification_list_title': certification_list_title,
-                                                              'certification_list_info': certification_list_info,
-                                                              'certification_list_necessary': certification_list_necessary,
-                                                              'certification_major': certification_major,
-                                                              'count_grade': count_grade})
+    context = {
+        'completed_list' : completed_list ,
+        'completed_list_count': completed_list_count,
+        'completed_list_point_count': completed_list_point_count,
+        'certification_list_title': certification_list_title,
+        'certification_list_info': certification_list_info,
+        'certification_list_necessary': certification_list_necessary,
+        'certification_major': certification_major,
+        'count_grade': count_grade
+    }
+
+    return render(request, 'webcrawler/completed_list.html', context)
 
 
 ## 전공과목 리스트 뷰
@@ -149,16 +157,19 @@ def major_list(request):
     else:
         major_list = None
 
+    context = {
+        'major_list' : major_list ,
+        'major_list_count': major_list_count,
+        'major_list_point_count': major_list_point_count,
+        'certification_list_title': certification_list_title,
+        'certification_list_info': certification_list_info,
+        'certification_list_necessary': certification_list_necessary,
+        'certification_major': certification_major,
+        'count_grade': count_grade,
+        'count_type': count_type
+    }
 
-    return render(request, 'webcrawler/major_list.html', {'major_list' : major_list ,
-                                                          'major_list_count': major_list_count,
-                                                          'major_list_point_count': major_list_point_count,
-                                                          'certification_list_title': certification_list_title,
-                                                          'certification_list_info': certification_list_info,
-                                                          'certification_list_necessary': certification_list_necessary,
-                                                          'certification_major': certification_major,
-                                                          'count_grade': count_grade,
-                                                          'count_type': count_type})
+    return render(request, 'webcrawler/major_list.html', context)
 
 ## 전공과목 반환해주는 함수
 def get_major_subject(subject):
@@ -166,7 +177,7 @@ def get_major_subject(subject):
     major_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '기전' or item[0] == '선전' or item[0] == '응전' or item[0] == '복수':
+        if item[0] == '기전' or item[0] == '선전' or item[0] == '응전' or item[0] == '복수' or item[0] == '교직':
             major_subject[title] =  item
 
     return major_subject
@@ -199,15 +210,19 @@ def culture_list(request):
     else:
         culture_list = None
 
-    return render(request, 'webcrawler/culture_list.html', {'culture_list': culture_list,
-                                                            'culture_list_count': culture_list_count,
-                                                            'culture_list_point_count': culture_list_point_count,
-                                                            'certification_list_title': certification_list_title,
-                                                            'certification_list_info': certification_list_info,
-                                                            'certification_list_necessary': certification_list_necessary,
-                                                            'certification_major': certification_major,
-                                                            'count_grade': count_grade,
-                                                            'count_type': count_type})
+    context = {
+        'culture_list': culture_list,
+        'culture_list_count': culture_list_count,
+        'culture_list_point_count': culture_list_point_count,
+        'certification_list_title': certification_list_title,
+        'certification_list_info': certification_list_info,
+        'certification_list_necessary': certification_list_necessary,
+        'certification_major': certification_major,
+        'count_grade': count_grade,
+        'count_type': count_type
+    }
+
+    return render(request, 'webcrawler/culture_list.html', context)
 
 ## 교양과목 반환해주는 함수
 def get_culture_subject(subject):
@@ -227,13 +242,17 @@ def get_sum_of_subject(subject):
 
     culture_subject_sum = 0
     major_subject_sum = 0
+    basic_major_subject_sum = 0
 
     for title, arr in subject.items():
+        if arr[0] == "기전": # 기전 카운트
+            basic_major_subject_sum += float(arr[2])
+            
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
-        elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전":
+        elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
             major_subject_sum = major_subject_sum + float(arr[2])
-
+    sum['basic_major_subject_sum'] = int(basic_major_subject_sum)
     sum['major_subject_sum'] = int(major_subject_sum)
     sum['culture_subject_sum'] = int(culture_subject_sum)
 
@@ -257,11 +276,6 @@ def chart(request):
 
     return render(request, 'webcrawler/grade_graph.html', {'average_point_info': average_point_info})
     
-
-### 졸업 학점 로직 구현하기
-def get_graduate_point():
-    pass
-
 ## 백분위
 def get_percentage(point, grade_point):
 
@@ -274,7 +288,7 @@ def get_count_type(subject):
     type_count = Counter()
 
     for title, item in subject.items():
-        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선']:
+        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선', '교직']:
             type_count[item[0]] += 1
 
     return type_count
@@ -289,3 +303,127 @@ def get_count_grade_point(subject):
             grade_point[item[3]] += 1
 
     return grade_point
+
+# 학번 user_info[1] , 단과대학명 user_info[4], 학과 user_info[6]
+def get_graduated_point(user_number, user_colleage, user_major):
+    
+    graduated_point = 0
+
+    user_number = int(''.join(list(user_number[2:4])))
+    print(user_number)
+
+    # 13학번부터 136학점 창의공과대학
+    if user_number > 12 and user_colleage == "창의공과대학":
+        graduated_point = 136
+
+    elif user_number > 12 and (user_colleage == "교학대학" or user_colleage == "인문대학" or user_colleage == "경영대학" or user_colleage == "농식품융합대학"
+                             or user_colleage == "자연과학대학" or user_colleage == "생활과학대학" or user_colleage == "사회과학대학"):
+        graduated_point = 130
+    elif user_number > 12 and user_major == "봉황인재학과":
+        graduated_point = 120
+    elif user_number > 5 and (user_colleage == "조형예술디자인대학" or user_colleage == "미술대학"):
+        graduated_point = 130
+    elif user_colleage == "의과대학" or user_colleage == "한의과대학" or user_colleage == "치과대학":
+        graduated_point = 160
+    elif user_major == "간호학과" or user_colleage == "사범대학" or user_major == '작업치료학과':
+        graduated_point = 140
+    else:
+        graduated_point = 140
+
+    return graduated_point
+
+def get_culture_point(user_number):
+
+    user_number = int(''.join(list(user_number[2:4])))
+    culture_point = 0
+
+    if user_number >= 10:
+        culture_point = 60
+    elif 5 <= user_number <= 9:
+        culture_point = 70
+    elif 2 <= user_number <= 4:
+        culture_point = 80
+    else:
+        culture_point = 100000
+
+    return culture_point
+
+
+def get_major_point(user_number, user_colleage, user_major):
+    
+    user_number = int(''.join(list(user_number[2:4])))
+
+    basic_major_point = 0
+    major_point = 0
+    special_point = 0
+
+    # 교학대학
+    if user_colleage == "교학대학":
+        basic_major_point = 18
+        major_point = 69
+    # 인문대학
+    elif user_major == "국어국문학과" or user_major == "문예창작학과" or user_major == "영어영문학과" or user_major == "중국학과" or user_major == "역사문화학부" or user_major == "철학과" or user_major == "음악과":
+        basic_major_point = 15
+        major_point = 66
+    # 사범대학
+    elif user_major == "국어교육과" or user_major == "영어교육과" or user_major == "일어교육과" or user_major == "한문교육과" or user_major == "역사교육과" or user_major == "교육학과" or user_major == "유아교육과":
+        basic_major_point = 15
+        major_point = 69
+    elif user_major == "가정교육과" or user_major == "수학교육과" or user_major == "체육교육과":
+        basic_major_point = 19
+        major_point = 69
+    elif user_major == "중등특수교육과":
+        basic_major_point = 15
+        major_point = 80
+        special_point = 42 - basic_major_point
+    # 조형예술디자인 대학
+    elif user_major == "미술과" or  user_major == "귀금속보석공예과" or user_major == "디자인학부":
+        basic_major_point = 19
+        major_point = 66
+    elif user_major == "패션디자인산업학과":
+        basic_major_point = 19
+        major_point = 69
+    # 사회과학대학
+    elif user_major == "행정언론학부" or user_major ==  "복지·보건학부" or user_major ==  "군사학과" or user_major == "경찰행정학과" or user_major == "소방행정학과":
+        basic_major_point = 15
+        major_point = 66
+    elif user_major == "가동아정복지학과":
+        basic_major_point = 19
+        major_point = 69
+    # 자연과학대학
+    elif user_major == "응용수학부" or  user_major == "빅데이터·금융통계학부" or user_major == "바이오나노화학부" or user_major == "반도체·디스플레이학부" or user_major == "생명과학부" or user_major == "뷰티디자인학부":
+        basic_major_point = 19
+        major_point = 69
+    elif user_major == "스포츠과학부":
+        basic_major_point = 19
+        major_point = 66
+    elif user_colleage == "농식품융합대학":
+        basic_major_point = 19
+        major_point = 69
+    # 창의공과대학
+    elif user_colleage == "창의공과대학" and user_major != "건축학과":
+        basic_major_point = 19
+        major_point = 72
+    elif user_major == "건축학과":
+        basic_major_point = 0
+        major_point = 0
+    # 경영대학
+    elif user_major == "국제통상학부":
+        basic_major_point = 15
+        major_point = 66
+    elif user_major == "경제학부":
+        basic_major_point = 24
+        major_point = 66
+    elif user_major == "경영학부":
+        basic_major_point = 30
+        major_point = 66
+    # 의과대학, 한의과대학, 치과대학, 한약학과
+    elif user_colleage == "의과대학" or user_colleage == "한의과대학" or user_colleage == "치과대학" or user_major == "한약학과":
+        basic_major_point = 0
+        major_point = 0
+    # 약학과
+    elif user_major == "약학과":
+        basic_major_point = 0
+        major_point = 160
+    
+    return major_point, basic_major_point
