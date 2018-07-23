@@ -44,13 +44,13 @@ def parser(id, pw):
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg":
         return False
 
-    try:
-        WebDriverWait(driver, 1).until(EC.alert_is_present(), "test")
-        alert = driver.switch_to_alert()
-        alert.accept()
-        print("alert accepted")
-    except TimeoutException:
-        print("no alert")
+    # try:
+    #     WebDriverWait(driver, 1).until(EC.alert_is_present(), "test")
+    #     alert = driver.switch_to_alert()
+    #     alert.accept()
+    #     print("alert accepted")
+    # except TimeoutException:
+    #     print("no alert")
 
     ### 사용자 정보 크롤링
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
@@ -187,47 +187,80 @@ def parser(id, pw):
     for year, grade ,semester, point in zip(average_point_year, average_point_grade, average_point_semester, average_point):
         average_point_info.append([year.text, grade.text, semester.text, point.text])
 
-    year_list = []
+    # year_list = []
 
-    for item in select_year:
-        year_list.append(item)
+    # for item in select_year:
+    #     year_list.append(item)
 
     # 데이터를 담을 전체 리스트
     information = []
     subject = {}
     sum_of_grade_point = 0
 
-    for x in year_list:
-        driver.get("http://intra.wku.ac.kr" + x['href'])
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
+    # for x in year_list:
+    #     driver.get("http://intra.wku.ac.kr" + x['href'])
+    #     html = driver.page_source
+    #     soup = BeautifulSoup(html, 'html.parser')
 
-        # 이수구분
-        subject_kind = soup.select(
-            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
-        # 학수번호
-        subject_number = soup.select(
-            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
-        # 과목명
-        subject_list = soup.select(
-            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
-        # 학점
-        subject_grade_point = soup.select(
-            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(4)')
-        # 점수
-        subject_grade = soup.select(
-            'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
-        # 학년
-        subject_year = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(1)')[0].text
-        # 학기
-        subject_semester = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(2)')[0].text
+    #     # 이수구분
+    #     subject_kind = soup.select(
+    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
+    #     # 학수번호
+    #     subject_number = soup.select(
+    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
+    #     # 과목명
+    #     subject_list = soup.select(
+    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
+    #     # 학점
+    #     subject_grade_point = soup.select(
+    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(4)')
+    #     # 점수
+    #     subject_grade = soup.select(
+    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
+    #     # 학년
+    #     subject_year = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(1)')[0].text
+    #     # 학기
+    #     subject_semester = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(2)')[0].text
 
-        for kind, number, title, point, grade in zip(subject_kind, subject_number, subject_list, subject_grade_point, subject_grade):
-            subject[title.text] = [kind.text, number.text, point.text, grade.text, subject_year, subject_semester]
-            sum_of_grade_point += float(point.text)
+    #     for kind, number, title, point, grade in zip(subject_kind, subject_number, subject_list, subject_grade_point, subject_grade):
+    #         subject[title.text] = [kind.text, number.text, point.text, grade.text, subject_year, subject_semester]
+    #         sum_of_grade_point += float(point.text)
 
 
-    information.append(subject) # 교과목 정보
+
+    ## 전체성적리스트 페이지
+    driver.get("http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreList.jsp")
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+
+    t_data = soup.select("body > table > tbody")
+
+    flag1 = False
+    flag2 = False
+    y = []
+    s = []
+    total_point = []
+    average_p = []
+    sub_info = {}
+
+    t_data[0].select("td") # 단과대학, 전공, 학번, 이름
+    for item in t_data[1].select("tr"):
+        data = item.select('td')
+        data = [x.text for x in data]
+
+        if data and data[0].find("년") != -1:
+            year = data[0][0:4]
+            semester = data[0][9:10]
+        
+        if data and data[0].find("취득학점") != -1:
+            total_point = data[1]
+            average_p = data[2]
+
+        if data and len(data) > 3:
+            sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
+            sum_of_grade_point += float(data[3])
+
+    information.append(sub_info)  # 교과목 정보
     information.append({'sum_of_grade_point' : sum_of_grade_point}) # 전체 이수학점
     information.append(user_info) # 사용자 정보
     information.append(scholar_ship) # 장학금 정보
