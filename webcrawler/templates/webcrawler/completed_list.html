@@ -19,7 +19,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th class="text-center">학년</th>
+                            <th class="text-center">년도</th>
                             <th class="text-center">학기</th>
                             <th>과목명</th>
                             <th class="text-center">학수번호</th>
@@ -29,6 +29,7 @@
                             {% endif %}
                             <th class="text-center">타입</th>
                             <th class="text-center">학점</th>
+                            <th class="text-center">평점</th>
                             <th class="text-center">점수</th>
                         </tr>
                     </thead>
@@ -64,6 +65,7 @@
                             <td class="text-center">{{ item.0 }}</td>
                            
                             <td class="text-center">{{ item.2 }}</td>
+                            <td class="text-center">{{ item.6 }}</td>
                             <td class="text-center">{{ item.3 }}</td>
                         </tr>
                         {% endfor %}

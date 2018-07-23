@@ -19,7 +19,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th class="text-center">학년</th>
+                            <th class="text-center">년도</th>
                             <th class="text-center">학기</th>
                            <th>과목명</th>
                             <th class="text-center">학수번호</th>
@@ -29,6 +29,7 @@
                             {% endif %}
                             <th class="text-center">타입</th>
                             <th class="text-center">학점</th>
+                            <th class="text-center">평점</th>
                             <th class="text-center">점수</th>
                         </tr>
                     </thead>
@@ -64,6 +65,7 @@
                             <td class="text-center">{{ item.0 }}</td>
                            
                             <td class="text-center">{{ item.2 }}</td>
+                            <td class="text-center">{{ item.6 }}</td>
                             <td class="text-center">{{ item.3 }}</td>
                         </tr>
                         {% endfor %}
@@ -89,7 +91,7 @@
                             <th class="text-center">기전</th>
                             <th class="text-center">선전</th>
                             <th class="text-center">응전</th>
-                            <th class="text-center">복전</th>
+                            <th class="text-center">복수</th>
                             <th class="text-center">교직</th>
                             <th class="text-center">A+</th>
                             <th class="text-center">A0</th>
@@ -108,7 +110,7 @@
                         <td class="text-center">{{ count_type|keyvalue:"기전"}} 개</td>
                         <td class="text-center">{{ count_type|keyvalue:"선전"}} 개</td>
                         <td class="text-center">{{ count_type|keyvalue:"응전"}} 개</td>
-                        <td class="text-center">{{ count_type|keyvalue:"복전"}} 개</td>
+                        <td class="text-center">{{ count_type|keyvalue:"복수"}} 개</td>
                         <td class="text-center">{{ count_type|keyvalue:"교직"}} 개</td>
                         <td class="text-center">{{ count_grade|keyvalue:"A+"}} 개</td>
                         <td class="text-center">{{ count_grade|keyvalue:"A0"}} 개</td>
