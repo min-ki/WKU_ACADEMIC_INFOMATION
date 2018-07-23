@@ -37,9 +37,15 @@ def index(request):
                 remain_graduated_point = int(graduated_point - total_point) # 남은학점
                 
                 graduated_point_percentage = int(get_percentage(total_point, graduated_point))  # 졸업학점 퍼센티지
-                major_point_percentage = int(get_percentage(
-                    subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
+                major_point_percentage = int(get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
                 culture_point_percentage = int(get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
+
+
+                ### 복수전공, 교직이수 
+                plural_major = check_plural_major(data[0])
+                teach_major = check_teach_major(data[0])
+
+                print(plural_major, teach_major)
 
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
@@ -83,6 +89,8 @@ def index(request):
         'graduated_point_percentage': graduated_point_percentage,
         'major_point_percentage': major_point_percentage,
         'culture_point_percentage': culture_point_percentage,
+        'plural_major' : plural_major,
+        'teach_major' : teach_major, 
     }
 
     return render(request, 'webcrawler/index.html', context)
@@ -177,7 +185,7 @@ def get_major_subject(subject):
     major_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '기전' or item[0] == '선전' or item[0] == '응전' or item[0] == '복수' or item[0] == '교직':
+        if item[0] == '기전' or item[0] == '선전' or item[0] == '전선' or item[0] == '응전' or item[0] == '복수' or item[0] == '교직':
             major_subject[title] =  item
 
     return major_subject
@@ -247,10 +255,10 @@ def get_sum_of_subject(subject):
     for title, arr in subject.items():
         if arr[0] == "기전": # 기전 카운트
             basic_major_subject_sum += float(arr[2])
-            
+
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
-        elif arr[0] == "기전" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
+        elif arr[0] == "기전" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
             major_subject_sum = major_subject_sum + float(arr[2])
     sum['basic_major_subject_sum'] = int(basic_major_subject_sum)
     sum['major_subject_sum'] = int(major_subject_sum)
@@ -265,6 +273,8 @@ def wpoint_detail(request):
     
     if request.session.get('detail_wpoint', False):
         detail_wpoint = request.session['detail_wpoint']
+    else:
+        detail_wpoint = None
 
     return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
 
@@ -288,7 +298,7 @@ def get_count_type(subject):
     type_count = Counter()
 
     for title, item in subject.items():
-        if item[0] in ['기전', '응전', '선전', '복수', '교필', '교선', '계필', '일선', '교직']:
+        if item[0] in ['기전', '응전', '선전', '전선', '복수', '교필', '교선', '계필', '일선', '교직']:
             type_count[item[0]] += 1
 
     return type_count
@@ -427,3 +437,27 @@ def get_major_point(user_number, user_colleage, user_major):
         major_point = 160
     
     return major_point, basic_major_point
+
+
+
+### 복수전공 체크
+def check_plural_major(subject):
+
+    '''
+        복수전공을 한다면은 복수유형의 과목이 존재
+    '''
+    for item in subject.values():
+        if item[0] == "복수":
+            return True
+    return False
+
+### 교직이수 체크
+def check_teach_major(subject):
+    
+    '''
+        타입중 교직이 존재하면 교직 이수
+    '''
+    for item in subject.values():
+        if item[0] == "교직":
+            return True
+    return False        
