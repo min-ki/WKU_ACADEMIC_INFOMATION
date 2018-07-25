@@ -45,8 +45,6 @@ def index(request):
                 plural_major = check_plural_major(data[0])
                 teach_major = check_teach_major(data[0])
 
-                print(plural_major, teach_major)
-
                 ### 세션 데이터 설정
                 request.session['subject_list'] = subject_list
                 request.session['total_point'] = total_point
@@ -135,7 +133,6 @@ def completed_list(request):
     }
 
     return render(request, 'webcrawler/completed_list.html', context)
-
 
 ## 전공과목 리스트 뷰
 def major_list(request):
@@ -266,8 +263,6 @@ def get_sum_of_subject(subject):
 
     return sum
 
-
-
 ## W - POINT 상세페이지
 def wpoint_detail(request):
     
@@ -277,7 +272,6 @@ def wpoint_detail(request):
         detail_wpoint = None
 
     return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
-
 
 def chart(request):
 
