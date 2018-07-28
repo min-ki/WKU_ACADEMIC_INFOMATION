@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>정보서비스</title>
+    <title>WGP - WKU Graduated Possible?</title>
     
     <!-- VENDOR CSS -->
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/bootstrap/css/bootstrap.min.css' %}" >
@@ -38,7 +38,7 @@
             {% comment %} <a href="index.html">
                 <img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo">
             </a> {% endcomment %}
-            <p>원광대 웹정보 간편보기 서비스</p>
+            <p>WGP - 원광대 졸업가능?</p>
         </div>
         <div class="container-fluid">
             <div class="navbar-btn">
@@ -136,31 +136,37 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:completed' %}" class="">
+                        <a href="{% url 'home:completed' %}">
                             <i class="lnr lnr-list"></i>
                             <span>이수과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:major' %}" class="">
+                        <a href="{% url 'home:necessary' %}">
+                            <i class="lnr lnr-list"></i>
+                            <span>필수 과목 리스트</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:major' %}">
                             <i class="lnr lnr-list"></i>
                             <span>전공과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:culture' %}" class="">
+                        <a href="{% url 'home:culture' %}">
                             <i class="lnr lnr-list"></i>
                             <span>교양과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:chart' %}" class="">
+                        <a href="{% url 'home:chart' %}">
                             <i class="lnr lnr-chart-bars"></i>
                             <span>성적 그래프</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:wpoint' %}" class="">
+                        <a href="{% url 'home:wpoint' %}">
                             <i class="lnr lnr-alarm"></i>
                             <span>W - POINT</span>
                         </a>

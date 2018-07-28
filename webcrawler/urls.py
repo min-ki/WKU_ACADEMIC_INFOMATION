@@ -6,6 +6,7 @@ app_name = 'webcrawler'
 urlpatterns = [
     path('', views.index, name='index'),
     path('completed/', views.completed_list, name='completed'),
+    path('necessary/', views.necessary_list, name='necessary'),
     path('major/', views.major_list, name='major'),
     path('culture/', views.culture_list, name='culture'),
     path('wpoint/', views.wpoint_detail, name='wpoint'),

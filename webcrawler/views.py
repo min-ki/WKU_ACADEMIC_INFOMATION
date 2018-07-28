@@ -134,6 +134,36 @@ def completed_list(request):
 
     return render(request, 'webcrawler/completed_list.html', context)
 
+# 필수과목 리스트
+def necessary_list(request):
+    
+    if request.session.get('user_info', False) and request.session.get('subject_list', False):
+        user_info = request.session['user_info']
+        user_subject_list = request.session['subject_list']
+    else:
+        return redirect('accounts:login')
+
+    user_subject_list = [subject for subject in user_subject_list.keys()]
+
+    necessary_subject_list = Subject.objects.filter(necessary=True, major__name__contains=user_info[6])
+    # necessary_subject_list = [subject.title for subject in necessary_subject_list]
+
+    completed_list = [] # 이수과목 리스트
+    not_completed_list = [] # 미이수 과목리스트
+
+    for subject in necessary_subject_list:
+        if subject.title in user_subject_list:
+            completed_list.append(subject) # 이수한 과목
+        else:
+            not_completed_list.append(subject) # 미 이수 과목
+
+    context = {
+        'completed_list' : completed_list,
+        'not_completed_list' : not_completed_list,
+    }
+
+    return render(request, 'webcrawler/necessary_list.html', context)
+
 ## 전공과목 리스트 뷰
 def major_list(request):
     
