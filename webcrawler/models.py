@@ -20,6 +20,7 @@ class Subject(models.Model):
         ('전필', '전공필수'),
         ('전선', '전공선택'),
         ('교직', '교직'),
+        ('학필', '학필')
     )
 
     CERTIFICATION_TYPE_CHOICES = (
@@ -46,3 +47,5 @@ class Subject(models.Model):
 
     def __str__(self):
         return self.title
+
+
