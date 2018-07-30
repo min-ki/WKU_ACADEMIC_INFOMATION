@@ -10,6 +10,7 @@ def index(request):
         intranet_id = request.session['intranet_id']
         intranet_pw = request.session['intranet_pw']
     else:
+        messages.error(request, '로그인에 실패했습니다.')
         return redirect('accounts:login')
         
     if intranet_id and intranet_pw:
@@ -62,8 +63,8 @@ def index(request):
 
             else:
                 # 로그인 에러 출력
-                messages.error(request, '로그인에 실패했습니다.')
-                return redirect('accounts:login')
+                # messages.error(request, '로그인에 실패했습니다.')
+                # return redirect('accounts:login')
                 
         except NameError:
             print("NameError 발생")
