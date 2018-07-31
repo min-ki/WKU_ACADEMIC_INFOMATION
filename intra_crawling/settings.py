@@ -89,10 +89,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'wku_webcrawler',
+        # 'NAME': 'wgp_db',
         'USER': 'min_2271',
         'PASSWORD': '',
+        # 'PASSWORD': 'min_2271',
         'HOST': 'localhost',
         'PORT': '',
+        # 'PORT': '5432',
     }
 }
 
@@ -135,6 +138,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'intra_crawling', 'static'),
 ]

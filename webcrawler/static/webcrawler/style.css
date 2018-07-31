@@ -44,3 +44,9 @@
 .user_status {
     padding: 10px;
 }
+
+@media (max-width: 575.98px) {
+    .list {
+        width: 1200px;
+    }
+}

@@ -27,7 +27,6 @@
                             {% if certification_major %}
                             <th class="text-center">공학인증</th>
                             {% endif %}
-                            <th class="text-center">타입</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +35,6 @@
                             <td>{{ subject.subject_year}}</td>
                             <td>{{ subject.subject_semester }}</td>
                             <td class="text-center">{{ subject.title }}</td>
-                            <td class="text-center">{{ subject.certification_type }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -59,11 +57,10 @@
                         <tr>
                             <th>년도</th>
                             <th>학기</th>
-                            <th>과목명</th>
+                            <th class="text-center">과목명</th>
                             {% if certification_major %}
                             <th class="text-center">공학인증</th>
                             {% endif %}
-                            <th class="text-center">타입</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,7 +69,6 @@
                             <td>{{ subject.subject_year}}</td>
                             <td>{{ subject.subject_semester }}</td>
                             <td class="text-center">{{ subject.title }}</td>
-                            <td class="text-center">{{ subject.certification_type }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
