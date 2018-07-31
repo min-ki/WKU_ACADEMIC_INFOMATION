@@ -38,7 +38,7 @@
             {% comment %} <a href="index.html">
                 <img src="assets/img/logo-dark.png" alt="Klorofil Logo" class="img-responsive logo">
             </a> {% endcomment %}
-            <p>WGP - 원광대 졸업가능?</p>
+            <p>WGP - 원광대 졸업 정보</p>
         </div>
         <div class="container-fluid">
             <div class="navbar-btn">
@@ -84,12 +84,12 @@
                             <span>이수과목 리스트</span>
                         </a>
                     </li>
-                    <li>
+                    {% comment %} <li>
                         <a href="{% url 'home:necessary' %}">
                             <i class="lnr lnr-list"></i>
                             <span>필수 과목 리스트</span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                     <li>
                         <a href="{% url 'home:major' %}">
                             <i class="lnr lnr-list"></i>
@@ -143,6 +143,7 @@
     <div class="clearfix"></div>
     <footer>
         <div class="container-fluid">
+            <p> 문의사항: xxx@xxx.com </p>
             <p class="copyright">&copy; 2018 원광대학교 컴퓨터공학과 14학번 박민기. All Rights Reserved.</p>
         </div>
     </footer>

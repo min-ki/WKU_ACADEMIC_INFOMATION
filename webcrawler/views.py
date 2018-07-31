@@ -60,12 +60,7 @@ def index(request):
                 request.session['graduated_point_percentage'] = graduated_point_percentage
                 request.session['major_point_percentage'] = major_point_percentage
                 request.session['culture_point_percentage'] = culture_point_percentage
-
-            else:
-                # 로그인 에러 출력
-                # messages.error(request, '로그인에 실패했습니다.')
-                # return redirect('accounts:login')
-                
+       
         except NameError:
             print("NameError 발생")
 
