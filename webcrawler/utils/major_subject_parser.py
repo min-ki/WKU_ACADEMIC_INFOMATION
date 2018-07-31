@@ -11,7 +11,7 @@ import os, sys
 from pyvirtualdisplay import Display
 
 def subject_parser(id, pw):
-    
+
 
     # 가상 디스플레이 셋팅
     # display = Display(visible=0, size=(800, 600))
@@ -126,7 +126,7 @@ def subject_parser(id, pw):
                         select_codeRegiment.select_by_value(str(major_code))
                     except NoSuchElementException:
                         select_codeRegiment = None
- 
+
                     driver.find_element_by_xpath("/html/body/form/input[1]").click()
 
                     try:
@@ -135,21 +135,21 @@ def subject_parser(id, pw):
                         alert.accept()
                     except TimeoutException:
                         pass
-                    
+
                     html = driver.page_source
                     soup = BeautifulSoup(html, 'html.parser')
                     grade = soup.find('select', {"name" : "grade"}).find_all('option', {'selected': True})[0].text
                     major_name = soup.find('select', {"name" : "codeRegiment"}).find_all('option', {'selected': True})
                     if major_name:
                         major_name = major_name[0].text
-                    
+
                     print(y, grade, major_name)
                     # print(major_name)
 
                     year = soup.find('select', {"name" : "year"}).find_all('option', {'selected': True})
                     if year:
                         year = int(year[0].text[:4])
-                    
+
                     subject_semester = soup.select(
                         "body > table > tbody > tr > td:nth-of-type(1)")
                     subject_type = soup.select("body > table > tbody > tr > td:nth-of-type(2)")
@@ -167,8 +167,8 @@ def subject_parser(id, pw):
 
                     for a, b, c, d, e, f, g, h in zip(subject_semester, subject_type, subject_number, subject_name, subject_point, subject_theory, subject_training, subject_host):
                         # print(year, a.text, b.text, c.text, d.text, e.text, f.text, g.text, h.text)
-                        
-                        try: 
+
+                        try:
                             major = Major.objects.get(name=major_name)
                         except Major.DoesNotExist:
                             major = False
