@@ -6,10 +6,13 @@ from selenium.common.exceptions import TimeoutException, UnexpectedAlertPresentE
 from bs4 import BeautifulSoup
 import time
 from datetime import datetime
-
+from pyvirtualdisplay import Display
 def parser(id, pw):
 
     start = datetime.now()
+
+    # display = Display(visible=0, size=(800, 600))
+    # display.start()
 
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
@@ -269,6 +272,8 @@ def parser(id, pw):
     information.append(average_point_info) # 평균 학점 정보
 
     driver.close() # 크롤링 끝
+    driver.quit()
+    # display.stop()
 
     finish = datetime.now() - start
     print(finish)
