@@ -2,8 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parser
 from .models import Subject, Major
-from .utils import subject_fn # 각종 계산함수들은 여기에
-
+from .utils import subject_fn 
 
 def index(request):
     
