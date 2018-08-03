@@ -1,14 +1,25 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
+from webcrawler.intranet import parser
 # 웹 정보 서비스 로그인
 def login(request):
     
     if request.method == 'POST':
         request.session['intranet_id'] = request.POST['username']
         request.session['intranet_pw'] = request.POST['password']
-        messages.success(request, '로그인에 성공하셨습니다.')
-        return redirect('home:index')
+        
+        if not request.session.get('data', False):
+            data = parser(request.POST['username'], request.POST['password'])
+
+            if data:
+                request.session['data'] = data
+                messages.success(request, '로그인에 성공하셨습니다.')
+                return redirect('home:index')
+            else:
+                messages.error(request, '로그인에 실패하셨습니다.')
+        else:
+            data = request.session['data']
+            return redirect('home:index')
     else:
         request.session.flush()
     
