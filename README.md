@@ -16,8 +16,11 @@
 
 
 ## 사용 기술
-- Python 3.6
-- Django 2.0.7
+- Python
+- Django
 - Selenium
 - Beautifulsoup4 
 - Postgresql
+- AWS EC2
+- Nginx
+- Uwsgi

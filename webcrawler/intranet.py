@@ -45,7 +45,7 @@ def parser(id, pw):
 
     # 로그인 실패
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg":
-        return False
+        return "login_fail"
 
     # try:
     #     WebDriverWait(driver, 1).until(EC.alert_is_present(), "test")
