@@ -179,7 +179,6 @@ def get_graduated_point(user_number, user_colleage, user_major):
     graduated_point = 0
 
     user_number = int(''.join(list(user_number[2:4])))
-    print(user_number)
 
     # 13학번부터 136학점 창의공과대학
     if user_number > 12 and user_colleage == "창의공과대학":

@@ -2,12 +2,6 @@
 {% load get_graduated_point %}
 {% block content %}
 
-
-<div style="margin: 10px">
-    <button class="btn btn-sm btn-outline-secondary">Share</button>
-    <button class="btn btn-sm btn-outline-secondary">Export</button>
-</div>
-
 <div class="list row">
     <div class="col-md-12">
         <!-- TABLE HOVER -->
@@ -96,7 +90,8 @@
                             <th class="text-center">C0</th>
                             <th class="text-center">D+</th>
                             <th class="text-center">D0</th>
-                            <th class="text-center">P</th>
+                            <th class="text-center">F</th> 
+                            <th class="text-center">P / F</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,7 +105,8 @@
                         <td class="text-center">{{ count_grade|keyvalue:"C0"}} 개</td>
                         <td class="text-center">{{ count_grade|keyvalue:"D+"}} 개</td>
                         <td class="text-center">{{ count_grade|keyvalue:"D0"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"P"}} 개</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"F"}} 개</td>
+                        <td class="text-center">{{ count_grade|keyvalue:"P"}} 개 / {{ count_grade|keyvalue:"fail"}} 개</td>
                     </tbody>
                 </table>
             </div>

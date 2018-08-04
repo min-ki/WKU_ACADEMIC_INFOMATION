@@ -2,91 +2,101 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parser
 from .models import Subject, Major
-from .utils import subject_fn # 각종 계산함수들은 여기에
-
+from .utils import subject_fn 
 
 def index(request):
     
-    if request.session.get('intranet_id', False) and request.session.get('intranet_pw', False):
-        intranet_id = request.session['intranet_id']
-        intranet_pw = request.session['intranet_pw']
+    """
+        * Dashboard 페이지
+
+        * 기능
+            - 사용자 정보 (이름, 학년, 학번, 이수학기, 소속, 학과)
+            - 학점 현황
+            - 성적 현황
+            - 장학금 현황
+            - WPOINT
+
+        * intranet.parser 를 통해서 데이터 크롤링
+            data[0] : 교과목 정보
+            data[1] : 전체 이수 학점
+            data[2] : 사용자 정보
+            data[3] : 장학 정보
+            data[4] : WPOINT
+            data[5] : WPOINT 상세 정보
+            data[6] : 평균 학점 정보
+    """
+
+
+
+    if request.session.get('data', False):
+        data = request.session['data']
     else:
-        messages.error(request, '로그인에 실패했습니다.')
-        return redirect('accounts:login')
+        data = parser(
+            request.session['intranet_id'], request.session['intranet_pw'])
+
+    if data:
+        subject_list = data[0] # 과목 리스트
+        subject_point = subject_fn.get_sum_of_subject(data[0]) # 전공학점, 교양학점
+        total_point = int(data[1]['sum_of_grade_point'])  # 전체 학점
+        user_info = data[2]  # 사용자 정보    
+        scholar_ship = data[3] # 장학정보
+        wpoint = data[4] # WPOINT  
+        detail_wpoint = data[5] # WPOINT Detail
+        average_point_info = data[6]
+        graduated_point = subject_fn.get_graduated_point(user_info[1], user_info[4], user_info[6]) # 졸업학점
+        major_point, basic_major_point = subject_fn.get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
+        culture_point = subject_fn.get_culture_point(user_info[1]) # 교양학점 
+        remain_graduated_point = int(graduated_point - total_point) # 남은학점
         
-    if intranet_id and intranet_pw:
-        try:
-            if not request.session.get('data', False):
-                data = parser(intranet_id, intranet_pw)
-                request.session['data'] = data
-            else:
-                data = request.session['data']
+        graduated_point_percentage = int(subject_fn.get_percentage(total_point, graduated_point))  # 졸업학점 퍼센티지
+        major_point_percentage = int(subject_fn.get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
+        culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
 
+        ### 복수전공, 교직이수 
+        plural_major = subject_fn.check_plural_major(data[0]) 
+        teach_major = subject_fn.check_teach_major(data[0])
 
-            if data:
-                subject_list = data[0] # 과목 리스트
-                subject_point = subject_fn.get_sum_of_subject(data[0]) # 전공학점, 교양학점
-                total_point = int(data[1]['sum_of_grade_point'])  # 전체 학점
-                user_info = data[2]  # 사용자 정보    
-                scholar_ship = data[3] # 장학정보
-                wpoint = data[4] # WPOINT  
-                detail_wpoint = data[5] # WPOINT Detail
-                average_point_info = data[6]
-                graduated_point = subject_fn.get_graduated_point(user_info[1], user_info[4], user_info[6]) # 졸업학점
-                major_point, basic_major_point = subject_fn.get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
-                culture_point = subject_fn.get_culture_point(user_info[1]) # 교양학점 
-                remain_graduated_point = int(graduated_point - total_point) # 남은학점
-                
-                graduated_point_percentage = int(subject_fn.get_percentage(total_point, graduated_point))  # 졸업학점 퍼센티지
-                major_point_percentage = int(subject_fn.get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
-                culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
+        ### 세션 데이터 설정
+        request.session['subject_list'] = subject_list
+        request.session['total_point'] = total_point
+        request.session['graduated_point'] = graduated_point # 졸업 학점
+        request.session['basic_major_point'] = basic_major_point # 기본 전공 학점
+        request.session['major_point'] = major_point # 전체 전공 학점
+        request.session['culture_point'] = culture_point # 교양 학점
+        request.session['subject_point'] = subject_point  # 과목 학점 정보
+        request.session['user_info'] = user_info  # 유저정보
+        request.session['scholar_ship'] =  scholar_ship # 장학금 정보
+        request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
+        request.session['average_point_info'] = average_point_info # 평균 학점 정보
+        request.session['remain_graduated_point'] = remain_graduated_point # 남은 졸업 학점
+        request.session['graduated_point_percentage'] = graduated_point_percentage
+        request.session['major_point_percentage'] = major_point_percentage
+        request.session['culture_point_percentage'] = culture_point_percentage
+    
 
-                ### 복수전공, 교직이수 
-                plural_major = subject_fn.check_plural_major(data[0]) 
-                teach_major = subject_fn.check_teach_major(data[0])
-
-                ### 세션 데이터 설정
-                request.session['subject_list'] = subject_list
-                request.session['total_point'] = total_point
-                request.session['graduated_point'] = graduated_point # 졸업 학점
-                request.session['basic_major_point'] = basic_major_point # 기본 전공 학점
-                request.session['major_point'] = major_point # 전체 전공 학점
-                request.session['culture_point'] = culture_point # 교양 학점
-                request.session['subject_point'] = subject_point  # 과목 학점 정보
-                request.session['user_info'] = user_info  # 유저정보
-                request.session['scholar_ship'] =  scholar_ship # 장학금 정보
-                request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
-                request.session['average_point_info'] = average_point_info # 평균 학점 정보
-                request.session['remain_graduated_point'] = remain_graduated_point # 남은 졸업 학점
-                request.session['graduated_point_percentage'] = graduated_point_percentage
-                request.session['major_point_percentage'] = major_point_percentage
-                request.session['culture_point_percentage'] = culture_point_percentage
-       
-        except NameError:
-            print("NameError 발생")
-
-    context = {
-        'subject_point': subject_point,
-        'subject_list': subject_list,
-        'total_point': total_point,
-        'user_info': user_info,
-        'graduated_point': graduated_point,
-        'basic_major_point': basic_major_point,
-        'major_point' : major_point,
-        'culture_point' : culture_point,
-        'scholar_ship': scholar_ship,
-        'wpoint': wpoint,
-        'detail_wpoint': detail_wpoint,
-        'average_point_info': average_point_info,
-        'remain_graduated_point': remain_graduated_point,
-        'graduated_point_percentage': graduated_point_percentage,
-        'major_point_percentage': major_point_percentage,
-        'culture_point_percentage': culture_point_percentage,
-        'plural_major' : plural_major,
-        'teach_major' : teach_major, 
-    }
+        context = {
+            'subject_point': subject_point,
+            'subject_list': subject_list,
+            'total_point': total_point,
+            'user_info': user_info,
+            'graduated_point': graduated_point,
+            'basic_major_point': basic_major_point,
+            'major_point' : major_point,
+            'culture_point' : culture_point,
+            'scholar_ship': scholar_ship,
+            'wpoint': wpoint,
+            'detail_wpoint': detail_wpoint,
+            'average_point_info': average_point_info,
+            'remain_graduated_point': remain_graduated_point,
+            'graduated_point_percentage': graduated_point_percentage,
+            'major_point_percentage': major_point_percentage,
+            'culture_point_percentage': culture_point_percentage,
+            'plural_major' : plural_major,
+            'teach_major' : teach_major, 
+        }
 
     return render(request, 'webcrawler/index.html', context)
+
 
 ## 이수과목 리스트 뷰
 def completed_list(request):

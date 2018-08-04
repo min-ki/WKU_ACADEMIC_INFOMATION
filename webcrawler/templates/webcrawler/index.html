@@ -4,13 +4,6 @@
 
 <h3 class="page-title">Dashboard</h3>
 
-<div class="btn-toolbar mb-2 mb-md-0" style="padding: 10px;">
-    <div class="btn-group mr-2">
-      <button class="btn btn-sm btn-outline-secondary">Share</button>
-      <button class="btn btn-sm btn-outline-secondary">Export</button>
-  </div>
-</div>
-
 <div class="row">
   <div class="col-md-8">
     <!-- PANEL HEADLINE -->
@@ -30,6 +23,12 @@
             <p class="user_info">학년 : {{ user_info.3 }}</p>
             <p class="user_info">이수학기 :{{ user_info.5 }}</p>
             <p class="user_info">학과 : {{ user_info.6 }}</p>
+          </div>
+
+          <div class="col-sm-4 col-md-4 user_info_container">
+            <p class="user_info"><span class="label label-danger">졸업 불가능</span></p>
+            <p class="user_info"><span class="label label-danger">졸업 학점 부족</span></p>
+            <p class="user_info"><span class="label label-danger">전공 학점 부족</span></p>
           </div>
         </div>
       </div>
