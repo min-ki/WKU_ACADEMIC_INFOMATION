@@ -141,8 +141,16 @@ def get_major_point(user_number, user_colleage, user_major):
         major_point = 69
     # 창의공과대학
     elif user_colleage == "창의공과대학" and user_major != "건축학과":
+        
+        # 17학번 부터는 75학점 적용
+        if user_number >= 17:
+            major_point = 75
+        else:
+            major_point = 72
+
         basic_major_point = 19
-        major_point = 72
+        
+
     elif user_major == "건축학과":
         basic_major_point = 0
         major_point = 0
@@ -243,3 +251,118 @@ def get_count_grade_point(subject):
             grade_point[item[3]] += 1
 
     return grade_point
+
+
+def get_culutre_necessary_point(subject):
+
+    """
+        교양 필수 학점 계산
+    """
+
+    culture_necessary_point = 0
+
+    for title, item in subject.items():
+        if item[0] == '교필':
+            culture_necessary_point += float(item[2])
+    
+    return int(culture_necessary_point)
+
+
+def get_line_necessary_point(subject):
+    
+    """
+        계열 필수 학점 계산
+    """
+
+    line_necessary_point = 0
+
+    for title, item in subject.items():
+        if item[0] == '계필':
+            line_necessary_point += float(item[2])
+    
+    return int(line_necessary_point)
+
+
+def get_language_necessary_point(subject):
+
+    """
+        언어 영역 학점 계산
+    """
+
+    language_necessary_point = 0
+
+    for title, item in subject.items():
+        if title == '기술보고서작성및발표' or title == '글쓰기이론과실제' or title == '독서와토론' or title == '언어추론' or title == '초급실용한자':
+            language_necessary_point += float(item[2])
+    
+    return int(language_necessary_point)
+
+
+def get_english_necessary_point(subject):
+    
+    """
+        영어 영역 학점 계산
+    """
+
+    english_necessary_point = 0
+
+    for title, item in subject.items():
+        if title == '토익1' or title == '토익2' or title == '대학영어1' or title == '대학영어2' or title == '텝스1' or title == '텝스2' or title == '영어회화1' or title == '영어회화2' or title == "영어읽기" or title == "시청각영어":
+            english_necessary_point += float(item[2])
+    
+    return int(english_necessary_point)
+
+
+def get_sw_necessary_point(subject):
+
+    """
+        SW 영역 학점 계산
+    """
+
+    sw_necessary_point = 0
+
+    for title, item in subject.items():
+        if title == '컴퓨팅적 사고력' or title == '모바일프로그래밍' or title == '과학적데이터처리' or title == '창의개발프로그래밍' or title == '3D프린팅이해및활용':
+            sw_necessary_point += float(item[2])
+
+    return int(sw_necessary_point)
+
+def get_culture_choice_point(subject):
+    
+    """
+        인문 소양 학점 계산
+    """
+    culture_choice_point = 0
+
+    for title, item in subject.items():
+        if item[0] == "교선":
+            culture_choice_point += float(item[2])
+
+    return int(culture_choice_point)
+
+def get_founded_subject_necessary_point(subject):
+
+    """
+        창업 영역 학점 계산
+    """
+
+    founded_subject_necessary_point = 0
+
+    for title, item in subject.items():
+        if title == "창업의이해" or title == "기업과정신및창업기초" or title == "창업과지적재산권":
+            founded_subject_necessary_point += float(item[2])
+
+    return int(founded_subject_necessary_point)
+
+def get_creative_necessary_point(subject):
+    
+    """
+        창의 영역 학점 계산
+    """
+    creative_necessary_point = 0
+
+    for title, item in subject.items():
+        if title == "창의적 발상기법":
+            creative_necessary_point += float(item[2])
+
+    return int(creative_necessary_point)

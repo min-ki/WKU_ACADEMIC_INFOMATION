@@ -52,6 +52,16 @@ def index(request):
         major_point_percentage = int(subject_fn.get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
         culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
 
+        ### 필수 학점
+        graduated_culture_point = subject_fn.get_culutre_necessary_point(data[0])
+        graduated_line_point = subject_fn.get_line_necessary_point(data[0])
+        graduated_language_point = subject_fn.get_language_necessary_point(data[0])
+        graduated_english_point = subject_fn.get_english_necessary_point(data[0])
+        graduated_sw_point = subject_fn.get_sw_necessary_point(data[0])
+        graduated_culture_choice_point = subject_fn.get_culture_choice_point(data[0])
+        graduated_founded_subject_point = subject_fn.get_founded_subject_necessary_point(data[0])
+        graduated_creative_point = subject_fn.get_creative_necessary_point(data[0])
+
         ### 복수전공, 교직이수 
         plural_major = subject_fn.check_plural_major(data[0]) 
         teach_major = subject_fn.check_teach_major(data[0])
@@ -93,6 +103,14 @@ def index(request):
             'culture_point_percentage': culture_point_percentage,
             'plural_major' : plural_major,
             'teach_major' : teach_major, 
+            'graduated_culture_point': graduated_culture_point,
+            'graduated_line_point': graduated_line_point,
+            'graduated_language_point': graduated_language_point,
+            'graduated_english_point': graduated_english_point,
+            'graduated_sw_point': graduated_sw_point,
+            'graduated_culture_choice_point' : graduated_culture_choice_point,
+            'graduated_founded_subject_point': graduated_founded_subject_point,
+            'graduated_creative_point' : graduated_creative_point,
         }
 
     return render(request, 'webcrawler/index.html', context)

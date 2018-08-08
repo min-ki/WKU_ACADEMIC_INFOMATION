@@ -130,3 +130,4 @@ venv.bak/
 Pipfile
 Pipfile.lock
 .vscode/settings.json
+.idea/

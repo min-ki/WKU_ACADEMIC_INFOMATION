@@ -11,21 +11,21 @@
       <div class="panel-heading">
         <h3 class="panel-title">사용자 정보</h3>
         <div class="row">
-          <div class="col-sm-4 col-md-4">
-            <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="120" style="height: 140px; margin: 10px; vertical-align: bottom;">
+          <div class="col-sm-3 col-md-3">
+            <img src="http://intra.wku.ac.kr{{ user_info.2 }}" alt="..." class="img-thumbnail" width="120" style="margin: 10px;">
           </div>
-          <div class="col-sm-4 col-md-4 user_info_container">
+          <div class="col-sm-3 col-md-3 user_info_container">
           <p class="user_info">이름 : {{ user_info.0 }}</p>
           <p class="user_info">학번 : {{ user_info.1 }}</p>
           <p class="user_info">소속 : {{ user_info.4 }}</p>
           </div>
-          <div class="col-sm-4 col-md-4 user_info_container">
+          <div class="col-sm-3 col-md-3 user_info_container">
             <p class="user_info">학년 : {{ user_info.3 }}</p>
             <p class="user_info">이수학기 :{{ user_info.5 }}</p>
             <p class="user_info">학과 : {{ user_info.6 }}</p>
           </div>
 
-          <div class="col-sm-4 col-md-4 user_info_container">
+          <div class="col-sm-3 col-md-3 user_info_container">
             <p class="user_info"><span class="label label-danger">졸업 불가능</span></p>
             <p class="user_info"><span class="label label-danger">졸업 학점 부족</span></p>
             <p class="user_info"><span class="label label-danger">전공 학점 부족</span></p>
@@ -35,30 +35,6 @@
 
       <div class="panel-body">
         <div class="row">
-
-          <!-- <div class="col-md-12">
-            <div class="panel">
-              <div class="panel-heading">
-                <h3 class="panel-title">사용자 현황</h3>
-              </div>
-              <div class="panel-body">
-                
-                <span class="label label-info user_status">복수전공</span>
-                {% if plural_major %} 
-                  <input type="checkbox" disabled="disabled" checked="checked">
-                  {% else %}
-                  <input type="checkbox" disabled="disabled">
-                {% endif %}
-
-                <span class="label label-info user_status">교직이수</span>
-                {% if teach_major %} 
-                  <input type="checkbox" disabled="disabled" checked="checked">
-                  {% else %}
-                  <input type="checkbox" disabled="disabled">
-                {% endif %}
-              </div>
-            </div>
-          </div> -->
 
           <div class="col-md-12">
             <div class="panel">
@@ -95,7 +71,51 @@
                       <tr>
                         <td class="text-center"> {{ subject_point.basic_major_subject_sum }} / {{ basic_major_point }} </td>
                         <td class="text-center"> {{ subject_point.major_subject_sum }} / {{ major_point }} </td>
-                        <td class="text-center"> {{ subject_point.culture_subject_sum }}/ {{ culture_point }} </td>
+                        <td class="text-center"> {{ subject_point.culture_subject_sum }} / {{ culture_point }} </td>
+                      </tr>
+                    </tbody>
+
+                     <thead>
+	                    <tr>
+												<th class="text-center">교양필수</th>
+												<th class="text-center">계열필수</th>
+												<th class="text-center">언어영역</th>
+											</tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center"> {{ graduated_culture_point }} / 5 </td>
+                        <td class="text-center"> {{ graduated_line_point }} / 12 </td>
+                        <td class="text-center"> {{ graduated_language_point }} / 2 </td>
+                      </tr>
+                    </tbody>
+
+                    <thead>
+	                    <tr>
+												<th class="text-center">영어영역</th>
+												<th class="text-center">SW영역</th>
+												<th class="text-center">인문소양</th>
+											</tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center"> {{ graduated_english_point }} / 4 </td>
+                        <td class="text-center"> {{ graduated_sw_point }} / 4 </td>
+                        <td class="text-center"> {{ graduated_culture_choice_point }} / 6 </td>
+                      </tr>
+                    </tbody>
+
+
+                    <thead>
+	                    <tr>
+												<th class="text-center">창업영역</th>
+												<th class="text-center">창의영역</th>
+											</tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="text-center"> {{ graduated_founded_subject_point }} / 2 </td>
+                        <td class="text-center"> {{ graduated_creative_point }} / 2 </td>
                       </tr>
                     </tbody>
 
