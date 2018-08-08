@@ -13,7 +13,6 @@
 </div>
 
 <div class="container" id="login_section">
-    
 
     <div style="margin: 100px"></div>
     
@@ -46,8 +45,8 @@
 <script>
 
 
-    var id;
-    var pw;
+    var id = "";
+    var pw = "";
 
     $('#intranet_id').on('input', function (e) {
         id = e.target.value;
@@ -55,16 +54,14 @@
     
     $('#intranet_pw').on('input', function (e) {
         pw = e.target.value;
-    })
+    });
 
-    
-    if(id != '' && pw != '') {
-        $('#login').click(function() {
+    $('#login').click(function() {
+        if(id !== "" && pw !== "") {
             $( "#login_section" ).fadeOut( "fast" );
             $('.spinner').css("display", "block");
-            }
-        )
-    }
+        }
+    });
 
     setTimeout(fade_out, 5000);
 
@@ -72,4 +69,6 @@
         $("#message").fadeOut().empty();
     }
 </script>
+
+
 {% endblock %}
