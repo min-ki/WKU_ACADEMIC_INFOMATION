@@ -24,3 +24,23 @@
 - AWS EC2
 - Nginx
 - Uwsgi
+
+
+## 설치 과정
+- mkdir workspace
+
+- cd workspace
+
+- cd WGP
+
+- git remote add min_ki
+
+- pip3 install pipenv
+
+- pipenv --three
+
+- pipenv shell
+
+- git clone https://github.com/min-ki/WGP.git
+
+- pipenv install -r requirements.txt
