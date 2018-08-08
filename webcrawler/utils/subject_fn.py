@@ -33,21 +33,33 @@ def get_sum_of_subject(subject):
 
     sum = {}
 
-    culture_subject_sum = 0
-    major_subject_sum = 0
     basic_major_subject_sum = 0
+    major_subject_sum = 0
+    culture_subject_sum = 0
+
+    select_major_subject_sum = 0 
+    apply_major_subject_sum = 0
 
     for title, arr in subject.items():
         if arr[0] == "기전":  # 기전 카운트
             basic_major_subject_sum += float(arr[2])
 
+        if arr[0] == "선전": # 선택전공 카운트
+            select_major_subject_sum += float(arr[2])
+        
+        if arr[0] == "응전": # 응용전공 카운트
+            apply_major_subject_sum += float(arr[2])
+
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
         elif arr[0] == "기전" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
             major_subject_sum = major_subject_sum + float(arr[2])
+
     sum['basic_major_subject_sum'] = int(basic_major_subject_sum)
     sum['major_subject_sum'] = int(major_subject_sum)
     sum['culture_subject_sum'] = int(culture_subject_sum)
+    sum['select_major_subject_sum'] = int(select_major_subject_sum)
+    sum['apply_major_subject_sum'] = int(apply_major_subject_sum)
 
     return sum
 
