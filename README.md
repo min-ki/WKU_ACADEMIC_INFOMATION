@@ -52,7 +52,7 @@ $ git clone https://github.com/min-ki/WGP.git
 
 -----------------------------------------
 
-###디렉토리 이동
+### 디렉토리 이동
 
 - **WGP** 디렉토리 이동
 
@@ -100,7 +100,7 @@ $ pipenv shell
 
 ------------------------------------------
 
-### 개발환경 실행###
+### 개발환경 실행
 
 - 실제 DB에 테이블을 생성하기 위해 **Migration**을 DB에 적용합니다
 
@@ -126,7 +126,7 @@ $ python manage.py runserver
 
 - 프로젝트를 열어 **intra_crawling** 디렉토리에 있는 **settings.py** 열어 이미지파일처럼 수정해줍니다
 
-![aa](/Users/marine/Desktop/aa.jpeg)
+![aa](https://user-images.githubusercontent.com/37236133/43987612-380bddbc-9d5e-11e8-9018-d5a9dd6e9928.jpeg)
 
 ---
 
@@ -143,12 +143,12 @@ $ python manage.py runserver
 4. 아래 폴더를 기준으로 할 경우 **/Users/marine/Downloads/chromedriver** 가 Driver의 위치입니다 
    **꼭! 기억해주세요** (***PC마다 위치는 다를수있습니다***)
 
-   ![c](/Users/marine/Desktop/c.jpeg)
+   ![c](https://user-images.githubusercontent.com/37236133/43987617-50c0ffcc-9d5e-11e8-8f08-821826c734df.jpeg)
 
 5. 이제 **webcrawler** 디렉토리에 있는 **intranet.py** 열어 아래에 있는 이미지파일처럼 수정해줍니다
    (**각자 다운받은 위치에 있는 주소를 넣어주셔야합니다**)
 
-![bb](/Users/marine/Desktop/bb.jpeg)
+![bb](https://user-images.githubusercontent.com/37236133/43987620-5970cc38-9d5e-11e8-9dbe-c00472cd24ad.jpeg)
 
 ---
 
