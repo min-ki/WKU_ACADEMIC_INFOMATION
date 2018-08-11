@@ -100,7 +100,7 @@ $ pipenv shell
 
 ------------------------------------------
 
-### 개발환경 실행
+### 개발환경 실행###
 
 - 실제 DB에 테이블을 생성하기 위해 **Migration**을 DB에 적용합니다
 
@@ -136,7 +136,8 @@ $ python manage.py runserver
 
    [ChromeDriver 다운](https://sites.google.com/a/chromium.org/chromedriver/downloads)
 
-2. 버전을 클릭하면 **OS**별 **Driver**파일이 나타난다 사용하는 **OS**에 따른 **Driver**를 다운받습니다
+2. 버전을 클릭하면 **OS**별 **Driver**파일이 나타난다 사용하는 **OS**에 맞는 **Driver**를 다운받습니다
+   ![d](https://user-images.githubusercontent.com/37236133/43987713-1e238538-9d60-11e8-803c-ee3d87ede3a5.jpeg)
 
 3. **Zip** 파일을 받고 압축해제를 하면 **chromedriver**라는 파일이 저장됩니다
 
