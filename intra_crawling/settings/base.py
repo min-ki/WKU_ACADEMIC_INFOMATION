@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
     'django_extensions',
-    'webcrawler', 
+    'webcrawler',
     'accounts',
 ]
 
@@ -140,7 +140,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'intra_crawling', 'static'),
+    # os.path.join(BASE_DIR, 'intra_crawling', 'static'),
 ]
 
 # MEDIA 설정
@@ -152,7 +152,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = '/home/'
 
 
-# Session 
+# Session
 # SESSION_COOKIE_AGE = 1200
 SESSION_SAVE_EVERY_REQUEST = True
 
