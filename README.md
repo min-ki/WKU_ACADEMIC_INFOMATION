@@ -124,9 +124,9 @@ $ python manage.py runserver
 
 ### settings.py 설정
 
-- 프로젝트를 열어 **intra_crawling** 디렉토리에 있는 **settings.py** 열어 이미지파일처럼 수정해줍니다
+- **postgresql** 대신에 내장된 **sqlite3**를 사용합니다
 
-![aa](https://user-images.githubusercontent.com/37236133/43987612-380bddbc-9d5e-11e8-9018-d5a9dd6e9928.jpeg)
+<img src="https://user-images.githubusercontent.com/37236133/43992259-bfd3f1f4-9db7-11e8-8a36-ecbed3a9670f.jpeg" width="550">
 
 ---
 
@@ -137,19 +137,19 @@ $ python manage.py runserver
    [ChromeDriver 다운](https://sites.google.com/a/chromium.org/chromedriver/downloads)
 
 2. 버전을 클릭하면 **OS**별 **Driver**파일이 나타난다 사용하는 **OS**에 맞는 **Driver**를 다운받습니다
-   ![d](https://user-images.githubusercontent.com/37236133/43987713-1e238538-9d60-11e8-803c-ee3d87ede3a5.jpeg)
+   <img src="https://user-images.githubusercontent.com/37236133/43997885-907c4d2c-9e23-11e8-8a02-b604ee4965e0.jpeg" width="550">
 
 3. **Zip** 파일을 받고 압축해제를 하면 **chromedriver**라는 파일이 저장됩니다
 
 4. 아래 폴더를 기준으로 할 경우 **/Users/marine/Downloads/chromedriver** 가 Driver의 위치입니다 
    **꼭! 기억해주세요** (***PC마다 위치는 다를수있습니다***)
 
-   ![c](https://user-images.githubusercontent.com/37236133/43987617-50c0ffcc-9d5e-11e8-8f08-821826c734df.jpeg)
+   <img src="https://user-images.githubusercontent.com/37236133/43997896-c208ee0e-9e23-11e8-8ed3-4485cb47e21a.jpeg" width="550">
 
 5. 이제 **webcrawler** 디렉토리에 있는 **intranet.py** 열어 아래에 있는 이미지파일처럼 수정해줍니다
    (**각자 다운받은 위치에 있는 주소를 넣어주셔야합니다**)
 
-![bb](https://user-images.githubusercontent.com/37236133/43987620-5970cc38-9d5e-11e8-9dbe-c00472cd24ad.jpeg)
+<img src="https://user-images.githubusercontent.com/37236133/43997900-e24e58b6-9e23-11e8-99a2-d7f209feb6fb.jpeg" width="550">
 
 ---
 
