@@ -9,17 +9,7 @@
                 <h3 class="panel-title">성적 그래프</h3>
             </div>
             <div class="panel-body">
-                <div id="demo-line-chart" class="ct-chart"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6 col-md-12">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3 class="panel-title">Bar Chart</h3>
-            </div>
-            <div class="panel-body">
-                <div id="demo-bar-chart" class="ct-chart"></div>
+                <div id="grade-graph" class="ct-chart"></div>
             </div>
         </div>
     </div>
@@ -40,9 +30,6 @@
             y_series.push(point);
         {% endfor %}
 
-        console.log(x_labels);
-        console.log(y_series);
-        
 
         var data = {
             labels: [...x_labels],
@@ -53,25 +40,14 @@
 
         // line chart
         options = {
+            high: 4.5,
             height: "300px",
-            showPoint: true,
             axisX: {
                 showGrid: true
             },
-            lineSmooth: true,
         };
 
-        new Chartist.Line('#demo-line-chart', data, options);
-
-        // bar chart
-        options = {
-            height: "300px",
-            axisX: {
-                showGrid: false
-            },
-        };
-
-        new Chartist.Bar('#demo-bar-chart', data, options);
+        new Chartist.Bar('#grade-graph', data, options);
 
     });
 </script>

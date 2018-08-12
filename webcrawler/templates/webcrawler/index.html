@@ -26,7 +26,7 @@
           </div>
 
           <div class="col-sm-3 col-md-3 user_info_container">
-            <p class="user_info"><span class="label label-danger">졸업 불가능</span></p>
+            <p class="user_info">상담횟수 : {{ consult_count }}</p>
             <p class="user_info"><span class="label label-danger">졸업 학점 부족</span></p>
             <p class="user_info"><span class="label label-danger">전공 학점 부족</span></p>
           </div>
@@ -263,7 +263,7 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  {% comment %} <div class="col-md-6">
     <!-- PANEL NO PADDING -->
     <div class="panel">
       <div class="panel-heading">
@@ -284,7 +284,7 @@
       </div>
     </div>
     <!-- END PANEL NO PADDING -->
-  </div>
+  </div> {% endcomment %}
 </div>
 
 {% endblock %}

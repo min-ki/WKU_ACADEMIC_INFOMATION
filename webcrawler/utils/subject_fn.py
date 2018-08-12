@@ -366,3 +366,18 @@ def get_creative_necessary_point(subject):
             creative_necessary_point += float(item[2])
 
     return int(creative_necessary_point)
+
+
+def count_culsult(subject):
+
+    """
+        자기계발심층상담 과목 카운팅 함수
+    """
+
+    count = 0
+
+    for title, item in subject.items():
+        if "자기계발심층상담" in title:
+            count = count + 1
+            
+    return count

@@ -9,6 +9,6 @@ urlpatterns = [
     path('necessary/', views.necessary_list, name='necessary'),
     path('major/', views.major_list, name='major'),
     path('culture/', views.culture_list, name='culture'),
-    path('wpoint/', views.wpoint_detail, name='wpoint'),
+    # path('wpoint/', views.wpoint_detail, name='wpoint'),
     path('chart/', views.chart, name='chart'),
 ]
