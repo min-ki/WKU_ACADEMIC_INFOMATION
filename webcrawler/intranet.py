@@ -107,47 +107,47 @@ def parser(id, pw):
     ### 도덕성, 창의성, 소통력, 실천력, 포인트 합계
     ### 사업참여 내역
 
-    driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
-    time.sleep(1)
+    # driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
+    # time.sleep(1)
 
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    wpoint = []
+    # html = driver.page_source
+    # soup = BeautifulSoup(html, 'html.parser')
+    # wpoint = []
 
-    # ### 인정 포인트, 현재 포인트
-    accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
-    accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
-    over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
-    over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
+    # # ### 인정 포인트, 현재 포인트
+    # accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
+    # accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
+    # over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
+    # over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
 
-    for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
-        wpoint.append([
-            t_accept_table.text,
-            t_accept_point.text,
-            t_over_table.text,
-            t_over_point.text,
-        ])
+    # for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
+    #     wpoint.append([
+    #         t_accept_table.text,
+    #         t_accept_point.text,
+    #         t_over_table.text,
+    #         t_over_point.text,
+    #     ])
 
     ### 사업참여 내역
 
-    detail_wpoint = []
+    # detail_wpoint = []
 
-    industry_name = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(1) > a > strong')
-    industry_duration = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(2)')
-    industry_info = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(3)')
-    industry_accept_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(4)')
-    industry_over_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(5)')
-    industry_accepted = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(6)')
+    # industry_name = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(1) > a > strong')
+    # industry_duration = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(2)')
+    # industry_info = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(3)')
+    # industry_accept_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(4)')
+    # industry_over_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(5)')
+    # industry_accepted = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(6)')
 
-    for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
-        detail_wpoint.append([
-            t_industry_name.text,
-            t_industry_duration.text,
-            t_industry_info.text,
-            t_industry_accept_point.text,
-            t_industry_over_point.text,
-            t_industry_accepted.text,
-        ])
+    # for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
+    #     detail_wpoint.append([
+    #         t_industry_name.text,
+    #         t_industry_duration.text,
+    #         t_industry_info.text,
+    #         t_industry_accept_point.text,
+    #         t_industry_over_point.text,
+    #         t_industry_accepted.text,
+    #     ])
 
 
     # 전체 성적 리스트 주소
@@ -219,15 +219,18 @@ def parser(id, pw):
             average_p = data[2]
 
         if data and len(data) > 3:
-            sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
+            if data[2] in sub_info:
+                sub_info[data[2] + '(' + year + '-' + semester + ')'] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
+            else:
+                sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
             sum_of_grade_point += float(data[3])
 
     information.append(sub_info)  # 교과목 정보
     information.append({'sum_of_grade_point' : sum_of_grade_point}) # 전체 이수학점
     information.append(user_info) # 사용자 정보
     information.append(scholar_ship) # 장학금 정보
-    information.append(wpoint) # WPOINT 정보
-    information.append(detail_wpoint) # WPOINT 상세정보
+    # information.append(wpoint) # WPOINT 정보
+    # information.append(detail_wpoint) # WPOINT 상세정보
     information.append(average_point_info) # 평균 학점 정보
 
     driver.close() # 크롤링 끝

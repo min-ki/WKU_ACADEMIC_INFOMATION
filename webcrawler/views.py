@@ -40,9 +40,9 @@ def index(request):
         total_point = int(data[1]['sum_of_grade_point'])  # 전체 학점
         user_info = data[2]  # 사용자 정보    
         scholar_ship = data[3] # 장학정보
-        wpoint = data[4] # WPOINT  
-        detail_wpoint = data[5] # WPOINT Detail
-        average_point_info = data[6]
+        # wpoint = data[4] # WPOINT  
+        # detail_wpoint = data[5] # WPOINT Detail
+        average_point_info = data[4]
         graduated_point = subject_fn.get_graduated_point(user_info[1], user_info[4], user_info[6]) # 졸업학점
         major_point, basic_major_point = subject_fn.get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
         culture_point = subject_fn.get_culture_point(user_info[1]) # 교양학점 
@@ -66,6 +66,10 @@ def index(request):
         plural_major = subject_fn.check_plural_major(data[0]) 
         teach_major = subject_fn.check_teach_major(data[0])
 
+
+        ## 자기계발심층상담 횟수
+        consult_count = subject_fn.count_culsult(data[0])
+
         ### 세션 데이터 설정
         request.session['subject_list'] = subject_list
         request.session['total_point'] = total_point
@@ -76,13 +80,13 @@ def index(request):
         request.session['subject_point'] = subject_point  # 과목 학점 정보
         request.session['user_info'] = user_info  # 유저정보
         request.session['scholar_ship'] =  scholar_ship # 장학금 정보
-        request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
+        # request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
         request.session['average_point_info'] = average_point_info # 평균 학점 정보
         request.session['remain_graduated_point'] = remain_graduated_point # 남은 졸업 학점
         request.session['graduated_point_percentage'] = graduated_point_percentage
         request.session['major_point_percentage'] = major_point_percentage
         request.session['culture_point_percentage'] = culture_point_percentage
-    
+        request.session['consult_count'] = consult_count
 
         context = {
             'subject_point': subject_point,
@@ -94,8 +98,8 @@ def index(request):
             'major_point' : major_point,
             'culture_point' : culture_point,
             'scholar_ship': scholar_ship,
-            'wpoint': wpoint,
-            'detail_wpoint': detail_wpoint,
+            # 'wpoint': wpoint,
+            # 'detail_wpoint': detail_wpoint,
             'average_point_info': average_point_info,
             'remain_graduated_point': remain_graduated_point,
             'graduated_point_percentage': graduated_point_percentage,
@@ -111,6 +115,7 @@ def index(request):
             'graduated_culture_choice_point' : graduated_culture_choice_point,
             'graduated_founded_subject_point': graduated_founded_subject_point,
             'graduated_creative_point' : graduated_creative_point,
+            'consult_count' : consult_count,
         }
 
     return render(request, 'webcrawler/index.html', context)
@@ -293,14 +298,14 @@ def culture_list(request):
     return render(request, 'webcrawler/culture_list.html', context)
 
 ## W - POINT 상세페이지
-def wpoint_detail(request):
+# def wpoint_detail(request):
     
-    if request.session.get('detail_wpoint', False):
-        detail_wpoint = request.session['detail_wpoint']
-    else:
-        detail_wpoint = None
+#     if request.session.get('detail_wpoint', False):
+#         detail_wpoint = request.session['detail_wpoint']
+#     else:
+#         detail_wpoint = None
 
-    return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
+#     return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
 
 def chart(request):
 

@@ -108,12 +108,12 @@
                             <span>차트</span>
                         </a>
                     </li>
-                    <li>
+                    {% comment %} <li>
                         <a href="{% url 'home:wpoint' %}">
                             <i class="lnr lnr-alarm"></i>
                             <span>W - POINT</span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                 </ul>
             </nav>
         </div>
@@ -141,14 +141,9 @@
     </div>
     <!-- END MAIN -->
     <div class="clearfix"></div>
-    <footer>
-        <div class="container-fluid">
-            <p> 문의사항: xxx@xxx.com </p>
-            <p class="copyright">&copy; 2018 원광대학교 컴퓨터공학과 14학번 박민기. All Rights Reserved.</p>
-        </div>
-    </footer>
-</div>
 
+    
+</div>
 
 <script>
     setTimeout(fade_out, 5000);
