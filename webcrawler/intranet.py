@@ -173,6 +173,7 @@ def parser(id, pw):
     average_point_grade = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
     average_point_semester = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
     average_point = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(7)')
+    average_point_total = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(3)')[0].text
 
     average_point_year = [item for item in average_point_year]
     average_point_grade = [item for item in average_point_grade]
@@ -232,6 +233,7 @@ def parser(id, pw):
     # information.append(wpoint) # WPOINT 정보
     # information.append(detail_wpoint) # WPOINT 상세정보
     information.append(average_point_info) # 평균 학점 정보
+    information.append(float(average_point_total)) # 전체 평균 학점
 
     driver.close() # 크롤링 끝
     driver.quit()

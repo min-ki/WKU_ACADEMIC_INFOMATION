@@ -27,8 +27,7 @@
 
           <div class="col-sm-3 col-md-3 user_info_container">
             <p class="user_info">상담횟수 : {{ consult_count }}</p>
-            <p class="user_info"><span class="label label-danger">졸업 학점 부족</span></p>
-            <p class="user_info"><span class="label label-danger">전공 학점 부족</span></p>
+            <p class="user_info">전체평균 : {{ average_point_total}} </p>
           </div>
         </div>
       </div>
@@ -64,17 +63,17 @@
 	                    <tr>
 												<th class="text-center">기본전공</th>
 												<th class="text-center">전체전공</th>
-												<th class="text-center">교양학점</th>
+												<th class="text-center">전체교양</th>
 											</tr>
                     </thead>
-                    <tbody>
+                     <tbody>
                       <tr>
                         <td class="text-center"> {{ subject_point.basic_major_subject_sum }} / {{ basic_major_point }} </td>
                         <td class="text-center"> {{ subject_point.major_subject_sum }} / {{ major_point }} </td>
                         <td class="text-center"> {{ subject_point.culture_subject_sum }} / {{ culture_point }} </td>
                       </tr>
                     </tbody>
-
+                    {% comment %}
                      <thead>
 	                    <tr>
 												<th class="text-center">교양필수</th>
@@ -131,7 +130,7 @@
                           <td class="text-center">{{ subject_point.apply_major_subject_sum }}</td>
                         </tr>
                     </tbody>
-                
+                 {% endcomment %}
 									</table>
 								</div>
 							</div>

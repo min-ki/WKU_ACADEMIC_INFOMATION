@@ -79,17 +79,17 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'home:point' %}">
+                            <i class="lnr lnr-list"></i>
+                            <span>학점 상세 현황</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'home:completed' %}">
                             <i class="lnr lnr-list"></i>
                             <span>이수과목 리스트</span>
                         </a>
                     </li>
-                    {% comment %} <li>
-                        <a href="{% url 'home:necessary' %}">
-                            <i class="lnr lnr-list"></i>
-                            <span>필수 과목 리스트</span>
-                        </a>
-                    </li> {% endcomment %}
                     <li>
                         <a href="{% url 'home:major' %}">
                             <i class="lnr lnr-list"></i>
@@ -105,15 +105,21 @@
                     <li>
                         <a href="{% url 'home:chart' %}">
                             <i class="lnr lnr-chart-bars"></i>
-                            <span>차트</span>
+                            <span>성적 그래프</span>
                         </a>
                     </li>
-                    {% comment %} <li>
-                        <a href="{% url 'home:wpoint' %}">
+                    <li>
+                        <a href="#">
                             <i class="lnr lnr-alarm"></i>
-                            <span>W - POINT</span>
+                            <span>문의 게시판</span>
                         </a>
-                    </li> {% endcomment %}
+                    </li> 
+                    <li>
+                        <a href="#">
+                            <i class="lnr lnr-alarm"></i>
+                            <span>About</span>
+                        </a>
+                    </li> 
                 </ul>
             </nav>
         </div>

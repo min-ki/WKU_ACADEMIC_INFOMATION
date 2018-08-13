@@ -40,9 +40,8 @@ def index(request):
         total_point = int(data[1]['sum_of_grade_point'])  # 전체 학점
         user_info = data[2]  # 사용자 정보    
         scholar_ship = data[3] # 장학정보
-        # wpoint = data[4] # WPOINT  
-        # detail_wpoint = data[5] # WPOINT Detail
         average_point_info = data[4]
+        average_point_total = data[5]
         graduated_point = subject_fn.get_graduated_point(user_info[1], user_info[4], user_info[6]) # 졸업학점
         major_point, basic_major_point = subject_fn.get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
         culture_point = subject_fn.get_culture_point(user_info[1]) # 교양학점 
@@ -70,7 +69,20 @@ def index(request):
         ## 자기계발심층상담 횟수
         consult_count = subject_fn.count_culsult(data[0])
 
+        point = {} # 학점 정보를 담을 사전
+        point['total_point'] = total_point
+        point['graduated_point'] = graduated_point
+        point['basic_major_point'] = basic_major_point
+        point['major_poin'] = major_point
+        point['culture_point'] = culture_point
+        point['graduated_point_percentage'] = graduated_point_percentage
+        point['major_point_percentage'] = major_point_percentage
+        point['culture_point_percentage'] = culture_point_percentage
+        point['remain_graduated_point'] = remain_graduated_point
+        point['average_point_total'] = average_point_total
+
         ### 세션 데이터 설정
+        request.session['point_info'] = point
         request.session['subject_list'] = subject_list
         request.session['total_point'] = total_point
         request.session['graduated_point'] = graduated_point # 졸업 학점
@@ -80,7 +92,6 @@ def index(request):
         request.session['subject_point'] = subject_point  # 과목 학점 정보
         request.session['user_info'] = user_info  # 유저정보
         request.session['scholar_ship'] =  scholar_ship # 장학금 정보
-        # request.session['detail_wpoint'] = detail_wpoint # WPOINT세부정보
         request.session['average_point_info'] = average_point_info # 평균 학점 정보
         request.session['remain_graduated_point'] = remain_graduated_point # 남은 졸업 학점
         request.session['graduated_point_percentage'] = graduated_point_percentage
@@ -98,8 +109,6 @@ def index(request):
             'major_point' : major_point,
             'culture_point' : culture_point,
             'scholar_ship': scholar_ship,
-            # 'wpoint': wpoint,
-            # 'detail_wpoint': detail_wpoint,
             'average_point_info': average_point_info,
             'remain_graduated_point': remain_graduated_point,
             'graduated_point_percentage': graduated_point_percentage,
@@ -116,18 +125,32 @@ def index(request):
             'graduated_founded_subject_point': graduated_founded_subject_point,
             'graduated_creative_point' : graduated_creative_point,
             'consult_count' : consult_count,
+            'average_point_total' : average_point_total,
         }
 
     return render(request, 'webcrawler/index.html', context)
 
+## 학점 상세 정보
+def point(request):
+
+    # 로그인 체크
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
+        return redirect('accounts:login')
+
+    point_info = {}
+
+    if request.session.get('point_info', False):
+        point_info = request.session['point_info'].copy()
+
+    print(point_info)
+
+    return render(request, 'webcrawler/point.html', point_info)
 
 ## 이수과목 리스트 뷰
 def completed_list(request):
     
     # 로그인 체크
-    if request.session.get('intranet_id', False) and request.session.get('intranet_pw', False):
-        pass
-    else:
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
         return redirect('accounts:login')
 
     # 사용자 정보
@@ -175,9 +198,7 @@ def completed_list(request):
 def necessary_list(request):
     
     # 로그인 체크
-    if request.session.get('intranet_id', False) and request.session.get('intranet_pw', False):
-        pass
-    else:
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
         return redirect('accounts:login')
 
     # 사용자 정보
@@ -216,6 +237,10 @@ def necessary_list(request):
 ## 전공과목 리스트 뷰
 def major_list(request):
     
+     # 로그인 체크
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
+        return redirect('accounts:login')
+
     if request.session.get('user_info', False):
         user_info = request.session['user_info']
     else:
@@ -258,6 +283,10 @@ def major_list(request):
 ## 교양과목 리스트 뷰
 def culture_list(request):
 
+     # 로그인 체크
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
+        return redirect('accounts:login')
+
     if request.session.get('user_info', False):
         user_info = request.session['user_info']
     else:
@@ -297,18 +326,12 @@ def culture_list(request):
 
     return render(request, 'webcrawler/culture_list.html', context)
 
-## W - POINT 상세페이지
-# def wpoint_detail(request):
-    
-#     if request.session.get('detail_wpoint', False):
-#         detail_wpoint = request.session['detail_wpoint']
-#     else:
-#         detail_wpoint = None
-
-#     return render(request, 'webcrawler/wpoint_detail.html', {'detail_wpoint': detail_wpoint})
-
 def chart(request):
 
+     # 로그인 체크
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
+        return redirect('accounts:login')
+        
     if request.session.get('average_point_info', False):
         average_point_info = request.session['average_point_info']
 
