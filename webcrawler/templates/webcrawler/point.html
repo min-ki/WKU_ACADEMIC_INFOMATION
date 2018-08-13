@@ -6,7 +6,7 @@
   <div class="col-md-12">
     <div class="panel">
       <div class="panel-heading">
-        <h3 class="panel-title">사용자 상세 현황</h3>
+        <h3 class="panel-title point-title">사용자 상세 현황</h3>
         <div class="row">
           <div class="table-responsive">
               <table class="table project-table">
@@ -24,16 +24,20 @@
                         <td> {{ total_point }} / {{ graduated_point }} </td>
                         <td>
                           <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ graduated_point_percentage }}%;">
+                              <span>{{ graduated_point_percentage}}% 달성</span>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <span class="label label-success">ACTIVE</span>
+                          {% if graduated_point_percentage >= 100 %}
+                            <span class="label label-success">달성</span>
+                          {% else %}
+                            <span class="label label-warning">진행 중</span>
+                          {% endif %}
                         </td>
                     </tr>
-                    <tr>
+                    {% comment %} <tr>
                         <td> 남은학점 </td>
                         <td> {{ remain_graduated_point }} / 0</td>
                         <td>
@@ -46,33 +50,41 @@
                         <td>
                           <span class="label label-success">ACTIVE</span>
                         </td>
-                    </tr>
+                    </tr> {% endcomment %}
                     <tr>
                         <td> 이수전공 / 전체전공 </td>
-                        <td> 56 / 72</td>
+                        <td> {{ subject_point.major_subject_sum }} / {{ major_point }}</td>
                         <td>
                           <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ major_point_percentage}}%;">
+                              <span>{{ major_point_percentage }}% 달성</span>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <span class="label label-success">ACTIVE</span>
+                          {% if major_point_percentage == 100 %}
+                            <span class="label label-success">달성</span>
+                          {% else %}
+                            <span class="label label-warning">진행 중</span>
+                          {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td> 이수교양 / 전체교양 </td>
-                        <td> 56 / 72</td>
+                        <td> {{ subject_point.culture_subject_sum }} / {{ culture_point}}</td>
                         <td>
                           <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
+<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{ culture_point_percentage }}%;">
+                              <span>{{ culture_point_percentage }}% 달성</span>
                             </div>
                           </div>
                         </td>
                         <td>
-                          <span class="label label-success">ACTIVE</span>
+                          {% if culture_point_percentage == 100 %}
+                            <span class="label label-success">달성</span>
+                          {% else %}
+                            <span class="label label-warning">진행 중</span>
+                          {% endif %}
                         </td>
                     </tr>
                   </tbody>
@@ -85,7 +97,7 @@
   <div class="col-md-12">
     <div class="panel">
       <div class="panel-heading">
-        <h3 class="panel-title">전공 상세 현황</h3>
+        <h3 class="panel-title point-title">전공 상세 현황</h3>
         <div class="row">
           <div class="table-responsive">
               <table class="table project-table">
@@ -100,57 +112,137 @@
                   <tbody>
                     <tr>
                         <td> 기본전공</td>
-                        <td> {{ total_point }} / {{ graduated_point }} </td>
+                        <td> {{ subject_point.basic_major_subject_sum }} / {{ basic_major_point }} </td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
+                          {{ type_average_point.basic_major_average_point | floatformat:2 }}
                         </td>
-                        <td>15</td>
+                        <td>
+                          {% if major_count_type.기전 %} 
+                            {{ major_count_type.기전 }}
+                          {% else %}
+                            0
+                          {% endif %}
+                        </td>
                     </tr>
                     <tr>
                         <td> 선택전공 </td>
-                        <td> {{ remain_graduated_point }} / 0</td>
+                        <td> {{ remain_graduated_point }} </td>
+                        <td> {{ type_average_point.select_major_average_point | floatformat:2 }}</td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
+                          {% if major_count_type.선전 %} 
+                            {{ major_count_type.선전 }}
+                          {% else %}
+                            0
+                          {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <td> 응용전공 </td>
-                        <td> 56 / 72</td>
+                        <td>{{ subject_point.apply_major_subject_sum }}</td>
+                        <td>{{ type_average_point.apply_major_average_point | floatformat:2 }}</td>
                         <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
+                          {% if major_count_type.응전 %} 
+                            {{ major_count_type.응전 }}
+                          {% else %}
+                            0
+                          {% endif %}
                         </td>
                     </tr>
+                    {% comment %} <tr>
+                        <td> 복수전공 </td>
+                        <td> {{ subject_point.multiply_major_subject_sum}} / 최소이수학점 </td>
+                        <td> {{ type_average_point.apply_major_average_point | floatformat:2 }} </td>
+                        <td>
+                          {% if major_count_type.복전 %} 
+                            {{ major_count_type.복전 }}
+                          {% else %}
+                            0
+                          {% endif %}
+                        </td>
+                    </tr> {% endcomment %}
+                  </tbody>
+                </table>
+                {% comment %} 복수전공 이수자는 계열별 최소전공 인정학점{인문․사회계열 36학점 이상, 사회복지학전공, 군사학과 42학점 이상, 경영학부 51학점 이상, 자연계열 및 예체능 계열은 48학점이상, 건축학과(5년제) 66학점 이상 {% endcomment %}
+           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="panel">
+      <div class="panel-heading">
+        <h3 class="panel-title point-title">교양 상세 현황</h3>
+        <div class="row">
+          <div class="table-responsive">
+              <table class="table project-table">
+                  <thead>
                     <tr>
-                        <td> 이수교양 / 전체교양 </td>
+                        <th>유형</th>
+                        <th>학점</th>
+                        <th>평균평점</th>
+                        <th>이수 과목 수</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td> 교양필수 </td>
+                        <td> {{ culture_necessary_point }} </td>
+                        <td> {{ type_average_point.necessary_culture_average_point | floatformat:2 }} </td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                        <td> 교양선택 </td>
+                        <td> {{ culture_select_total_point }} </td>
+                        <td> {{ type_average_point.select_culture_average_point | floatformat:2 }} </td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                        <td> 계열필수 </td>
+                        <td> {{ line_necessary_point }} </td>
+                        <td> {{ type_average_point.necessary_line_average_point | floatformat:2 }} </td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                        <td> 언어영역 </td>
+                        <td> {{ graduated_language_point }} / 2 </td>
+                        <td> {{ type_average_point.apply_major_average_point | floatformat:2 }} </td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                        <td> 영어영역 </td>
+                        <td> {{ graduated_english_point }} / 4</td>
+                        <td> {{ type_average_point.apply_major_average_point | floatformat:2 }}</td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                        <td> SW 영역 </td>
+                        <td> {{ graduated_english_point }} / 4</td>
+                        <td>{{ type_average_point.apply_major_average_point | floatformat:2 }}</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td> 인문소양 </td>
                         <td> 56 / 72</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
-                        </td>
+                        <td>{{ type_average_point.apply_major_average_point | floatformat:2 }}</td>
+                        <td> 0 </td>
+                    </tr>
+                    <tr>
+                      <td>창업영역</td>
+                      <td> {{ graduated_founded_subject_point }} </td>
+                      <td> {{ type_average_point.apply_major_average_point | floatformat:2 }} </td>
+                      <td> 0 </td>
+                    </tr>
+                    <tr>
+                      <td>창의영역</td>
+                      <td> {{ graduated_creative_point }} </td>
+                      <td> {{ type_average_point.apply_major_average_point | floatformat:2 }} </td>
+                      <td> 0 </td>
+                    </tr>
+                    <tr>
+                      <td>자유선택영역</td>
+                      <td> {{ free_choice_subject_point }} </td>
+                      <td> {{ type_average_point.apply_major_average_point | floatformat:2 }} </td>
+                      <td> 0 </td>
                     </tr>
                   </tbody>
               </table>
@@ -160,92 +252,41 @@
     </div>
   </div>
   <div class="col-md-12">
-    <div class="panel">
-      <div class="panel-heading">
-        <h3 class="panel-title">교양 상세 현황</h3>
-        <div class="row">
-          <div class="table-responsive">
-              <table class="table project-table">
-                  <thead>
-                    <tr>
-                        <th>유형</th>
-                        <th>학점</th>
-                        <th>평균평점</th>
-                        <th>들은 과목 수</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                        <td> 언어영역 </td>
-                        <td> {{ total_point }} / {{ graduated_point }} </td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> 영어영역 </td>
-                        <td> {{ remain_graduated_point }} / 0</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> SW 영역 </td>
-                        <td> 56 / 72</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td> 인문소양 </td>
-                        <td> 56 / 72</td>
-                        <td>
-                          <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                              <span>60% Complete</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          <span class="label label-success">ACTIVE</span>
-                        </td>
-                    </tr>
-                    <tr>
-                      <td>창업영역</td>
-                    </tr>
-                    <tr>
-                      <td>창의영역</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                    </tr>
-                  </tbody>
-              </table>
-           </div>
+  <div class="panel">
+    <div class="panel-heading">
+      <h3 class="panel-title point-title">기타 현황</h3>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table project-table">
+            <thead>
+              <tr>
+                <th>유형</th>
+                <th>학점</th>
+                <th>평균평점</th>
+                <th>이수 과목 수</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td> 일반선택 </td>
+                <td> 0 </td>
+                <td>
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+            </tbody>
+          </table>
+              * 일반선택은 본인 소속학과(전공)이 아닌 타 학과(전공)을 이수했을 때 일반선택(일선)으로 인정
         </div>
       </div>
     </div>
   </div>
+  </div>
+
 </div>
+
+
+
 {% endblock %}

@@ -51,35 +51,46 @@ def index(request):
         major_point_percentage = int(subject_fn.get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
         culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
 
-        ### 필수 학점
-        graduated_culture_point = subject_fn.get_culutre_necessary_point(data[0])
-        graduated_line_point = subject_fn.get_line_necessary_point(data[0])
-        graduated_language_point = subject_fn.get_language_necessary_point(data[0])
-        graduated_english_point = subject_fn.get_english_necessary_point(data[0])
-        graduated_sw_point = subject_fn.get_sw_necessary_point(data[0])
-        graduated_culture_choice_point = subject_fn.get_culture_choice_point(data[0])
-        graduated_founded_subject_point = subject_fn.get_founded_subject_necessary_point(data[0])
-        graduated_creative_point = subject_fn.get_creative_necessary_point(data[0])
+        ### 타입별 기전, 선전, 응전, 복전, 교직 카운팅
+        major_list = subject_fn.get_major_subject(data[0])
+        count_grade = subject_fn.get_count_grade_point(major_list)
+        count_type = subject_fn.get_count_type(major_list)
 
+        ### 자유 선택 영역 학점
+        free_choice_subject_point = subject_fn.get_free_choice_subject_point(data[0])
+        
         ### 복수전공, 교직이수 
         plural_major = subject_fn.check_plural_major(data[0]) 
         teach_major = subject_fn.check_teach_major(data[0])
 
 
-        ## 자기계발심층상담 횟수
+        ### 자기계발심층상담 횟수
         consult_count = subject_fn.count_culsult(data[0])
 
         point = {} # 학점 정보를 담을 사전
         point['total_point'] = total_point
         point['graduated_point'] = graduated_point
-        point['basic_major_point'] = basic_major_point
-        point['major_poin'] = major_point
         point['culture_point'] = culture_point
         point['graduated_point_percentage'] = graduated_point_percentage
-        point['major_point_percentage'] = major_point_percentage
         point['culture_point_percentage'] = culture_point_percentage
         point['remain_graduated_point'] = remain_graduated_point
         point['average_point_total'] = average_point_total
+        point['subject_point'] = subject_point
+        point['basic_major_point'] = basic_major_point # 기본 전공 학점
+        point['major_point'] = major_point # 들은 전공 학점
+        point['major_point_percentage'] = major_point_percentage # 들은 전공 / 전체 전공
+        point['major_count_type'] = count_type # 전공 타입 카운트
+        point['graduated_language_point'] = subject_fn.get_language_necessary_point(data[0]) # 언어 영역
+        point['graduated_english_point'] = subject_fn.get_english_necessary_point(data[0]) # 영어 영역
+        point['graduated_sw_point'] = subject_fn.get_sw_necessary_point(data[0]) # 소프트웨어 영역
+        point['graduated_founded_subject_point'] = subject_fn.get_founded_subject_necessary_point(data[0]) # 창업 영역
+        point['graduated_creative_point'] = subject_fn.get_creative_necessary_point(data[0]) # 창의 영역
+        point['graduated_culture_choice_point'] = subject_fn.get_culture_choice_point(data[0])  # 인문소양 영역
+        point['free_choice_subject_point'] = free_choice_subject_point # 자유선택 영역
+        point['type_average_point'] = subject_fn.get_count_grade_average_point(data[0]) # 타입 별 평균 학점
+        point['culture_necessary_point'] = subject_fn.get_culutre_necessary_point(data[0]) # 교양필수 학점 총 합
+        point['culture_select_total_point'] = subject_fn.get_culutre_select_point(data[0]) # 교양선택 학점 총 합
+        point['line_necessary_point'] = subject_fn.get_line_necessary_point(data[0]) # 계열필수 학점 총 합
 
         ### 세션 데이터 설정
         request.session['point_info'] = point
@@ -116,14 +127,6 @@ def index(request):
             'culture_point_percentage': culture_point_percentage,
             'plural_major' : plural_major,
             'teach_major' : teach_major, 
-            'graduated_culture_point': graduated_culture_point,
-            'graduated_line_point': graduated_line_point,
-            'graduated_language_point': graduated_language_point,
-            'graduated_english_point': graduated_english_point,
-            'graduated_sw_point': graduated_sw_point,
-            'graduated_culture_choice_point' : graduated_culture_choice_point,
-            'graduated_founded_subject_point': graduated_founded_subject_point,
-            'graduated_creative_point' : graduated_creative_point,
             'consult_count' : consult_count,
             'average_point_total' : average_point_total,
         }
@@ -141,8 +144,6 @@ def point(request):
 
     if request.session.get('point_info', False):
         point_info = request.session['point_info'].copy()
-
-    print(point_info)
 
     return render(request, 'webcrawler/point.html', point_info)
 

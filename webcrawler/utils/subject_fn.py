@@ -39,6 +39,7 @@ def get_sum_of_subject(subject):
 
     select_major_subject_sum = 0 
     apply_major_subject_sum = 0
+    multiply_major_subject_sum = 0
 
     for title, arr in subject.items():
         if arr[0] == "기전":  # 기전 카운트
@@ -50,6 +51,9 @@ def get_sum_of_subject(subject):
         if arr[0] == "응전": # 응용전공 카운트
             apply_major_subject_sum += float(arr[2])
 
+        if arr[0] == "복전": # 복수전공 카운트
+            multiply_major_subject_sum += float(arr[2])
+
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
         elif arr[0] == "기전" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
@@ -60,6 +64,7 @@ def get_sum_of_subject(subject):
     sum['culture_subject_sum'] = int(culture_subject_sum)
     sum['select_major_subject_sum'] = int(select_major_subject_sum)
     sum['apply_major_subject_sum'] = int(apply_major_subject_sum)
+    sum['multiply_major_subject_sum'] = int(multiply_major_subject_sum)
 
     return sum
 
@@ -252,6 +257,72 @@ def get_count_grade_point(subject):
 
     return grade_point
 
+## 타입 별 학점 평균
+def get_count_grade_average_point(subject):
+
+    basic_major_average_point = 0 # 기본 전공 평균 평점
+    select_major_average_point = 0 # 선택 전공 평균 평점
+    apply_major_average_point = 0 # 응용 전공 평균 평점
+    multiply_major_average_point = 0 # 복수 전공 평균 평점
+
+    necessary_culture_average_point = 0 # 교양 필수 평균 평점
+    select_culture_average_point = 0 # 교양 선택 평균 평점
+    necessary_line_average_point = 0 # 계열 필수 평균 평점
+
+    type_count = get_count_type(subject)
+
+    type_count['기전'] -= count_culsult(subject)
+
+    for title, item in subject.items():
+        if item[0] == "기전":
+            basic_major_average_point += calc_average_point(item[3])
+        elif item[0] == "선전":
+            select_major_average_point += calc_average_point(item[3])
+        elif item[0] == "응전":
+            apply_major_average_point += calc_average_point(item[3])
+        elif item[0] == "복수":
+            multiply_major_average_point += calc_average_point(item[3])
+        elif item[0] == "교필":
+            necessary_culture_average_point += calc_average_point(item[3])
+        elif item[0] == "교선":
+            select_culture_average_point += calc_average_point(item[3])
+        elif item[0] == "계필":
+            necessary_line_average_point += calc_average_point(item[3])
+        elif item[0] == "일선":
+            pass
+        elif item[0] == "교선":
+            pass
+
+    type_average_point = {}
+    type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
+    type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전'] else 0
+    type_average_point['apply_major_average_point'] = (apply_major_average_point / type_count['응용']) if type_count['응용'] else 0
+    type_average_point['multiply_major_average_point'] = (multiply_major_average_point / type_count['복수']) if type_count['복수'] else 0
+    type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
+    type_average_point['select_culture_average_point'] = (select_culture_average_point / type_count['교선']) if type_count['교선'] else 0
+    type_average_point['necessary_line_average_point'] = (necessary_line_average_point / type_count['계필']) if type_count['계필'] else 0
+
+    return type_average_point
+
+def calc_average_point(type):
+    
+    value = 0
+    if type == "A+":
+        value = 4.5
+    elif type == "A0":
+        value = 4.0
+    elif type == "B+":
+        value = 3.5
+    elif type == "B0":
+        value = 3.0
+    elif type == "C+":
+        value = 2.5
+    elif type == "C0":
+        value = 2.0
+    elif type == "F":
+        value = 1.0
+
+    return value
 
 def get_culutre_necessary_point(subject):
 
@@ -267,6 +338,19 @@ def get_culutre_necessary_point(subject):
     
     return int(culture_necessary_point)
 
+def get_culutre_select_point(subject):
+    
+    """
+        교양 선택 학점 계산
+    """
+
+    culture_select_point = 0
+
+    for title, item in subject.items():
+        if item[0] == '교선':
+            culture_select_point += float(item[2])
+    
+    return int(culture_select_point)
 
 def get_line_necessary_point(subject):
     
@@ -335,7 +419,10 @@ def get_culture_choice_point(subject):
     culture_choice_point = 0
 
     for title, item in subject.items():
-        if item[0] == "교선":
+        if title == "죽음학의이해" or title == "지식과인간의삶" or title == "인간과윤리" or title == "서양철학의이해" or \
+           title == "인권과정의" or title == "조선왕조실록보물찾기" or title == "삶의비밀" or title == "문학과문화콘텐츠" or \
+           title == "문예학개론" or title == "인물로보는중국역사" or title == "현대동아시아문학의이해" or title == "영미언어와문학의이해" or \
+           title == "고전,현대를걷다" or title == "영상으로보는고고미술사" or title == "재미와의미" or title == "영화로만나는인문학":
             culture_choice_point += float(item[2])
 
     return int(culture_choice_point)
@@ -349,7 +436,7 @@ def get_founded_subject_necessary_point(subject):
     founded_subject_necessary_point = 0
 
     for title, item in subject.items():
-        if title == "창업의이해" or title == "기업과정신및창업기초" or title == "창업과지적재산권":
+        if title == "창업의이해" or title == "기업과정신및창업기초":
             founded_subject_necessary_point += float(item[2])
 
     return int(founded_subject_necessary_point)
@@ -367,6 +454,23 @@ def get_creative_necessary_point(subject):
 
     return int(creative_necessary_point)
 
+def get_free_choice_subject_point(subject):
+    
+    """
+        창업 영역 학점 계산
+    """
+    free_choice_subject_point = 0
+
+    for title, item in subject.items():
+        if title == "한국어능력시험(외국인)" or title == "평생교육론" or title == "평생교육프로그램개발론" or title == "인적자원개발론" or \
+           title == "원격교육론" or title == "특수교육론" or title == "챠밍마시지요법" or title == "컴퓨터활용3" or title == "컴퓨터활용3" or \
+           title == "한국전통미술의이해" or title == "페미니즘과여성문학" or title == "문학과디지털매체" or title == "생활서예" or title == "한방의학콘서트" or \
+           title == "한국문화교류1" or title == "한국문화교류2" or title == "문화예술창업실무" or title == "소자본및벤처창업" or title == "창업실무" or \
+           title == "창업론" or title == "색깔있는창업마케팅" or title == "사회적기업:창업과경영" or title == "벤처창업과경쟁전략" or title == "창업성공전략" or title == "청년창업성공의이해" or\
+           title == "창업과공업경영" or title == "덕성훈련심화과정" or title == "미술감상및비평":
+            free_choice_subject_point += float(item[2])
+
+    return int(free_choice_subject_point)
 
 def count_culsult(subject):
 
@@ -381,3 +485,5 @@ def count_culsult(subject):
             count = count + 1
             
     return count
+
+
