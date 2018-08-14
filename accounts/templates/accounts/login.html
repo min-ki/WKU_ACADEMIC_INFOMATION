@@ -3,7 +3,6 @@
 
 {% block content %}
 
-
 <div class="spinner">
     <div class="rect1"></div>
     <div class="rect2"></div>
@@ -12,52 +11,72 @@
     <div class="rect5"></div>
 </div>
 
-<div class="container" id="login_section">
-    <div style="margin: 100px"></div>
+<div id="login_section">
     
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{message.tags}}" id="message">
-                {{ message.message }} {# 실제 메세지 내용 #}
-            </div>
-        {% endfor %}
-    {% endif %}
-    <h1>WGP - WKU Graduated Possible?</h1>
-
-    <article class="text-left" >
-        <form class="form-signin" action="" method="post">
-             {% csrf_token %}
-            <!--<div class="form-group">
-                <label for="intranet_id">웹정보서비스 아이디</label>
-                <input type="text" class="form-control" id="intranet_id" name="username" aria-describedby="emailHelp" placeholder="아이디를 입력해주세요." required>
-                <small id="emailHelp" class="form-text text-muted">웹 정보서비스 아이디를 입력해주세요.</small>
-            </div>
-            <div class="form-group">
-                <label for="intranet_pw">웹정보서비스 패스워드</label>
-                <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
-                <small id="emailHelp" class="form-text text-muted">웹 정보서비스 패스워드 입력해주세요.</small> 
-            </div>
-            <button type="submit" id="login" class="btn btn-primary">로그인</button>
-        -->
-       
-            <label for="intranet_id">웹정보서비스 아이디</label>
-            <input type="text" class="form-control" id="intranet_id" name="username"  placeholder="아이디를 입력해주세요." required autofocus>
-        
-            <label for="intranet_pw">웹정보서비스 패스워드</label>
-            <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
-        
-            <button type="submit" id="login" class="btn btn-primary btn-block">로그인</button>
-
-        </form>
-    </article>
-</div>
-
-<footer class="footer">
-    <div class="container">
-        <span class="mt-5 mb-3">&copy;2018</span>
-        <span style="float:right">개발 : 우리팀명은 무엇일까..</span>
+    <div style="margin-top: 30px">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}}" id="message">
+                    {{ message.message }} {# 실제 메세지 내용 #}
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
-</footer>
+
+    {# 사이드바 시작#}
+        <div class="left-menu-bar">
+            <div class="left-menu-bar--top--section">
+                <div class="left-menu-bar__logo">
+                    <h1>WGP</h1>
+                </div>
+                <h1 class="h3 mb-3 font-weight-normal text-center">웹정보서비스 </h1>
+                <form class="form-signin" action="" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                        <input type="text" class="form-control" id="intranet_id" name="username" placeholder="User ID" required autofocus>
+                    </div>
+        
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
+                </form>
+            </div>
+        
+            <div class="left-menu-bar--bottom-section">
+                <div class="left-menu-bar__copyright">
+                    <dl>
+                        <dt>팀장</dt>
+                        <dd>박민기</dd>
+                    </dl>
+                    <dl>
+                        <dt>팀원</dd>
+                        <dd>한성민</dd>
+                        <dd>김정훈</dd>
+                        <dd>김현호</dd>
+                    </dl>
+                    <dl>
+                        <dt>&copy;2018 (멋)팀코딩</dt>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        {# 사이드바 끝#}
+
+        <div class="right-description">
+            <img class="mySlides" src="{% static "webcrawler/assets/img/beach1.png"%}" alt="1" width="100%" height="100%">
+            <img class="mySlides" src="{% static "webcrawler/assets/img/beach2.png"%}" alt="2" width="100%" height="100%">
+            <img class="mySlides" src="{% static "webcrawler/assets/img/beach3.png"%}" alt="3" width="100%" height="100%">
+        </div>
+    </div>
+ 
+</div>
 
 <script src="{% static 'webcrawler/assets/vendor/jquery/jquery.min.js' %}"></script>
 
@@ -87,6 +106,24 @@
     function fade_out() {
         $("#message").fadeOut().empty();
     }
+
+    var myIndex = 0;
+    carousel();
+
+    function carousel(){
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for(i=0; i< x.length; i++) {
+            x[i].style.display = "none";
+        }
+        myIndex++;
+
+        if (myIndex > x.length) {
+            myIndex = 1
+        }
+            x[myIndex-1].style.display = "block";
+            setTimeout(carousel, 3000);
+        }
 </script>
 
 
