@@ -51,7 +51,7 @@ def get_sum_of_subject(subject):
         if arr[0] == "응전": # 응용전공 카운트
             apply_major_subject_sum += float(arr[2])
 
-        if arr[0] == "복전": # 복수전공 카운트
+        if arr[0] == "복수": # 복수전공 카운트
             multiply_major_subject_sum += float(arr[2])
 
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
@@ -79,8 +79,6 @@ def check_plural_major(subject):
     return False
 
 ### 교직이수 체크
-
-
 def check_teach_major(subject):
     '''
         타입중 교직이 존재하면 교직 이수
@@ -180,7 +178,6 @@ def get_major_point(user_number, user_colleage, user_major):
 
     return major_point, basic_major_point
 
-
 # 교양 이수 학점 
 def get_culture_point(user_number):
     
@@ -224,7 +221,6 @@ def get_graduated_point(user_number, user_colleage, user_major):
         graduated_point = 140
 
     return graduated_point
-
 
 ## 백분위
 def get_percentage(point, grade_point):
@@ -366,7 +362,6 @@ def get_line_necessary_point(subject):
     
     return int(line_necessary_point)
 
-
 def get_language_necessary_point(subject):
 
     """
@@ -374,13 +369,16 @@ def get_language_necessary_point(subject):
     """
 
     language_necessary_point = 0
+    language_average_point = 0
+    language_subject_count = 0
 
     for title, item in subject.items():
         if title == '기술보고서작성및발표' or title == '글쓰기이론과실제' or title == '독서와토론' or title == '언어추론' or title == '초급실용한자':
             language_necessary_point += float(item[2])
-    
-    return int(language_necessary_point)
+            language_average_point += calc_average_point(item[3])
+            language_subject_count += 1
 
+    return int(language_necessary_point), (language_average_point / language_subject_count) if language_subject_count else 0, language_subject_count
 
 def get_english_necessary_point(subject):
     
@@ -389,13 +387,16 @@ def get_english_necessary_point(subject):
     """
 
     english_necessary_point = 0
+    english_average_point = 0
+    english_subject_count = 0
 
     for title, item in subject.items():
         if title == '토익1' or title == '토익2' or title == '대학영어1' or title == '대학영어2' or title == '텝스1' or title == '텝스2' or title == '영어회화1' or title == '영어회화2' or title == "영어읽기" or title == "시청각영어":
             english_necessary_point += float(item[2])
-    
-    return int(english_necessary_point)
+            english_average_point += calc_average_point(item[3])
+            english_subject_count += 1
 
+    return int(english_necessary_point), (english_average_point / english_subject_count) if english_subject_count else 0, english_subject_count
 
 def get_sw_necessary_point(subject):
 
@@ -404,12 +405,16 @@ def get_sw_necessary_point(subject):
     """
 
     sw_necessary_point = 0
+    sw_average_point = 0
+    sw_subject_count = 0
 
     for title, item in subject.items():
         if title == '컴퓨팅적 사고력' or title == '모바일프로그래밍' or title == '과학적데이터처리' or title == '창의개발프로그래밍' or title == '3D프린팅이해및활용':
             sw_necessary_point += float(item[2])
+            sw_average_point += calc_average_point(item[3])
+            sw_subject_count += 1
 
-    return int(sw_necessary_point)
+    return int(sw_necessary_point), (sw_average_point / sw_subject_count) if sw_subject_count else 0, sw_subject_count
 
 def get_culture_choice_point(subject):
     
@@ -417,6 +422,8 @@ def get_culture_choice_point(subject):
         인문 소양 학점 계산
     """
     culture_choice_point = 0
+    culture_average_point = 0
+    culture_subject_count = 0
 
     for title, item in subject.items():
         if title == "죽음학의이해" or title == "지식과인간의삶" or title == "인간과윤리" or title == "서양철학의이해" or \
@@ -424,8 +431,10 @@ def get_culture_choice_point(subject):
            title == "문예학개론" or title == "인물로보는중국역사" or title == "현대동아시아문학의이해" or title == "영미언어와문학의이해" or \
            title == "고전,현대를걷다" or title == "영상으로보는고고미술사" or title == "재미와의미" or title == "영화로만나는인문학":
             culture_choice_point += float(item[2])
+            culture_average_point += calc_average_point(item[3])
+            culture_subject_count += 1
 
-    return int(culture_choice_point)
+    return int(culture_choice_point), (culture_average_point / culture_subject_count) if culture_subject_count else 0, culture_subject_count
 
 def get_founded_subject_necessary_point(subject):
 
@@ -434,12 +443,16 @@ def get_founded_subject_necessary_point(subject):
     """
 
     founded_subject_necessary_point = 0
+    founded_average_point = 0
+    founded_subject_count = 0
 
     for title, item in subject.items():
         if title == "창업의이해" or title == "기업과정신및창업기초":
             founded_subject_necessary_point += float(item[2])
+            founded_average_point += calc_average_point(item[3])
+            founded_subject_count += 1
 
-    return int(founded_subject_necessary_point)
+    return int(founded_subject_necessary_point), (founded_average_point / founded_subject_count) if founded_subject_count else 0, founded_subject_count
 
 def get_creative_necessary_point(subject):
     
@@ -447,12 +460,16 @@ def get_creative_necessary_point(subject):
         창의 영역 학점 계산
     """
     creative_necessary_point = 0
+    creative_average_point = 0
+    creative_subject_count = 0
 
     for title, item in subject.items():
         if title == "창의적 발상기법":
             creative_necessary_point += float(item[2])
+            creative_average_point += calc_average_point(item[3])
+            creative_subject_count += 1
 
-    return int(creative_necessary_point)
+    return int(creative_necessary_point), (creative_average_point / creative_subject_count) if creative_subject_count else 0, creative_subject_count
 
 def get_free_choice_subject_point(subject):
     
@@ -460,6 +477,8 @@ def get_free_choice_subject_point(subject):
         창업 영역 학점 계산
     """
     free_choice_subject_point = 0
+    free_choice_average_point = 0
+    free_choice_subject_count = 0
 
     for title, item in subject.items():
         if title == "한국어능력시험(외국인)" or title == "평생교육론" or title == "평생교육프로그램개발론" or title == "인적자원개발론" or \
@@ -469,8 +488,10 @@ def get_free_choice_subject_point(subject):
            title == "창업론" or title == "색깔있는창업마케팅" or title == "사회적기업:창업과경영" or title == "벤처창업과경쟁전략" or title == "창업성공전략" or title == "청년창업성공의이해" or\
            title == "창업과공업경영" or title == "덕성훈련심화과정" or title == "미술감상및비평":
             free_choice_subject_point += float(item[2])
+            free_choice_average_point += calc_average_point(item[3])
+            free_choice_subject_count += 1
 
-    return int(free_choice_subject_point)
+    return int(free_choice_subject_point), (free_choice_average_point / free_choice_subject_count) if free_choice_subject_count else 0, free_choice_subject_count
 
 def count_culsult(subject):
 

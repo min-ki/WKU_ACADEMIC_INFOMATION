@@ -52,9 +52,7 @@ def index(request):
         culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
 
         ### 타입별 기전, 선전, 응전, 복전, 교직 카운팅
-        major_list = subject_fn.get_major_subject(data[0])
-        count_grade = subject_fn.get_count_grade_point(major_list)
-        count_type = subject_fn.get_count_type(major_list)
+        count_type = subject_fn.get_count_type(data[0])
 
         ### 자유 선택 영역 학점
         free_choice_subject_point = subject_fn.get_free_choice_subject_point(data[0])
@@ -79,14 +77,14 @@ def index(request):
         point['basic_major_point'] = basic_major_point # 기본 전공 학점
         point['major_point'] = major_point # 들은 전공 학점
         point['major_point_percentage'] = major_point_percentage # 들은 전공 / 전체 전공
-        point['major_count_type'] = count_type # 전공 타입 카운트
-        point['graduated_language_point'] = subject_fn.get_language_necessary_point(data[0]) # 언어 영역
-        point['graduated_english_point'] = subject_fn.get_english_necessary_point(data[0]) # 영어 영역
-        point['graduated_sw_point'] = subject_fn.get_sw_necessary_point(data[0]) # 소프트웨어 영역
-        point['graduated_founded_subject_point'] = subject_fn.get_founded_subject_necessary_point(data[0]) # 창업 영역
-        point['graduated_creative_point'] = subject_fn.get_creative_necessary_point(data[0]) # 창의 영역
-        point['graduated_culture_choice_point'] = subject_fn.get_culture_choice_point(data[0])  # 인문소양 영역
-        point['free_choice_subject_point'] = free_choice_subject_point # 자유선택 영역
+        point['count_type'] = count_type # 타입 카운트
+        point['graduated_language_point'], point['language_average_point'], point['language_subject_count'] = subject_fn.get_language_necessary_point(data[0]) # 언어 영역
+        point['graduated_english_point'], point['english_average_point'], point['english_subject_count'] = subject_fn.get_english_necessary_point(data[0]) # 영어 영역
+        point['graduated_sw_point'], point['sw_average_point'], point['sw_subject_count'] = subject_fn.get_sw_necessary_point(data[0]) # 소프트웨어 영역
+        point['graduated_culture_choice_point'], point['culture_average_point'], point['culture_subject_count'] = subject_fn.get_culture_choice_point(data[0])  # 인문소양 영역
+        point['graduated_founded_subject_point'], point['founded_average_point'], point['founded_subject_count'] = subject_fn.get_founded_subject_necessary_point(data[0]) # 창업 영역
+        point['graduated_creative_point'], point['creative_average_point'], point['creative_subject_count'] = subject_fn.get_creative_necessary_point(data[0]) # 창의 영역
+        point['free_choice_subject_point'], point['free_choice_average_point'], point['free_choice_subject_count'] = free_choice_subject_point # 자유선택 영역
         point['type_average_point'] = subject_fn.get_count_grade_average_point(data[0]) # 타입 별 평균 학점
         point['culture_necessary_point'] = subject_fn.get_culutre_necessary_point(data[0]) # 교양필수 학점 총 합
         point['culture_select_total_point'] = subject_fn.get_culutre_select_point(data[0]) # 교양선택 학점 총 합
