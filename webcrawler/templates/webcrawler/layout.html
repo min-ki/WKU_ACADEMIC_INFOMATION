@@ -73,49 +73,49 @@
             <nav>
                 <ul class="nav">
                     <li>
-                        <a href="{% url 'home:index' %}" class="active">
+                        <a href="{% url 'home:index' %}" id="dashboard">
                             <i class="lnr lnr-home"></i>
-                            <span>Dashboard</span>
+                            <span id="dashboard">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:point' %}">
+                        <a href="{% url 'home:point' %}" id="point">
                             <i class="lnr lnr-list"></i>
                             <span>학점 상세 현황</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:completed' %}">
+                        <a href="{% url 'home:completed' %}" id="completed">
                             <i class="lnr lnr-list"></i>
                             <span>이수과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:major' %}">
+                        <a href="{% url 'home:major' %}" id="major">
                             <i class="lnr lnr-list"></i>
                             <span>전공과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:culture' %}">
+                        <a href="{% url 'home:culture' %}" id="culture">
                             <i class="lnr lnr-list"></i>
                             <span>교양과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:chart' %}">
+                        <a href="{% url 'home:chart' %}" id="chart">
                             <i class="lnr lnr-chart-bars"></i>
                             <span>성적 그래프</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="#" id="inquire">
                             <i class="lnr lnr-alarm"></i>
                             <span>문의 게시판</span>
                         </a>
                     </li> 
                     <li>
-                        <a href="#">
+                        <a href="#" id="about">
                             <i class="lnr lnr-alarm"></i>
                             <span>About</span>
                         </a>
@@ -152,6 +152,25 @@
 </div>
 
 <script>
+
+        console.log(window.location['href']);
+
+        var url = window.location['href'].substr(25);
+        var current_name = window.location['href'].substr(31);
+        
+        $('.active').removeClass('active');
+        
+        if(current_name !== "") {
+            current_name = current_name.substring(0, current_name.length - 1);
+        } else {
+            current_name = 'dashboard';
+        }
+      
+        var current_item = document.getElementById(current_name);
+        current_item.className += "active";
+
+    
+
     setTimeout(fade_out, 5000);
 
     function fade_out() {

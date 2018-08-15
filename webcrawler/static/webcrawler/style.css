@@ -58,3 +58,8 @@
 .p-info {
     width: 25%;
 }
+
+.summary {
+    padding-left: 8px !important;
+    width: 5%;
+}

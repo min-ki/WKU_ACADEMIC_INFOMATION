@@ -1,4 +1,5 @@
 from collections import Counter
+from . import subject_variable
 
 def get_major_subject(subject):
     
@@ -292,7 +293,7 @@ def get_count_grade_average_point(subject):
     type_average_point = {}
     type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
     type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전'] else 0
-    type_average_point['apply_major_average_point'] = (apply_major_average_point / type_count['응용']) if type_count['응용'] else 0
+    type_average_point['apply_major_average_point'] = (apply_major_average_point / type_count['응전']) if type_count['응전'] else 0
     type_average_point['multiply_major_average_point'] = (multiply_major_average_point / type_count['복수']) if type_count['복수'] else 0
     type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
     type_average_point['select_culture_average_point'] = (select_culture_average_point / type_count['교선']) if type_count['교선'] else 0
@@ -317,7 +318,8 @@ def calc_average_point(type):
         value = 2.0
     elif type == "F":
         value = 1.0
-
+    elif type == "P":
+        value = 0
     return value
 
 def get_culutre_necessary_point(subject):
@@ -464,7 +466,7 @@ def get_creative_necessary_point(subject):
     creative_subject_count = 0
 
     for title, item in subject.items():
-        if title == "창의적 발상기법":
+        if "창의적 발상기법" in title or "창의적사고와융합" in title:
             creative_necessary_point += float(item[2])
             creative_average_point += calc_average_point(item[3])
             creative_subject_count += 1
@@ -480,13 +482,10 @@ def get_free_choice_subject_point(subject):
     free_choice_average_point = 0
     free_choice_subject_count = 0
 
+    free_choice_subject = []
+
     for title, item in subject.items():
-        if title == "한국어능력시험(외국인)" or title == "평생교육론" or title == "평생교육프로그램개발론" or title == "인적자원개발론" or \
-           title == "원격교육론" or title == "특수교육론" or title == "챠밍마시지요법" or title == "컴퓨터활용3" or title == "컴퓨터활용3" or \
-           title == "한국전통미술의이해" or title == "페미니즘과여성문학" or title == "문학과디지털매체" or title == "생활서예" or title == "한방의학콘서트" or \
-           title == "한국문화교류1" or title == "한국문화교류2" or title == "문화예술창업실무" or title == "소자본및벤처창업" or title == "창업실무" or \
-           title == "창업론" or title == "색깔있는창업마케팅" or title == "사회적기업:창업과경영" or title == "벤처창업과경쟁전략" or title == "창업성공전략" or title == "청년창업성공의이해" or\
-           title == "창업과공업경영" or title == "덕성훈련심화과정" or title == "미술감상및비평":
+        if title in subject_variable.free_choice_subject:
             free_choice_subject_point += float(item[2])
             free_choice_average_point += calc_average_point(item[3])
             free_choice_subject_count += 1

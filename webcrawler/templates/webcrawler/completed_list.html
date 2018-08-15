@@ -80,33 +80,33 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-center">이수과목</th>
-                            <th class="text-center">전체학점</th>
-                            <th class="text-center">A+</th>
-                            <th class="text-center">A0</th>
-                            <th class="text-center">B+</th>
-                            <th class="text-center">B0</th>
-                            <th class="text-center">C+</th>
-                            <th class="text-center">C0</th>
-                            <th class="text-center">D+</th>
-                            <th class="text-center">D0</th>
-                            <th class="text-center">F</th> 
-                            <th class="text-center">P / F</th>
+                            <th class="text-center summary">과목 수</th>
+                            <th class="text-center summary">총 학점</th>
+                            <th class="text-center summary">A+</th>
+                            <th class="text-center summary">A0</th>
+                            <th class="text-center summary">B+</th>
+                            <th class="text-center summary">B0</th>
+                            <th class="text-center summary">C+</th>
+                            <th class="text-center summary">C0</th>
+                            <th class="text-center summary">D+</th>
+                            <th class="text-center summary">D0</th>
+                            <th class="text-center summary">F</th> 
+                            <th class="text-center summary">P / F</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <td class="text-center">{{ completed_list_count }} 개</td>
-                        <td class="text-center">{{ completed_list_point_count }} 학점</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"A+"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"A0"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"B+"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"B0"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"C+"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"C0"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"D+"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"D0"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"F"}} 개</td>
-                        <td class="text-center">{{ count_grade|keyvalue:"P"}} 개 / {{ count_grade|keyvalue:"fail"}} 개</td>
+                        <td class="text-center summary">{{ completed_list_count }} 개</td>
+                        <td class="text-center summary">{{ completed_list_point_count }} 학점</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"A+"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"A0"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"B+"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"B0"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"C+"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"C0"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"D+"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"D0"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"F"}} 개</td>
+                        <td class="text-center summary">{{ count_grade|keyvalue:"P"}} 개 / {{ count_grade|keyvalue:"fail"}} 개</td>
                     </tbody>
                 </table>
             </div>
