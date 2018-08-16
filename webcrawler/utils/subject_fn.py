@@ -265,6 +265,8 @@ def get_count_grade_average_point(subject):
     necessary_culture_average_point = 0 # 교양 필수 평균 평점
     select_culture_average_point = 0 # 교양 선택 평균 평점
     necessary_line_average_point = 0 # 계열 필수 평균 평점
+    normal_select_average_point = 0 # 일반 선택 평균 평점
+    teach_major_average_point = 0 # 교직 평균 평점
 
     type_count = get_count_type(subject)
 
@@ -286,9 +288,11 @@ def get_count_grade_average_point(subject):
         elif item[0] == "계필":
             necessary_line_average_point += calc_average_point(item[3])
         elif item[0] == "일선":
-            pass
-        elif item[0] == "교선":
-            pass
+            normal_select_average_point += calc_average_point(item[3])
+        elif item[0] == "일선":
+            normal_select_average_point += calc_average_point(item[3])
+        elif item[0] == "교직":
+            teach_major_average_point += calc_average_point(item[3])
 
     type_average_point = {}
     type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
@@ -298,6 +302,8 @@ def get_count_grade_average_point(subject):
     type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
     type_average_point['select_culture_average_point'] = (select_culture_average_point / type_count['교선']) if type_count['교선'] else 0
     type_average_point['necessary_line_average_point'] = (necessary_line_average_point / type_count['계필']) if type_count['계필'] else 0
+    type_average_point['normal_select_average_point'] = (normal_select_average_point / type_count['일선']) if type_count['일선'] else 0
+    type_average_point['teach_major_average_point'] = (teach_major_average_point / type_count['교직']) if type_count['교직'] else 0
 
     return type_average_point
 
