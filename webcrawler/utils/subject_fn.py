@@ -28,7 +28,6 @@ def get_culture_subject(subject):
 
     return culture_subject
 
-
 ## 전공과목 총 학점, 교양과목 총 학점
 def get_sum_of_subject(subject):
 
@@ -88,7 +87,6 @@ def check_teach_major(subject):
         if item[0] == "교직":
             return True
     return False
-
 
 def get_major_point(user_number, user_colleage, user_major):
     """
@@ -399,7 +397,7 @@ def get_english_necessary_point(subject):
     english_subject_count = 0
 
     for title, item in subject.items():
-        if title == '토익1' or title == '토익2' or title == '대학영어1' or title == '대학영어2' or title == '텝스1' or title == '텝스2' or title == '영어회화1' or title == '영어회화2' or title == "영어읽기" or title == "시청각영어":
+        if title in subject_variable.english_subject:
             english_necessary_point += float(item[2])
             english_average_point += calc_average_point(item[3])
             english_subject_count += 1
@@ -417,7 +415,7 @@ def get_sw_necessary_point(subject):
     sw_subject_count = 0
 
     for title, item in subject.items():
-        if title == '컴퓨팅적 사고력' or title == '모바일프로그래밍' or title == '과학적데이터처리' or title == '창의개발프로그래밍' or title == '3D프린팅이해및활용':
+        if title in subject_variable.sw_subject:
             sw_necessary_point += float(item[2])
             sw_average_point += calc_average_point(item[3])
             sw_subject_count += 1
@@ -434,10 +432,7 @@ def get_culture_choice_point(subject):
     culture_subject_count = 0
 
     for title, item in subject.items():
-        if title == "죽음학의이해" or title == "지식과인간의삶" or title == "인간과윤리" or title == "서양철학의이해" or \
-           title == "인권과정의" or title == "조선왕조실록보물찾기" or title == "삶의비밀" or title == "문학과문화콘텐츠" or \
-           title == "문예학개론" or title == "인물로보는중국역사" or title == "현대동아시아문학의이해" or title == "영미언어와문학의이해" or \
-           title == "고전,현대를걷다" or title == "영상으로보는고고미술사" or title == "재미와의미" or title == "영화로만나는인문학":
+        if title in subject_variable.culture_choice_subject:
             culture_choice_point += float(item[2])
             culture_average_point += calc_average_point(item[3])
             culture_subject_count += 1

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'webcrawler',
     'accounts',
+    'board',
 ]
 
 MIDDLEWARE = [
