@@ -80,7 +80,7 @@
                     </li>
                     <li>
                         <a href="{% url 'home:point' %}" id="point">
-                            <i class="lnr lnr-list"></i>
+                            <i class="lnr lnr-user"></i>
                             <span>학점 상세 현황</span>
                         </a>
                     </li>
@@ -116,7 +116,7 @@
                     </li> 
                     <li>
                         <a href="#" id="about">
-                            <i class="lnr lnr-alarm"></i>
+                            <i class="lnr lnr-rocket"></i>
                             <span>About</span>
                         </a>
                     </li> 
@@ -130,7 +130,7 @@
         <!-- MAIN CONTENT -->
         <div class="main-content">
             <div class="container-fluid">
-
+                
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{message.tags}}" id="message">
@@ -139,16 +139,11 @@
                     {% endfor %}
                 {% endif %}
 
-               {% block content %}
-               {% endblock %}
+                {% block content %} {% endblock %}
             </div>
         </div>
-        <!-- END MAIN CONTENT -->
     </div>
-    <!-- END MAIN -->
     <div class="clearfix"></div>
-
-    
 </div>
 
 <script>

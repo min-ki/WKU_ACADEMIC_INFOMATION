@@ -31,8 +31,7 @@ def index(request):
     if request.session.get('data', False):
         data = request.session['data']
     else:
-        data = parser(
-            request.session['intranet_id'], request.session['intranet_pw'])
+        data = parser(request.session['intranet_id'], request.session['intranet_pw'])
 
     if data:
         subject_list = data[0] # 과목 리스트
@@ -170,7 +169,7 @@ def completed_list(request):
     # 공학인증 리스트
     try:
         certification_list = Subject.objects.filter(major__name__contains=user_info[6]) # 공학인증 리스트
-        certification_list_title = [item.title for item in certification_list] # 공학인증 과목
+        certification_list_title = [item.title for item in certification_list ] # 공학인증 과목
         certification_list_info =  { item.title : item.certification_type for item in certification_list} # 공학인증 정보
         certification_list_necessary = { item.title : item.necessary for item in certification_list } # 필수과목 여부
         certification_major = Major.objects.get(name=user_info[6]).certification # 공학인증 학과 여부

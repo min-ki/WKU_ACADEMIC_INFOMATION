@@ -40,6 +40,10 @@
                                     {% if certification_list_necessary|keyvalue:title %}
                                         <span class="label label-primary"> 필수 </span>
                                     {% endif %}
+                                {% elif "자기계발심층상담" in title %}
+                                    {% if certification_list_necessary|keyvalue:"자기계발심층상담" %}
+                                        <span class="label label-primary"> 필수 </span>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                             {% if certification_major %}

@@ -236,7 +236,7 @@ def get_count_type(subject):
     type_count = Counter()
 
     for title, item in subject.items():
-        if item[0] in ['기전', '응전', '선전', '전선', '복수', '교필', '교선', '계필', '일선', '교직']:
+        if item[0] in subject_variable.subject_type:
             type_count[item[0]] += 1
 
     return type_count
@@ -307,24 +307,7 @@ def get_count_grade_average_point(subject):
 
 def calc_average_point(type):
     
-    value = 0
-    if type == "A+":
-        value = 4.5
-    elif type == "A0":
-        value = 4.0
-    elif type == "B+":
-        value = 3.5
-    elif type == "B0":
-        value = 3.0
-    elif type == "C+":
-        value = 2.5
-    elif type == "C0":
-        value = 2.0
-    elif type == "F":
-        value = 1.0
-    elif type == "P":
-        value = 0
-    return value
+    return subject_variable.grade_type_value[type]
 
 def get_culutre_necessary_point(subject):
 
@@ -379,7 +362,7 @@ def get_language_necessary_point(subject):
     language_subject_count = 0
 
     for title, item in subject.items():
-        if title == '기술보고서작성및발표' or title == '글쓰기이론과실제' or title == '독서와토론' or title == '언어추론' or title == '초급실용한자':
+        if title in subject_variable.language_subject:
             language_necessary_point += float(item[2])
             language_average_point += calc_average_point(item[3])
             language_subject_count += 1
@@ -450,7 +433,7 @@ def get_founded_subject_necessary_point(subject):
     founded_subject_count = 0
 
     for title, item in subject.items():
-        if title == "창업의이해" or title == "기업과정신및창업기초":
+        if title in subject_variable.creative_subject:
             founded_subject_necessary_point += float(item[2])
             founded_average_point += calc_average_point(item[3])
             founded_subject_count += 1
