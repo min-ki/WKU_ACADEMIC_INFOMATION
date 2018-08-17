@@ -20,7 +20,7 @@ def parser(id, pw):
     options.add_argument("disable-gpu")
 
     # webdriver 정보
-    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2", chrome_options=options)
+    driver = webdriver.Chrome("/Users/marine/Downloads/chromedriver", chrome_options=options)
     # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver", chrome_options=options)
     # driver.implicitly_wait(3)
 
