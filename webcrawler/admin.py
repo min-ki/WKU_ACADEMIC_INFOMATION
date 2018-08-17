@@ -1,5 +1,5 @@
 from django.contrib import admin, messages
-from .models import Major, Subject
+from .models import Major, Subject, Notice
 
 @admin.register(Major)
 class MajorAdmin(admin.ModelAdmin):
@@ -125,3 +125,7 @@ class SubjectAdmin(admin.ModelAdmin):
         queryset.update(certification_type="인선교")
         messages.success(request, '공학인증 선택 교양(으)로 지정했습니다.')
     certification_type_select_5.short_description = '인선교 지정'
+
+@admin.register(Notice)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('title','content','created_at','updated_at')
