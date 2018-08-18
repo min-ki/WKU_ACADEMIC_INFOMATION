@@ -11,4 +11,5 @@ urlpatterns = [
     path('major/', views.major_list, name='major'),
     path('culture/', views.culture_list, name='culture'),
     path('chart/', views.chart, name='chart'),
+    path('about/', views.about, name='about'),
 ]
