@@ -28,8 +28,10 @@ def parser(id, pw):
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
     # 로그인을 위한 id, pw 정보
-    driver.find_element_by_name('userid').send_keys(id)
-    driver.find_element_by_name('passwd').send_keys(pw)
+    driver.find_element_by_id('userid').send_keys(id)
+    # driver.find_element_by_name('userid').send_keys(id)
+    driver.find_element_by_id('passwd').send_keys(pw)
+    # driver.find_element_by_name('passwd').send_keys(pw)
 
     # 로그인 버튼 클릭
     driver.find_element_by_xpath(
@@ -48,6 +50,7 @@ def parser(id, pw):
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg":
         return "login_fail"
 
+    print('After Login: ', datetime.now() - start)
     ### 사용자 정보 크롤링
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
 
@@ -75,7 +78,7 @@ def parser(id, pw):
     # 사용자 정보 : 이름, 학번, 이미지경로, 학년, 단과대학명, 이수학기, 전공
     user_info = [user_name, user_number, user_image, user_grade, user_college, user_completed_semester, user_major]
 
-
+    print('After User info: ', datetime.now() - start)
     ### 장학 이력 정보 크롤링
     ### 년도, 학기, 장학명, 장학입학금, 장학수업료, 계
 
@@ -102,6 +105,7 @@ def parser(id, pw):
             t_scholar_total.text
         ])
 
+    print('After scholar_ship: ', datetime.now() - start)
 
     ### W - POINT 크롤링
     ### 도덕성, 창의성, 소통력, 실천력, 포인트 합계
@@ -190,6 +194,7 @@ def parser(id, pw):
     subject = {}
     sum_of_grade_point = 0
 
+    print('After average_point: ', datetime.now() - start)
 
     ## 전체성적리스트 페이지
     driver.get("http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreList.jsp")
@@ -225,6 +230,8 @@ def parser(id, pw):
             else:
                 sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
             sum_of_grade_point += float(data[3])
+
+    print('After user grade point: ', datetime.now() - start)
 
     information.append(sub_info)  # 교과목 정보
     information.append({'sum_of_grade_point' : sum_of_grade_point}) # 전체 이수학점

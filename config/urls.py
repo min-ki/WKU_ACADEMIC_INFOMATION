@@ -9,7 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/', include('webcrawler.urls', namespace='home')),
     path('accounts/', include('accounts.urls', namespace="accounts")),
-    # url(r'^admin/', admin.site.urls),
+    path('board/', include('board.urls', namespace="board")),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

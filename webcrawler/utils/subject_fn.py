@@ -28,7 +28,6 @@ def get_culture_subject(subject):
 
     return culture_subject
 
-
 ## 전공과목 총 학점, 교양과목 총 학점
 def get_sum_of_subject(subject):
 
@@ -88,7 +87,6 @@ def check_teach_major(subject):
         if item[0] == "교직":
             return True
     return False
-
 
 def get_major_point(user_number, user_colleage, user_major):
     """
@@ -238,7 +236,7 @@ def get_count_type(subject):
     type_count = Counter()
 
     for title, item in subject.items():
-        if item[0] in ['기전', '응전', '선전', '전선', '복수', '교필', '교선', '계필', '일선', '교직']:
+        if item[0] in subject_variable.subject_type:
             type_count[item[0]] += 1
 
     return type_count
@@ -265,6 +263,8 @@ def get_count_grade_average_point(subject):
     necessary_culture_average_point = 0 # 교양 필수 평균 평점
     select_culture_average_point = 0 # 교양 선택 평균 평점
     necessary_line_average_point = 0 # 계열 필수 평균 평점
+    normal_select_average_point = 0 # 일반 선택 평균 평점
+    teach_major_average_point = 0 # 교직 평균 평점
 
     type_count = get_count_type(subject)
 
@@ -286,9 +286,11 @@ def get_count_grade_average_point(subject):
         elif item[0] == "계필":
             necessary_line_average_point += calc_average_point(item[3])
         elif item[0] == "일선":
-            pass
-        elif item[0] == "교선":
-            pass
+            normal_select_average_point += calc_average_point(item[3])
+        elif item[0] == "일선":
+            normal_select_average_point += calc_average_point(item[3])
+        elif item[0] == "교직":
+            teach_major_average_point += calc_average_point(item[3])
 
     type_average_point = {}
     type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
@@ -298,29 +300,14 @@ def get_count_grade_average_point(subject):
     type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
     type_average_point['select_culture_average_point'] = (select_culture_average_point / type_count['교선']) if type_count['교선'] else 0
     type_average_point['necessary_line_average_point'] = (necessary_line_average_point / type_count['계필']) if type_count['계필'] else 0
+    type_average_point['normal_select_average_point'] = (normal_select_average_point / type_count['일선']) if type_count['일선'] else 0
+    type_average_point['teach_major_average_point'] = (teach_major_average_point / type_count['교직']) if type_count['교직'] else 0
 
     return type_average_point
 
 def calc_average_point(type):
     
-    value = 0
-    if type == "A+":
-        value = 4.5
-    elif type == "A0":
-        value = 4.0
-    elif type == "B+":
-        value = 3.5
-    elif type == "B0":
-        value = 3.0
-    elif type == "C+":
-        value = 2.5
-    elif type == "C0":
-        value = 2.0
-    elif type == "F":
-        value = 1.0
-    elif type == "P":
-        value = 0
-    return value
+    return subject_variable.grade_type_value[type]
 
 def get_culutre_necessary_point(subject):
 
@@ -375,7 +362,7 @@ def get_language_necessary_point(subject):
     language_subject_count = 0
 
     for title, item in subject.items():
-        if title == '기술보고서작성및발표' or title == '글쓰기이론과실제' or title == '독서와토론' or title == '언어추론' or title == '초급실용한자':
+        if title in subject_variable.language_subject:
             language_necessary_point += float(item[2])
             language_average_point += calc_average_point(item[3])
             language_subject_count += 1
@@ -393,7 +380,7 @@ def get_english_necessary_point(subject):
     english_subject_count = 0
 
     for title, item in subject.items():
-        if title == '토익1' or title == '토익2' or title == '대학영어1' or title == '대학영어2' or title == '텝스1' or title == '텝스2' or title == '영어회화1' or title == '영어회화2' or title == "영어읽기" or title == "시청각영어":
+        if title in subject_variable.english_subject:
             english_necessary_point += float(item[2])
             english_average_point += calc_average_point(item[3])
             english_subject_count += 1
@@ -411,7 +398,7 @@ def get_sw_necessary_point(subject):
     sw_subject_count = 0
 
     for title, item in subject.items():
-        if title == '컴퓨팅적 사고력' or title == '모바일프로그래밍' or title == '과학적데이터처리' or title == '창의개발프로그래밍' or title == '3D프린팅이해및활용':
+        if title in subject_variable.sw_subject:
             sw_necessary_point += float(item[2])
             sw_average_point += calc_average_point(item[3])
             sw_subject_count += 1
@@ -428,10 +415,7 @@ def get_culture_choice_point(subject):
     culture_subject_count = 0
 
     for title, item in subject.items():
-        if title == "죽음학의이해" or title == "지식과인간의삶" or title == "인간과윤리" or title == "서양철학의이해" or \
-           title == "인권과정의" or title == "조선왕조실록보물찾기" or title == "삶의비밀" or title == "문학과문화콘텐츠" or \
-           title == "문예학개론" or title == "인물로보는중국역사" or title == "현대동아시아문학의이해" or title == "영미언어와문학의이해" or \
-           title == "고전,현대를걷다" or title == "영상으로보는고고미술사" or title == "재미와의미" or title == "영화로만나는인문학":
+        if title in subject_variable.culture_choice_subject:
             culture_choice_point += float(item[2])
             culture_average_point += calc_average_point(item[3])
             culture_subject_count += 1
@@ -449,7 +433,7 @@ def get_founded_subject_necessary_point(subject):
     founded_subject_count = 0
 
     for title, item in subject.items():
-        if title == "창업의이해" or title == "기업과정신및창업기초":
+        if title in subject_variable.creative_subject:
             founded_subject_necessary_point += float(item[2])
             founded_average_point += calc_average_point(item[3])
             founded_subject_count += 1

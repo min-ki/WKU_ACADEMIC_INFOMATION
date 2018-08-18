@@ -288,14 +288,26 @@
               <tr>
                 <td class="text-center p-info"> 일반선택 </td>
                 <td class="text-center p-info"> 0 </td>
-                <td class="text-center p-info"></td>
-                <td class="text-center p-info"> 0 </td>
+                <td class="text-center p-info"> {{ type_average_point.normal_select_average_point | floatformat:2 }} </td>
+                <td class="text-center p-info">
+                  {% if count_type.일선 %} 
+                    {{ count_type.일선 }}
+                  {% else %}
+                    0
+                  {% endif %}
+                </td>
               </tr>
               <tr>
                 <td class="text-center p-info"> 교직 </td>
                 <td class="text-center p-info"> 0 </td>
-                <td class="text-center p-info"> </td>
-                <td class="text-center p-info"> 0 </td>
+                <td class="text-center p-info"> {{ type_average_point.normal_select_average_point | floatformat:2 }} </td>
+                <td class="text-center p-info">
+                  {% if count_type.교직 %} 
+                    {{ count_type.교직 }}
+                  {% else %}
+                    0
+                  {% endif %}
+                </td>
               </tr>
             </tbody>
           </table>
