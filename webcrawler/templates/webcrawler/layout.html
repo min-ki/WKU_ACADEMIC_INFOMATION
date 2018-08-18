@@ -10,6 +10,7 @@
     <title>WGP - WKU Graduated Possible?</title>
     
     <!-- VENDOR CSS -->
+    
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/bootstrap/css/bootstrap.min.css' %}" >
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/font-awesome/css/font-awesome.min.css' %}">
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/linearicons/style.css' %}">
@@ -17,6 +18,7 @@
 	<!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'webcrawler/assets/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'webcrawler/style.css' %}">
+    <link rel="stylesheet" href="{% static 'webcrawler/assets/css/about.css' %}">
 	<!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 
@@ -115,7 +117,7 @@
                         </a>
                     </li> 
                     <li>
-                        <a href="#" id="about">
+                        <a href="{% url 'home:about' %}" id="about">
                             <i class="lnr lnr-alarm"></i>
                             <span>About</span>
                         </a>
@@ -152,7 +154,10 @@
 </div>
 
 <script>
-
+        //1)
+        
+        /* Navigation Active */ 
+        /*
         console.log(window.location['href']);
 
         var url = window.location['href'].substr(25);
@@ -168,8 +173,23 @@
       
         var current_item = document.getElementById(current_name);
         current_item.className += "active";
+        /* end Navigation Active */ 
+        
+        //2)
+        var url = window.location.pathname;
+        var current_name;
 
-    
+        if (url.split('/').filter(String)[1]) {
+            current_name = url.split('/').filter(String)[1];
+        } else {
+            current_name = 'dashboard'
+        }
+
+        var current_item = document.getElementById(current_name);
+        current_item.className += "active";
+
+        
+    $('.active').removeClass('active');
 
     setTimeout(fade_out, 5000);
 
