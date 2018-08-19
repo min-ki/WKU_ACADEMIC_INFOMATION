@@ -5,22 +5,151 @@
 ## 제공 정보
 
 - 사용자 정보
-    - 이수과목 정보
-    - 전공과목 정보
-    - 교양과목 정보
-
+  - 이수과목 정보
+  - 전공과목 정보
+  - 교양과목 정보
 - 학점 현황
 - 성적 현황
 - 장학금 현황
 - WPOINT
 
-
 ## 사용 기술
+
 - Python
 - Django
 - Selenium
-- Beautifulsoup4 
+- Beautifulsoup4
 - Postgresql
 - AWS EC2
 - Nginx
 - Uwsgi
+
+---------------------------------------------
+
+# 전체 설치 과정 
+
+```shell
+$ git clone https://github.com/min-ki/WGP.git
+$ cd WGP
+$ git remote add wgp_repo https://github.com/min-ki/WGP.git
+$ pip install pipenv
+$ pipenv --three
+$ pipenv install -r requirements.txt
+$ pipenv shell
+$ python manage.py migrate
+$ python manage.py runserver 
+```
+
+-------------------------
+
+### 프로젝트 생성
+
+- 프로젝트 폴더를 하나 만들고 터미널을 열어 **프로젝트**를 생성합니다
+
+```shell
+$ git clone https://github.com/min-ki/WGP.git
+```
+
+-----------------------------------------
+
+### 디렉토리 이동
+
+- **WGP** 디렉토리 이동
+
+~~~ shell
+$ cd WGP
+~~~
+
+------------------------------------------
+
+### 저장소 지정
+
+- **로컬**과 **원격 저장소**를 연결합니다
+
+~~~ shell
+$ git remote add wgp_repo https://github.com/min-ki/WGP.git
+~~~
+
+-------------------------
+
+### 작업 환경 설치
+
+1. **pip**를 이용하여 [Pipenv](http://docs.pipenv.org/en/latest/)를 설치한다
+
+```shell
+$ pip install pipenv
+```
+
+2. **python** 버젼은 **3**로 지정해줍니다
+
+~~~shell
+$ pipenv --three
+~~~
+
+3. **requirements.txt** 에 패키지 리스트를 저장하여 다른 작업환경에서 개발환경을 동일하게 유지하게 합니다
+
+~~~shell
+$ pipenv install -r requirements.txt
+~~~
+
+4. 패키지를 설치후 **가상환경**을 만듭니다
+
+~~~shell
+$ pipenv shell
+~~~
+
+------------------------------------------
+
+### 개발환경 실행
+
+- 실제 DB에 테이블을 생성하기 위해 **Migration**을 DB에 적용합니다
+
+~~~shell
+$ python manage.py migrate
+~~~
+
+- 이제 **Django**서버를 실행시켜줍니다
+
+~~~shell
+$ python manage.py runserver 
+~~~
+
+---------------------------------------------
+
+### 개발환경 설정
+
+- 프로젝트를 실행하기전에 **intranet.py** 와 **settings.py** 부분을 수정해줘야합니다
+
+---
+
+### settings.py 설정
+
+- **postgresql** 대신에 내장된 **sqlite3**를 사용합니다
+
+<img src="https://user-images.githubusercontent.com/37236133/43992259-bfd3f1f4-9db7-11e8-8a36-ecbed3a9670f.jpeg" width="550">
+
+---
+
+### intranet.py 설정
+
+1. 먼저 **ChromeDriver**를 설치하기 위해 아래 주소를 통해서 들어간다
+
+   [ChromeDriver 다운](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+
+2. 버전을 클릭하면 **OS**별 **Driver**파일이 나타난다 사용하는 **OS**에 맞는 **Driver**를 다운받습니다
+   <img src="https://user-images.githubusercontent.com/37236133/43997885-907c4d2c-9e23-11e8-8a02-b604ee4965e0.jpeg" width="550">
+
+3. **Zip** 파일을 받고 압축해제를 하면 **chromedriver**라는 파일이 저장됩니다
+
+4. 아래 폴더를 기준으로 할 경우 **/Users/marine/Downloads/chromedriver** 가 Driver의 위치입니다 
+   **꼭! 기억해주세요** (***PC마다 위치는 다를수있습니다***)
+
+   <img src="https://user-images.githubusercontent.com/37236133/43997896-c208ee0e-9e23-11e8-8ed3-4485cb47e21a.jpeg" width="550">
+
+5. 이제 **webcrawler** 디렉토리에 있는 **intranet.py** 열어 아래에 있는 이미지파일처럼 수정해줍니다
+   (**각자 다운받은 위치에 있는 주소를 넣어주셔야합니다**)
+
+<img src="https://user-images.githubusercontent.com/37236133/43997900-e24e58b6-9e23-11e8-99a2-d7f209feb6fb.jpeg" width="550">
+
+---
+

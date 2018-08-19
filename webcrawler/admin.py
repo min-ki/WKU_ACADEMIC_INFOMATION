@@ -18,8 +18,9 @@ class MajorAdmin(admin.ModelAdmin):
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'subject_year', 'subject_grade', 'subject_semester',
-                    'major', 'subject_type', 'certification_type', 'subject_point','necessary',)
-    list_editable = ('certification_type', 'subject_type',)
+                    'major', 'subject_type', 'certification_type', 'culture_type', 
+                    'subject_point', 'necessary',)
+    list_editable = ('certification_type', 'subject_type', 'culture_type')
     list_filter = ('certification_type', 'subject_type', )
     search_fields = ('title', 'major__name',)
     actions = ['check_necessary', 'uncheck_necessary',

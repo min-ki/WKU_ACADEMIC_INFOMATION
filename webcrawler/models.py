@@ -31,12 +31,25 @@ class Subject(models.Model):
         ('인필BSM', '인필BSM'),
     )
 
+    CULTURE_TYPE_CHOICES = (
+        ('언어영역', '언어영역'),
+        ('영어영역', '영어영역'),
+        ('SW영역', 'SW영역'),
+        ('인문소양', '인문소양'),
+        ('창업영역', '창업영역'),
+        ('창의영역', '창의영역'),
+        ('자유선택영역', '자유선택영역'),
+    )
+
     title = models.CharField(max_length=30, verbose_name='제목') # 제목
     major = models.ForeignKey(Major, on_delete=models.CASCADE, verbose_name='학과')  # 학과
-    subject_type =  models.CharField(max_length=25, choices=SUBJECT_TYPE_CHOICES, verbose_name='과목 유형') # 과목유형
     subject_year = models.IntegerField(verbose_name='학년도') # 학년도
     subject_semester = models.IntegerField(verbose_name='학기')
+    
+    subject_type =  models.CharField(max_length=25, choices=SUBJECT_TYPE_CHOICES, verbose_name='과목 유형') # 과목유형
     certification_type = models.CharField(max_length=25, choices=CERTIFICATION_TYPE_CHOICES, blank=True, verbose_name='공학인증 타입') # 공학인증 유형
+    culture_type = models.CharField(max_length=25, choices=CULTURE_TYPE_CHOICES, blank=True, verbose_name='교양 유형') # 교양과목 유형
+
     subject_grade = models.CharField(max_length=10, verbose_name='학년')  # 학년
     subject_number = models.IntegerField(verbose_name='학수번호', null=True, blank=True)  # 학수번호
     subject_point = models.IntegerField(verbose_name='학점')  # 학점
@@ -44,6 +57,7 @@ class Subject(models.Model):
     subject_training = models.CharField(max_length=10, verbose_name='실습')  # 실습
     necessary = models.BooleanField(default=False, verbose_name='필수과목') # 필수과목 여부
     subject_detail_major = models.CharField(max_length=30, null=True, blank=True, verbose_name='세부전공') # 세부전공
+    
 
     def __str__(self):
         return self.title

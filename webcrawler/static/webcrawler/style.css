@@ -50,3 +50,16 @@
         width: 1200px;
     }
 }
+
+.point-title {
+    padding-bottom: 20px;
+}
+
+.p-info {
+    width: 25%;
+}
+
+.summary {
+    padding-left: 8px !important;
+    width: 5%;
+}

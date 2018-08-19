@@ -21,14 +21,17 @@ def parser(id, pw):
 
     # webdriver 정보
     driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2", chrome_options=options)
+    # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver", chrome_options=options)
     # driver.implicitly_wait(3)
 
     # 웹정보서비스 로그인 URL
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
     # 로그인을 위한 id, pw 정보
-    driver.find_element_by_name('userid').send_keys(id)
-    driver.find_element_by_name('passwd').send_keys(pw)
+    driver.find_element_by_id('userid').send_keys(id)
+    # driver.find_element_by_name('userid').send_keys(id)
+    driver.find_element_by_id('passwd').send_keys(pw)
+    # driver.find_element_by_name('passwd').send_keys(pw)
 
     # 로그인 버튼 클릭
     driver.find_element_by_xpath(
@@ -47,14 +50,7 @@ def parser(id, pw):
     if driver.current_url[:54] == "http://intra.wku.ac.kr/SWupis/V005/login.jsp?error_msg":
         return "login_fail"
 
-    # try:
-    #     WebDriverWait(driver, 1).until(EC.alert_is_present(), "test")
-    #     alert = driver.switch_to_alert()
-    #     alert.accept()
-    #     print("alert accepted")
-    # except TimeoutException:
-    #     print("no alert")
-
+    print('After Login: ', datetime.now() - start)
     ### 사용자 정보 크롤링
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
 
@@ -82,7 +78,7 @@ def parser(id, pw):
     # 사용자 정보 : 이름, 학번, 이미지경로, 학년, 단과대학명, 이수학기, 전공
     user_info = [user_name, user_number, user_image, user_grade, user_college, user_completed_semester, user_major]
 
-
+    print('After User info: ', datetime.now() - start)
     ### 장학 이력 정보 크롤링
     ### 년도, 학기, 장학명, 장학입학금, 장학수업료, 계
 
@@ -109,52 +105,53 @@ def parser(id, pw):
             t_scholar_total.text
         ])
 
+    print('After scholar_ship: ', datetime.now() - start)
 
     ### W - POINT 크롤링
     ### 도덕성, 창의성, 소통력, 실천력, 포인트 합계
     ### 사업참여 내역
 
-    driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
-    time.sleep(1)
+    # driver.get('http://intra.wku.ac.kr/SWupis/V005/CommonServ/entire/job/extra_wpoint.jsp')
+    # time.sleep(1)
 
-    html = driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    wpoint = []
+    # html = driver.page_source
+    # soup = BeautifulSoup(html, 'html.parser')
+    # wpoint = []
 
-    # ### 인정 포인트, 현재 포인트
-    accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
-    accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
-    over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
-    over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
+    # # ### 인정 포인트, 현재 포인트
+    # accept_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(2) > th')
+    # accept_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(3) > td')
+    # over_table = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(5) > th')
+    # over_point = soup.select('table:nth-of-type(3) > tbody > tr:nth-of-type(6) > td')
 
-    for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
-        wpoint.append([
-            t_accept_table.text,
-            t_accept_point.text,
-            t_over_table.text,
-            t_over_point.text,
-        ])
+    # for t_accept_table, t_accept_point, t_over_table, t_over_point in zip(accept_table, accept_point, over_table, over_point):
+    #     wpoint.append([
+    #         t_accept_table.text,
+    #         t_accept_point.text,
+    #         t_over_table.text,
+    #         t_over_point.text,
+    #     ])
 
     ### 사업참여 내역
 
-    detail_wpoint = []
+    # detail_wpoint = []
 
-    industry_name = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(1) > a > strong')
-    industry_duration = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(2)')
-    industry_info = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(3)')
-    industry_accept_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(4)')
-    industry_over_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(5)')
-    industry_accepted = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(6)')
+    # industry_name = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(1) > a > strong')
+    # industry_duration = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(2)')
+    # industry_info = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(3)')
+    # industry_accept_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(4)')
+    # industry_over_point = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(5)')
+    # industry_accepted = soup.select('table:nth-of-type(4) > tbody > tr > td:nth-of-type(6)')
 
-    for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
-        detail_wpoint.append([
-            t_industry_name.text,
-            t_industry_duration.text,
-            t_industry_info.text,
-            t_industry_accept_point.text,
-            t_industry_over_point.text,
-            t_industry_accepted.text,
-        ])
+    # for t_industry_name, t_industry_duration, t_industry_info, t_industry_accept_point, t_industry_over_point, t_industry_accepted in zip(industry_name, industry_duration, industry_info, industry_accept_point, industry_over_point, industry_accepted):
+    #     detail_wpoint.append([
+    #         t_industry_name.text,
+    #         t_industry_duration.text,
+    #         t_industry_info.text,
+    #         t_industry_accept_point.text,
+    #         t_industry_over_point.text,
+    #         t_industry_accepted.text,
+    #     ])
 
 
     # 전체 성적 리스트 주소
@@ -180,6 +177,7 @@ def parser(id, pw):
     average_point_grade = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
     average_point_semester = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
     average_point = soup.select('body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(7)')
+    average_point_total = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(3)')[0].text
 
     average_point_year = [item for item in average_point_year]
     average_point_grade = [item for item in average_point_grade]
@@ -190,46 +188,13 @@ def parser(id, pw):
     for year, grade ,semester, point in zip(average_point_year, average_point_grade, average_point_semester, average_point):
         average_point_info.append([year.text, grade.text, semester.text, point.text])
 
-    # year_list = []
-
-    # for item in select_year:
-    #     year_list.append(item)
 
     # 데이터를 담을 전체 리스트
     information = []
     subject = {}
     sum_of_grade_point = 0
 
-    # for x in year_list:
-    #     driver.get("http://intra.wku.ac.kr" + x['href'])
-    #     html = driver.page_source
-    #     soup = BeautifulSoup(html, 'html.parser')
-
-    #     # 이수구분
-    #     subject_kind = soup.select(
-    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(1)')
-    #     # 학수번호
-    #     subject_number = soup.select(
-    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(2)')
-    #     # 과목명
-    #     subject_list = soup.select(
-    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(3)')
-    #     # 학점
-    #     subject_grade_point = soup.select(
-    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(4)')
-    #     # 점수
-    #     subject_grade = soup.select(
-    #         'body > table:nth-of-type(2) > tbody > tr > td:nth-of-type(6)')
-    #     # 학년
-    #     subject_year = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(1)')[0].text
-    #     # 학기
-    #     subject_semester = soup.select('body > table:nth-of-type(3) > tbody > tr:nth-of-type(2) > td:nth-of-type(2)')[0].text
-
-    #     for kind, number, title, point, grade in zip(subject_kind, subject_number, subject_list, subject_grade_point, subject_grade):
-    #         subject[title.text] = [kind.text, number.text, point.text, grade.text, subject_year, subject_semester]
-    #         sum_of_grade_point += float(point.text)
-
-
+    print('After average_point: ', datetime.now() - start)
 
     ## 전체성적리스트 페이지
     driver.get("http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Score/scoreList.jsp")
@@ -260,16 +225,22 @@ def parser(id, pw):
             average_p = data[2]
 
         if data and len(data) > 3:
-            sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
+            if data[2] in sub_info:
+                sub_info[data[2] + '(' + year + '-' + semester + ')'] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
+            else:
+                sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
             sum_of_grade_point += float(data[3])
+
+    print('After user grade point: ', datetime.now() - start)
 
     information.append(sub_info)  # 교과목 정보
     information.append({'sum_of_grade_point' : sum_of_grade_point}) # 전체 이수학점
     information.append(user_info) # 사용자 정보
     information.append(scholar_ship) # 장학금 정보
-    information.append(wpoint) # WPOINT 정보
-    information.append(detail_wpoint) # WPOINT 상세정보
+    # information.append(wpoint) # WPOINT 정보
+    # information.append(detail_wpoint) # WPOINT 상세정보
     information.append(average_point_info) # 평균 학점 정보
+    information.append(float(average_point_total)) # 전체 평균 학점
 
     driver.close() # 크롤링 끝
     driver.quit()

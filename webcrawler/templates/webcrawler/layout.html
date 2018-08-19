@@ -10,6 +10,7 @@
     <title>WGP - WKU Graduated Possible?</title>
     
     <!-- VENDOR CSS -->
+    
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/bootstrap/css/bootstrap.min.css' %}" >
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/font-awesome/css/font-awesome.min.css' %}">
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/linearicons/style.css' %}">
@@ -17,6 +18,7 @@
 	<!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'webcrawler/assets/css/main.css' %}">
     <link rel="stylesheet" href="{% static 'webcrawler/style.css' %}">
+    <link rel="stylesheet" href="{% static 'webcrawler/assets/css/about.css' %}">
 	<!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
 
@@ -73,47 +75,53 @@
             <nav>
                 <ul class="nav">
                     <li>
-                        <a href="{% url 'home:index' %}" class="active">
+                        <a href="{% url 'home:index' %}" id="dashboard">
                             <i class="lnr lnr-home"></i>
-                            <span>Dashboard</span>
+                            <span id="dashboard">Dashboard</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:completed' %}">
+                        <a href="{% url 'home:point' %}" id="point">
+                            <i class="lnr lnr-user"></i>
+                            <span>학점 상세 현황</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'home:completed' %}" id="completed">
                             <i class="lnr lnr-list"></i>
                             <span>이수과목 리스트</span>
                         </a>
                     </li>
-                    {% comment %} <li>
-                        <a href="{% url 'home:necessary' %}">
-                            <i class="lnr lnr-list"></i>
-                            <span>필수 과목 리스트</span>
-                        </a>
-                    </li> {% endcomment %}
                     <li>
-                        <a href="{% url 'home:major' %}">
+                        <a href="{% url 'home:major' %}" id="major">
                             <i class="lnr lnr-list"></i>
                             <span>전공과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:culture' %}">
+                        <a href="{% url 'home:culture' %}" id="culture">
                             <i class="lnr lnr-list"></i>
                             <span>교양과목 리스트</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:chart' %}">
+                        <a href="{% url 'home:chart' %}" id="chart">
                             <i class="lnr lnr-chart-bars"></i>
-                            <span>차트</span>
+                            <span>성적 그래프</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'home:wpoint' %}">
+                        <a href="{% url 'board:list' %}" id="inquire">
                             <i class="lnr lnr-alarm"></i>
-                            <span>W - POINT</span>
+                            <span>문의 게시판</span>
                         </a>
-                    </li>
+                    </li> 
+                    <li>
+                        <a href="{% url 'home:about' %}" id="about">
+                            <i class="lnr lnr-alarm"></i>
+                            <span>About</span>
+                        </a>
+                    </li> 
                 </ul>
             </nav>
         </div>
@@ -124,7 +132,7 @@
         <!-- MAIN CONTENT -->
         <div class="main-content">
             <div class="container-fluid">
-
+                
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-{{message.tags}}" id="message">
@@ -133,24 +141,51 @@
                     {% endfor %}
                 {% endif %}
 
-               {% block content %}
-               {% endblock %}
+                {% block content %} {% endblock %}
             </div>
         </div>
-        <!-- END MAIN CONTENT -->
     </div>
-    <!-- END MAIN -->
     <div class="clearfix"></div>
-    <footer>
-        <div class="container-fluid">
-            <p> 문의사항: xxx@xxx.com </p>
-            <p class="copyright">&copy; 2018 원광대학교 컴퓨터공학과 14학번 박민기. All Rights Reserved.</p>
-        </div>
-    </footer>
 </div>
 
-
 <script>
+        //1)
+        
+        /* Navigation Active */ 
+        /*
+        console.log(window.location['href']);
+
+        var url = window.location['href'].substr(25);
+        var current_name = window.location['href'].substr(31);
+        
+        $('.active').removeClass('active');
+        
+        if(current_name !== "") {
+            current_name = current_name.substring(0, current_name.length - 1);
+        } else {
+            current_name = 'dashboard';
+        }
+      
+        var current_item = document.getElementById(current_name);
+        current_item.className += "active";
+        /* end Navigation Active */ 
+        
+        //2)
+        var url = window.location.pathname;
+        var current_name;
+
+        if (url.split('/').filter(String)[1]) {
+            current_name = url.split('/').filter(String)[1];
+        } else {
+            current_name = 'dashboard'
+        }
+
+        var current_item = document.getElementById(current_name);
+        current_item.className += "active";
+
+        
+    $('.active').removeClass('active');
+
     setTimeout(fade_out, 5000);
 
     function fade_out() {

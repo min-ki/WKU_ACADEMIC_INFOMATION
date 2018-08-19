@@ -1,0 +1,61 @@
+.left-menu-bar{
+    box-sizing: border-box;
+    position: fixed;
+    float: left;
+    top: 0;
+    left : 0;
+    width: 450px;
+    height: 100%;
+    padding: 121px 60px 0 60px;
+}
+
+.left-menu-bar__logo{
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+/* 아이디 & 비밀번호 & 로그인 설정 시작 */
+.form-signin {
+    max-width: 340px;
+    padding: 15px;
+}
+
+.form-signin .input-group{
+    margin-bottom: 5px;
+}
+
+.form-signin .input-group-addon{
+    background-color: white;
+}
+
+.form-signin button{
+    margin-top: 50px;
+}
+
+.form-signin .form-control {
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+
+.left-menu-bar__copyright{
+    padding:15px 15px 60px 15px;
+}
+/*아이디 & 비밀번호 & 로그인 설정 끝*/
+
+/* 시작 */
+.right-description{
+    position: fixed;
+    float: right;
+    width: calc(100% - 450px);
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color:#337ab7;
+}
+/* 끝 */
