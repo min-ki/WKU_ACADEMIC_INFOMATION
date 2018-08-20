@@ -337,3 +337,4 @@ def chart(request):
         average_point_info = request.session['average_point_info']
 
     return render(request, 'webcrawler/chart.html', {'average_point_info': average_point_info})
+
