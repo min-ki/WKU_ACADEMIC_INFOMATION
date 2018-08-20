@@ -26,8 +26,6 @@ def index(request):
             data[6] : 평균 학점 정보
     """
 
-
-
     if request.session.get('data', False):
         data = request.session['data']
     else:
@@ -336,7 +334,5 @@ def chart(request):
     return render(request, 'webcrawler/chart.html', {'average_point_info': average_point_info})
 
 def about(request):
-    return render(request, 'webcrawler/about.html' ,{
-        'about' : about,
-    })
+    return render(request, 'webcrawler/about.html' , {})
     
