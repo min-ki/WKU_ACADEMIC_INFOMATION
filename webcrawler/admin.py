@@ -129,4 +129,3 @@ class SubjectAdmin(admin.ModelAdmin):
 @admin.register(Notice)
 class NewsAdmin(admin.ModelAdmin):
     list_display = ('title','content','created_at','updated_at')
-
