@@ -1,0 +1,13 @@
+.list_team{
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.list_team li{
+    float: left;
+    text-align: center;
+    padding: 1rem;
+    margin: 1rem;
+    list-style: none;
+}
