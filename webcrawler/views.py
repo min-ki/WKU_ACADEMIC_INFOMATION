@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .intranet import parser
-from .models import Subject, Major
+from .models import Subject, Major, Notice
 from .utils import subject_fn 
 
 def index(request):
@@ -107,6 +107,8 @@ def index(request):
         request.session['culture_point_percentage'] = culture_point_percentage
         request.session['consult_count'] = consult_count
 
+        notice = Notice.objects.all().last()
+
         context = {
             'subject_point': subject_point,
             'subject_list': subject_list,
@@ -126,6 +128,7 @@ def index(request):
             'teach_major' : teach_major, 
             'consult_count' : consult_count,
             'average_point_total' : average_point_total,
+            'notice' : notice,
         }
 
     return render(request, 'webcrawler/index.html', context)
@@ -265,7 +268,7 @@ def major_list(request):
         major_list = None
 
     context = {
-        'major_list' : major_list ,
+        'major_list': major_list,
         'major_list_count': major_list_count,
         'major_list_point_count': major_list_point_count,
         'certification_list_title': certification_list_title,
@@ -273,7 +276,7 @@ def major_list(request):
         'certification_list_necessary': certification_list_necessary,
         'certification_major': certification_major,
         'count_grade': count_grade,
-        'count_type': count_type
+        'count_type': count_type,
     }
 
     return render(request, 'webcrawler/major_list.html', context)
