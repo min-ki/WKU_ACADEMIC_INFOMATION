@@ -1,3 +1,9 @@
+  html,
+  body {
+      height: 100%;
+      margin: 0;
+  }
+
 .left-menu-bar{
     box-sizing: border-box;
     position: fixed;
@@ -59,3 +65,62 @@
     background-color:#337ab7;
 }
 /* 끝 */
+
+.no-space {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.box {
+    height:100%;
+    min-height:100%;
+}
+
+#login_section {
+    height: 100%;
+    min-height: 100%;
+}
+
+#image_section {
+    height: 100%;
+    min-height: 100%;
+}
+
+@media (max-width: 30em) {
+    .box {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -moz-box-orient: vertical;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        /* optional */
+        -webkit-box-align: start;
+        -moz-box-align: start;
+        -ms-flex-align: start;
+        -webkit-align-items: flex-start;
+        align-items: flex-start;
+    }
+    .box #login_section {
+        -webkit-box-ordinal-group: 2;
+        -moz-box-ordinal-group: 2;
+        -ms-flex-order: 2;
+        -webkit-order: 2;
+        order: 2;
+        height: 50%;
+        min-height: 50%;
+    }
+    .box #image_section {
+        -webkit-box-ordinal-group: 1;
+        -moz-box-ordinal-group: 1;
+        -ms-flex-order: 1;
+        -webkit-order: 1;
+        order: 1;
+        height: 50%;
+        min-height: 50%;
+    }
+}

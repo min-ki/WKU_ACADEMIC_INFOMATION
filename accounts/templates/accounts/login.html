@@ -11,65 +11,47 @@
     <div class="rect5"></div>
 </div>
 
-<div id="login_section">
+<div class="box container-fluid no-space">
     
+    {% if messages %}
     <div style="margin-top: 30px">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{message.tags}}" id="message">
-                    {{ message.message }} {# 실제 메세지 내용 #}
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% for message in messages %}
+            <div class="alert alert-{{message.tags}}" id="message">
+                {{ message.message }} {# 실제 메세지 내용 #}
+            </div>
+        {% endfor %}
     </div>
+    {% endif %}
 
     {# 사이드바 시작#}
-        <div class="left-menu-bar">
-            <div class="left-menu-bar--top--section">
-                <div class="left-menu-bar__logo">
-                    <h1>WGP</h1>
-                </div>
-                <h1 class="h3 mb-3 font-weight-normal text-center">웹정보서비스 </h1>
-                <form class="form-signin" action="" method="post">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-user"></i>
-                        </span>
-                        <input type="text" class="form-control" id="intranet_id" name="username" placeholder="User ID" required autofocus>
-                    </div>
-        
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-lock"></i>
-                        </span>
-                        <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
-                    </div>
-                    <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
-                </form>
+    <div class="col-md-4 col-xs-12 no-space" id="login_section">
+        <div>
+            <div>
+                <h1>WGP</h1>
             </div>
-        
-            <div class="left-menu-bar--bottom-section">
-                <div class="left-menu-bar__copyright">
-                    <dl>
-                        <dt>팀장</dt>
-                        <dd>박민기</dd>
-                    </dl>
-                    <dl>
-                        <dt>팀원</dd>
-                        <dd>한성민</dd>
-                        <dd>김정훈</dd>
-                        <dd>김현호</dd>
-                    </dl>
-                    <dl>
-                        <dt>&copy;2018 (멋)팀코딩</dt>
-                    </dl>
+            <h1>웹정보서비스 </h1>
+            <form class="form-signin" action="" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </span>
+                    <input type="text" class="form-control" id="intranet_id" name="username" placeholder="User ID" required autofocus>
                 </div>
-            </div>
+    
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
+            </form>
         </div>
+    </div>
         {# 사이드바 끝#}
 
-        <div class="right-description">
+        <div class="col-md-8 col-xs-12 no-space" id="image_section">
             <img class="mySlides" src="{% static 'webcrawler/assets/img/beach1.png' %}" alt="1" width="100%" height="100%">
             <img class="mySlides" src="{% static 'webcrawler/assets/img/beach2.png' %}" alt="2" width="100%" height="100%">
             <img class="mySlides" src="{% static 'webcrawler/assets/img/beach3.png' %}" alt="3" width="100%" height="100%">
