@@ -13,18 +13,20 @@
 
 <div class="box container-fluid no-space">
     
-    {% if messages %}
-    <div style="margin-top: 30px">
-        {% for message in messages %}
-            <div class="alert alert-{{message.tags}}" id="message">
-                {{ message.message }} {# 실제 메세지 내용 #}
-            </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
+    
     {# 사이드바 시작#}
     <div class="col-md-4 col-xs-12 no-space" id="login_section">
+        
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}}" id="message">
+                    {{ message.message }} {# 실제 메세지 내용 #}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <div>
             <div>
                 <h1>WGP</h1>

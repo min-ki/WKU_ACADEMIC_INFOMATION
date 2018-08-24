@@ -119,7 +119,7 @@
                         </td>
                         <td class="text-center p-info">
                           {% if count_type.기전 %} 
-                            {{ count_type.기전 }}
+                            {{ count_type.기전}}
                           {% else %}
                             0
                           {% endif %}
@@ -184,6 +184,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% if culture_necessary_point %}
                     <tr>
                         <td class="text-center p-info"> 교양필수 </td>
                         <td class="text-center p-info"> {{ culture_necessary_point }} </td>
@@ -196,6 +197,9 @@
                           {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
+
+                    {% if culture_select_total_point %}
                     <tr>
                         <td class="text-center p-info"> 교양선택 </td>
                         <td class="text-center p-info"> {{ culture_select_total_point }} </td>
@@ -208,6 +212,9 @@
                           {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
+
+                    {% if line_necessary_point %}
                     <tr>
                         <td class="text-center p-info"> 계열필수 </td>
                         <td class="text-center p-info"> {{ line_necessary_point }} </td>
@@ -220,48 +227,85 @@
                           {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
+
+                    {% if major_necessary_point %}
+                    <tr>
+                        <td class="text-center p-info"> 학과필수 </td>
+                        <td class="text-center p-info"> {{ major_necessary_point }} </td>
+                        <td class="text-center p-info"> {{ type_average_point.major_necessary_average_point | floatformat:2 }} </td>
+                        <td class="text-center p-info"> 
+                          {% if count_type.학필 %} 
+                            {{ count_type.학필 }}
+                          {% else %}
+                            0
+                          {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if graduated_language_point %}
                     <tr>
                         <td class="text-center p-info"> 언어영역 </td>
                         <td class="text-center p-info"> {{ graduated_language_point }} </td>
                         <td class="text-center p-info"> {{ language_average_point | floatformat:2 }} </td>
                         <td class="text-center p-info"> {{ language_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if graduated_english_point %}
                     <tr>
                         <td class="text-center p-info"> 영어영역 </td>
                         <td class="text-center p-info"> {{ graduated_english_point }} </td>
                         <td class="text-center p-info"> {{ english_average_point | floatformat:2 }}</td>
                         <td class="text-center p-info"> {{ english_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if graduated_sw_point %}
                     <tr>
                         <td class="text-center p-info"> SW 영역 </td>
                         <td class="text-center p-info"> {{ graduated_sw_point }} </td>
                         <td class="text-center p-info"> {{ sw_average_point | floatformat:2 }}</td>
                         <td class="text-center p-info"> {{ sw_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if graduated_culture_choice_point %}
                     <tr>
                         <td class="text-center p-info"> 인문소양영역 </td>
                         <td class="text-center p-info"> {{ graduated_culture_choice_point }} </td>
                         <td class="text-center p-info"> {{ culture_average_point | floatformat:2 }}</td>
                         <td class="text-center p-info"> {{ culture_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if graduated_founded_subject_point %}
                     <tr>
                       <td class="text-center p-info">창업영역</td>
                       <td class="text-center p-info"> {{ graduated_founded_subject_point }} </td>
                       <td class="text-center p-info"> {{ founded_average_point | floatformat:2 }} </td>
                       <td class="text-center p-info"> {{ founded_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if graduated_creative_point %}
                     <tr>
                       <td class="text-center p-info">창의영역</td>
                       <td class="text-center p-info"> {{ graduated_creative_point }} </td>
                       <td class="text-center p-info"> {{ creative_average_point | floatformat:2 }} </td>
                       <td class="text-center p-info"> {{ creative_subject_count }} </td>
                     </tr>
+                    {% endif %}
+
+                    {% if free_choice_subject_point %}
                     <tr>
                       <td class="text-center p-info">자유선택영역</td>
                       <td class="text-center p-info"> {{ free_choice_subject_point }} </td>
                       <td class="text-center p-info"> {{ free_choice_average_point | floatformat:2 }} </td>
                       <td class="text-center p-info"> {{ free_choice_subject_count }} </td>
                     </tr>
+                    {% endif %}
                   </tbody>
               </table>
            </div>
@@ -287,7 +331,7 @@
             <tbody>
               <tr>
                 <td class="text-center p-info"> 일반선택 </td>
-                <td class="text-center p-info"> 0 </td>
+                <td class="text-center p-info"> {{ subject_point.normal_subject }}</td>
                 <td class="text-center p-info"> {{ type_average_point.normal_select_average_point | floatformat:2 }} </td>
                 <td class="text-center p-info">
                   {% if count_type.일선 %} 
@@ -299,8 +343,8 @@
               </tr>
               <tr>
                 <td class="text-center p-info"> 교직 </td>
-                <td class="text-center p-info"> 0 </td>
-                <td class="text-center p-info"> {{ type_average_point.normal_select_average_point | floatformat:2 }} </td>
+                <td class="text-center p-info"> {{ subject_point.teach_subject }} </td>
+                <td class="text-center p-info"> {{ type_average_point.teach_major_average_point | floatformat:2 }} </td>
                 <td class="text-center p-info">
                   {% if count_type.교직 %} 
                     {{ count_type.교직 }}

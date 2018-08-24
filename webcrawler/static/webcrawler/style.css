@@ -45,9 +45,14 @@
     padding: 10px;
 }
 
+
 @media (max-width: 575.98px) {
     .list {
         width: 1200px;
+    }
+    .user_label {
+        display: inline-block;
+        margin: 5px;
     }
 }
 

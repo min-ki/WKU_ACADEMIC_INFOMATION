@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 import time
 from datetime import datetime
 from pyvirtualdisplay import Display
+import requests
+
 def parser(id, pw):
 
     start = datetime.now()
@@ -28,10 +30,10 @@ def parser(id, pw):
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
     # 로그인을 위한 id, pw 정보
-    driver.find_element_by_id('userid').send_keys(id)
-    # driver.find_element_by_name('userid').send_keys(id)
-    driver.find_element_by_id('passwd').send_keys(pw)
-    # driver.find_element_by_name('passwd').send_keys(pw)
+    # driver.find_element_by_id('userid').send_keys(id)
+    driver.find_element_by_name('userid').send_keys(id)
+    # driver.find_element_by_id('passwd').send_keys(pw)
+    driver.find_element_by_name('passwd').send_keys(pw)
 
     # 로그인 버튼 클릭
     driver.find_element_by_xpath(
@@ -55,7 +57,7 @@ def parser(id, pw):
     ### 이름, 학번, 이미지, 학년, 소속, 이수학기, 전공
 
     driver.get('http://intra.wku.ac.kr/SWupis/V005/Service/Stud/Resume/resume.jsp?sm=3')
-
+    
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
 

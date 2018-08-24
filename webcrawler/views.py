@@ -86,6 +86,8 @@ def index(request):
         point['culture_necessary_point'] = subject_fn.get_culutre_necessary_point(data[0]) # 교양필수 학점 총 합
         point['culture_select_total_point'] = subject_fn.get_culutre_select_point(data[0]) # 교양선택 학점 총 합
         point['line_necessary_point'] = subject_fn.get_line_necessary_point(data[0]) # 계열필수 학점 총 합
+        point['major_necessary_point'] = subject_fn.get_major_necessary_point(data[0]) # 학과 필수 학점 총 합
+
 
         ### 세션 데이터 설정
         request.session['point_info'] = point

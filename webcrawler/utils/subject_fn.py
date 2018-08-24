@@ -9,7 +9,7 @@ def get_major_subject(subject):
     major_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '기전' or item[0] == '선전' or item[0] == '전선' or item[0] == '응전' or item[0] == '복수' or item[0] == '교직':
+        if item[0] == '기전' or item[0] == '선전' or item[0] == '전선' or item[0] == '전필' or item[0] == '응전' or item[0] == '복수' or item[0] == '교직':
             major_subject[title] = item
 
     return major_subject
@@ -23,7 +23,7 @@ def get_culture_subject(subject):
     culture_subject = {}
 
     for title, item in subject.items():
-        if item[0] == '교필' or item[0] == '교선' or item[0] == '계필':
+        if item[0] == '교필' or item[0] == '교선' or item[0] == '계필' or item[0] == '학필':
             culture_subject[title] =  item
 
     return culture_subject
@@ -40,12 +40,14 @@ def get_sum_of_subject(subject):
     select_major_subject_sum = 0 
     apply_major_subject_sum = 0
     multiply_major_subject_sum = 0
+    normal_subject = 0
+    teach_subject = 0
 
     for title, arr in subject.items():
-        if arr[0] == "기전":  # 기전 카운트
+        if arr[0] == "기전" or arr[0] == "전필":  # 기전 카운트
             basic_major_subject_sum += float(arr[2])
 
-        if arr[0] == "선전": # 선택전공 카운트
+        if arr[0] == "선전" or arr[0] == "전선": # 선택전공 카운트
             select_major_subject_sum += float(arr[2])
         
         if arr[0] == "응전": # 응용전공 카운트
@@ -54,9 +56,15 @@ def get_sum_of_subject(subject):
         if arr[0] == "복수": # 복수전공 카운트
             multiply_major_subject_sum += float(arr[2])
 
+        if arr[0] == "일선":  # 일반선택 카운트
+            normal_subject += float(arr[2])
+
+        if arr[0] == "교직": # 교직 카운트
+            teach_subject += float(arr[2])
+
         if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
             culture_subject_sum = culture_subject_sum + float(arr[2])
-        elif arr[0] == "기전" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
+        elif arr[0] == "기전" or arr[0] == "전필" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
             major_subject_sum = major_subject_sum + float(arr[2])
 
     sum['basic_major_subject_sum'] = int(basic_major_subject_sum)
@@ -65,7 +73,9 @@ def get_sum_of_subject(subject):
     sum['select_major_subject_sum'] = int(select_major_subject_sum)
     sum['apply_major_subject_sum'] = int(apply_major_subject_sum)
     sum['multiply_major_subject_sum'] = int(multiply_major_subject_sum)
-
+    sum['normal_subject'] = int(normal_subject)
+    sum['teach_subject'] = int(teach_subject)
+    
     return sum
 
 ### 복수전공 체크
@@ -170,10 +180,18 @@ def get_major_point(user_number, user_colleage, user_major):
     elif user_colleage == "의과대학" or user_colleage == "한의과대학" or user_colleage == "치과대학" or user_major == "한약학과":
         basic_major_point = 0
         major_point = 0
+
+        if user_major == "한의예과":
+            basic_major_point = 0
+            major_point = 0
     # 약학과
     elif user_major == "약학과":
         basic_major_point = 0
         major_point = 160
+    elif user_major == "정보·전자상거래학부":
+        basic_major_point = 15
+        major_point = 66
+    
 
     return major_point, basic_major_point
 
@@ -213,7 +231,11 @@ def get_graduated_point(user_number, user_colleage, user_major):
     elif user_number > 5 and (user_colleage == "조형예술디자인대학" or user_colleage == "미술대학"):
         graduated_point = 130
     elif user_colleage == "의과대학" or user_colleage == "한의과대학" or user_colleage == "치과대학":
-        graduated_point = 160
+        if user_major == "한의예과":
+            graduated_point = 80
+        else:
+            graduated_point = 160
+
     elif user_major == "간호학과" or user_colleage == "사범대학" or user_major == '작업치료학과':
         graduated_point = 140
     else:
@@ -265,6 +287,7 @@ def get_count_grade_average_point(subject):
     necessary_line_average_point = 0 # 계열 필수 평균 평점
     normal_select_average_point = 0 # 일반 선택 평균 평점
     teach_major_average_point = 0 # 교직 평균 평점
+    major_necessary_average_point = 0 # 학과 필수 평점
 
     type_count = get_count_type(subject)
 
@@ -287,10 +310,10 @@ def get_count_grade_average_point(subject):
             necessary_line_average_point += calc_average_point(item[3])
         elif item[0] == "일선":
             normal_select_average_point += calc_average_point(item[3])
-        elif item[0] == "일선":
-            normal_select_average_point += calc_average_point(item[3])
         elif item[0] == "교직":
             teach_major_average_point += calc_average_point(item[3])
+        elif item[0] == "학필":
+            major_necessary_average_point += calc_average_point(item[3])
 
     type_average_point = {}
     type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
@@ -302,6 +325,7 @@ def get_count_grade_average_point(subject):
     type_average_point['necessary_line_average_point'] = (necessary_line_average_point / type_count['계필']) if type_count['계필'] else 0
     type_average_point['normal_select_average_point'] = (normal_select_average_point / type_count['일선']) if type_count['일선'] else 0
     type_average_point['teach_major_average_point'] = (teach_major_average_point / type_count['교직']) if type_count['교직'] else 0
+    type_average_point['major_necessary_average_point'] = (major_necessary_average_point / type_count['학필']) if type_count['학필'] else 0
 
     return type_average_point
 
@@ -334,7 +358,6 @@ def get_culutre_select_point(subject):
     for title, item in subject.items():
         if item[0] == '교선':
             culture_select_point += float(item[2])
-    
     return int(culture_select_point)
 
 def get_line_necessary_point(subject):
@@ -348,8 +371,18 @@ def get_line_necessary_point(subject):
     for title, item in subject.items():
         if item[0] == '계필':
             line_necessary_point += float(item[2])
-    
     return int(line_necessary_point)
+
+def get_major_necessary_point(subject):
+    """
+        학과 필수 학점 계산
+    """
+    major_necessary_point = 0
+
+    for title, item in subject.items():
+        if item[0] == '학필':
+            major_necessary_point += float(item[2])
+    return int(major_necessary_point)
 
 def get_language_necessary_point(subject):
 
