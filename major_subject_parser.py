@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import time
 import os, sys
 from pyvirtualdisplay import Display
+from django.conf import settings
 
 def subject_parser(id, pw):
 
@@ -23,13 +24,12 @@ def subject_parser(id, pw):
 
     from webcrawler.models import Subject, Major
 
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('headless')
-    # options.add_argument('window-size=1920x1080')
-    # options.add_argument("disable-gpu")
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    options.add_argument("disable-gpu")
 
-    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2")
-    # driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2",  chrome_options=options)
+    driver = webdriver.Chrome(settings.CHROME_DRIVER,  chrome_options=options)
     # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 

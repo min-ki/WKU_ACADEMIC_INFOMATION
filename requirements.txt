@@ -8,3 +8,4 @@ Werkzeug==0.14.1
 psycopg2-binary==2.7.5
 pyvirtualdisplay
 requests
+django-environ

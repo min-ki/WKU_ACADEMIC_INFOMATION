@@ -25,18 +25,19 @@
         </div>
         {% endif %}
         <div class="logo">
-            <h1>Logo</h1>
+            {% comment %} <h1>Logo</h1> {% endcomment %}
+            <img src="{% static 'accounts/logo.png' %}" width="60" height="67">
         </div>
         <div class="form">
             <div class="form-content">
-                <h1 class="text-center">웹정보서비스</h1>
+                <h3 class="text-center" id="form-title">원광대 학점 관리 서비스</h3>
                 <form class="form-signin" action="" method="post">
                     {% csrf_token %}
                     <div class="input-group">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-user"></i>
                         </span>
-                        <input type="text" class="form-control" id="intranet_id" name="username" placeholder="웹정보서비스로그인" required autofocus>
+                        <input type="text" class="form-control" id="intranet_id" name="username" placeholder="웹정보서비스아이디" required autofocus>
                     </div>
         
                     <div class="input-group">
@@ -72,8 +73,8 @@
             <h3>문의사항</h3>
         </div>
         <div class="abc">
-            <p>Email <span class="glyphicon glyphicon-envelope"></span> :</p>
-            <p>Facbook <i class="fa fa-facebook-square"></i> :</p>
+            <p>Email <span class="glyphicon glyphicon-envelope"></span> : min_2271@naver.com</p>
+            {% comment %} <p>Facbook <i class="fa fa-facebook-square"></i> :</p> {% endcomment %}
         </div>
     </div>
     {# Content End #}

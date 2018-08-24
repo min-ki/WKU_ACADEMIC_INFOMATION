@@ -1,4 +1,11 @@
 import os
+import environ
+
+# environ settings
+env = environ.Env()
+environ.Env.read_env()
+
+CHROME_DRIVER = env('CHROME_DRIVER')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -104,6 +111,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'config', 'static'),
+    os.path.join(BASE_DIR, 'accounts', 'static'),
 ]
 
 # MEDIA 설정

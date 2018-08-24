@@ -7,12 +7,12 @@ from bs4 import BeautifulSoup
 import time
 from datetime import datetime
 from pyvirtualdisplay import Display
-import requests
+from django.conf import settings
 
 def parser(id, pw):
 
     start = datetime.now()
-
+    
     # display = Display(visible=0, size=(800, 600))
     # display.start()
 
@@ -21,8 +21,10 @@ def parser(id, pw):
     options.add_argument('window-size=1920x1080')
     options.add_argument("disable-gpu")
 
+    chrome_path = settings.CHROME_DRIVER
+    
     # webdriver 정보
-    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2", chrome_options=options)
+    driver = webdriver.Chrome(chrome_path, chrome_options=options)
     # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver", chrome_options=options)
     # driver.implicitly_wait(3)
 

@@ -62,7 +62,7 @@ def get_sum_of_subject(subject):
         if arr[0] == "교직": # 교직 카운트
             teach_subject += float(arr[2])
 
-        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필" or arr[0] == "일선":
+        if arr[0] == "교필" or arr[0] == "교선" or arr[0] == "계필":  # or arr[0] == "일선"
             culture_subject_sum = culture_subject_sum + float(arr[2])
         elif arr[0] == "기전" or arr[0] == "전필" or arr[0] == "전선" or arr[0] == "선전" or arr[0] == "복수" or arr[0] == "응전" or arr[0] == '교직':
             major_subject_sum = major_subject_sum + float(arr[2])
@@ -294,8 +294,6 @@ def get_count_grade_average_point(subject):
     type_count['기전'] -= count_consult(subject)
     type_count['교필'] -= count_uni_subject(subject)
 
-    print(type_count['기전'])
-
     for title, item in subject.items():
         if item[0] == "기전" or item[0] == "전필":
             basic_major_average_point += calc_average_point(item[3])
@@ -324,14 +322,16 @@ def get_count_grade_average_point(subject):
         type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
     elif type_count['전필']:
         type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['전필']) if type_count['전필'] else 0
-    
-    print(type_average_point)
+    else:
+        type_average_point['basic_major_average_point'] = 0
 
     if type_count['선전']:
-        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전']else 0
+        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전'] else 0
     elif type_count['전선']:
-        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['전선']) if type_count['전선']else 0
-    
+        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['전선']) if type_count['전선'] else 0
+    else:
+        type_average_point['select_major_average_point'] = 0
+
     type_average_point['apply_major_average_point'] = (apply_major_average_point / type_count['응전']) if type_count['응전'] else 0
     type_average_point['multiply_major_average_point'] = (multiply_major_average_point / type_count['복수']) if type_count['복수'] else 0
     type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
