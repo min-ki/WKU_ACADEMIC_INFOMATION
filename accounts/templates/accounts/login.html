@@ -11,62 +11,79 @@
     <div class="rect5"></div>
 </div>
 
-<div class="box container-fluid no-space">
-    
-    
-    {# 사이드바 시작#}
-    <div class="col-md-4 col-xs-12 no-space" id="login_section">
-        
+<div class="box">
+
+    {# SideBar Start #}
+    <div class="sidebar" id="login_section"> 
         {% if messages %}
         <div>
             {% for message in messages %}
-                <div class="alert alert-{{message.tags}}" id="message">
-                    {{ message.message }} {# 실제 메세지 내용 #}
-                </div>
+            <div class="alert alert-{{message.tags}}" id="message">
+                {{ message.message }} {# 실제 메세지 내용 #}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
-
-        <div>
-            <div>
-                <h1>WGP</h1>
+        <div class="logo">
+            <h1>Logo</h1>
+        </div>
+        <div class="form">
+            <div class="form-content">
+                <h1 class="text-center">웹정보서비스</h1>
+                <form class="form-signin" action="" method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-user"></i>
+                        </span>
+                        <input type="text" class="form-control" id="intranet_id" name="username" placeholder="웹정보서비스로그인" required autofocus>
+                    </div>
+        
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="웹정보서비스비밀번호" required>
+                    </div>
+                    <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
+                </form>
             </div>
-            <h1>웹정보서비스 </h1>
-            <form class="form-signin" action="" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-user"></i>
-                    </span>
-                    <input type="text" class="form-control" id="intranet_id" name="username" placeholder="User ID" required autofocus>
-                </div>
-    
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-lock"></i>
-                    </span>
-                    <input type="password" class="form-control" id="intranet_pw" name="password" placeholder="Password" required>
-                </div>
-                <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
-            </form>
-        </div>
-    </div>
-        {# 사이드바 끝#}
 
-        <div class="col-md-8 col-xs-12 no-space" id="image_section">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/beach1.png' %}" alt="1" width="100%" height="100%">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/beach2.png' %}" alt="2" width="100%" height="100%">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/beach3.png' %}" alt="3" width="100%" height="100%">
+            <div class="form-copyright">
+                <span>copyright&copy; 2018. <br>TeamCoding. All rights reserved</span>
+            </div>
         </div>
     </div>
+    {# SideBar End #}
+
+    {# Content Start #}
+    <div class="content" id="image_section">
+        <div class="content-subtitle">
+            <sub style="font-size:1.5rem;">SERVICE</sub>
+            <h3>제공되는 서비스</h3>
+        </div>
+        <div class="content-slides">
+            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen1.png' %}" alt="1" width="100%" height="100%">
+            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen2.png' %}" alt="2" width="100%" height="100%">
+            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen3.png' %}" alt="3" width="100%" height="100%">
+        </div>
+        <div class="content-contact">
+            <sub style="font-size:1.5rem;">CONTACT</sub>
+            <h3>문의사항</h3>
+        </div>
+        <div class="abc">
+            <p>Email <span class="glyphicon glyphicon-envelope"></span> :</p>
+            <p>Facbook <i class="fa fa-facebook-square"></i> :</p>
+        </div>
+    </div>
+    {# Content End #}
+</div>
  
 </div>
 
 <script src="{% static 'webcrawler/assets/vendor/jquery/jquery.min.js' %}"></script>
 
 <script>
-
-
     var id = "";
     var pw = "";
 
@@ -82,6 +99,7 @@
         if(id !== "" && pw !== "") {
             $( "#login_section" ).fadeOut( "fast" );
             $('.spinner').css("display", "block");
+            $('.content').css("display", "none");
         }
     });
 
@@ -90,7 +108,7 @@
     function fade_out() {
         $("#message").fadeOut().empty();
     }
-
+    /*SlideShow Start*/
     var myIndex = 0;
     carousel();
 
@@ -108,6 +126,7 @@
             x[myIndex-1].style.display = "block";
             setTimeout(carousel, 3000);
         }
+    /*SlideShow End*/
 </script>
 
 

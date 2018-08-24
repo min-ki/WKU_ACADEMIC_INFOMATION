@@ -86,31 +86,81 @@
                         <tr>
                             <th class="text-center summary">과목 수</th>
                             <th class="text-center summary">총 학점</th>
-                            <th class="text-center summary">A+</th>
-                            <th class="text-center summary">A0</th>
-                            <th class="text-center summary">B+</th>
-                            <th class="text-center summary">B0</th>
-                            <th class="text-center summary">C+</th>
-                            <th class="text-center summary">C0</th>
-                            <th class="text-center summary">D+</th>
-                            <th class="text-center summary">D0</th>
-                            <th class="text-center summary">F</th> 
-                            <th class="text-center summary">PASS</th>
+                            {% if count_grade|keyvalue:"A+" %}
+                                <th class="text-center summary">A+</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"A0" %}
+                                <th class="text-center summary">A0</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"B+" %}
+                                <th class="text-center summary">B+</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"B0" %}
+                                <th class="text-center summary">B0</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"C+" %}
+                                <th class="text-center summary">C+</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"C0" %}
+                                <th class="text-center summary">C0</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"D+" %}
+                                <th class="text-center summary">D+</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"D0" %}
+                                <th class="text-center summary">D0</th>
+                            {% endif %}
+                            {% if count_grade|keyvalue:"F" %}
+                                <th class="text-center summary">F</th> 
+                            {% endif %}
+                            {% if count_grade|keyvalue:"P" %}
+                                <th class="text-center summary">PASS</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
                         <td class="text-center summary">{{ completed_list_count }} 개</td>
                         <td class="text-center summary">{{ completed_list_point_count }} 학점</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"A+"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"A0"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"B+"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"B0"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"C+"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"C0"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"D+"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"D0"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"F"}} 개</td>
-                        <td class="text-center summary">{{ count_grade|keyvalue:"P"}} 개</td>
+                        {% if count_grade|keyvalue:"A+" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"A+"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"A0" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"A0"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"B+" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"B+"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"B0" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"B0"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"C+" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"C+"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"C0" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"C0"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"D+" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"D+"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"D0" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"D0"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"F" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"F"}} 개</td>
+                        {% endif %}
+
+                        {% if count_grade|keyvalue:"P" %} 
+                            <td class="text-center summary">{{ count_grade|keyvalue:"P"}} 개</td>
+                        {% endif %}
+
                     </tbody>
                 </table>
             </div>
