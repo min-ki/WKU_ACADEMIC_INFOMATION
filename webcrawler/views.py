@@ -26,6 +26,9 @@ def index(request):
             data[6] : 평균 학점 정보
     """
 
+    if not (request.session.get('intranet_id', False) and request.session.get('intranet_pw', False)):
+        return redirect('accounts:login')
+
     if request.session.get('data', False):
         data = request.session['data']
     else:
@@ -43,7 +46,9 @@ def index(request):
         major_point, basic_major_point = subject_fn.get_major_point(user_info[1], user_info[4], user_info[6]) # 기본전공, 전체 전공학점
         culture_point = subject_fn.get_culture_point(user_info[1]) # 교양학점 
         remain_graduated_point = int(graduated_point - total_point) # 남은학점
-        
+        remain_major_point = int(major_point - subject_point['major_subject_sum'])
+        remain_culture_point = int(culture_point - subject_point['culture_subject_sum'])
+
         graduated_point_percentage = int(subject_fn.get_percentage(total_point, graduated_point))  # 졸업학점 퍼센티지
         major_point_percentage = int(subject_fn.get_percentage(subject_point['major_subject_sum'], major_point))  # 전공학점 퍼센티지
         culture_point_percentage = int(subject_fn.get_percentage(subject_point['culture_subject_sum'], culture_point)) # 교양학점 퍼센티지
@@ -60,7 +65,7 @@ def index(request):
 
 
         ### 자기계발심층상담 횟수
-        consult_count = subject_fn.count_culsult(data[0])
+        consult_count = subject_fn.count_consult(data[0])
 
         point = {} # 학점 정보를 담을 사전
         point['total_point'] = total_point
@@ -106,6 +111,8 @@ def index(request):
         request.session['major_point_percentage'] = major_point_percentage
         request.session['culture_point_percentage'] = culture_point_percentage
         request.session['consult_count'] = consult_count
+        request.session['remain_major_point'] = remain_major_point
+        request.session['remain_culture_point'] = remain_culture_point
 
         notice = Notice.objects.all().last()
 
@@ -129,6 +136,8 @@ def index(request):
             'consult_count' : consult_count,
             'average_point_total' : average_point_total,
             'notice' : notice,
+            'remain_major_point' : remain_major_point,
+            'remain_culture_point': remain_culture_point,
         }
 
     return render(request, 'webcrawler/index.html', context)

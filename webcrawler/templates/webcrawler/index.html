@@ -42,10 +42,23 @@
           </div>
 
           <div class="col-xs-12 col-sm-3 col-md-3 user_info_container">
-            <p class="user_label"><span class="user_info label label-danger">졸업 학점 부족</span></p>
-            <p class="user_label"><span class="user_info label label-danger">전공 학점 부족</span></p>
-            <p class="user_label"><span class="user_info label label-danger">상담 횟수 부족</span></p>
-            <p class="user_label"><span class="user_info label label-success">기본 전공 만족</span></p>
+            {% if remain_graduated_point <= 0 %}
+              <p class="user_label"><span class="user_info label label-success">졸업 학점 충족</span></p>
+            {% else %}
+              <p class="user_label"><span class="user_info label label-danger">졸업 학점 부족</span></p>
+            {% endif %}
+    
+            {% if  remain_major_point <= 0 %}
+              <p class="user_label"><span class="user_info label label-success">전공 학점 충족</span></p>
+            {% else %}
+              <p class="user_label"><span class="user_info label label-danger">전공 학점 부족</span></p>
+            {% endif %}
+            
+            {% if remain_culture_point <= 0 %}
+              <p class="user_label"><span class="user_info label label-success">교양 학점 충족</span></p>
+            {% else %}
+              <p class="user_label"><span class="user_info label label-danger">교양 학점 부족</span></p>
+            {% endif %}
           </div>
         </div>
       </div>

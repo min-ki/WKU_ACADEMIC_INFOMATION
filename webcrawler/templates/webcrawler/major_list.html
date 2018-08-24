@@ -91,8 +91,16 @@
                                 <th class="text-center summary">기전</th>
                             {% endif %}
 
+                            {% if count_type|keyvalue:"전필" %}
+                                <th class="text-center summary">전필</th>
+                            {% endif %}
+
                             {% if count_type|keyvalue:"선전" %}
                                 <th class="text-center summary">선전</th>
+                            {% endif %}
+
+                            {% if count_type|keyvalue:"전선" %}
+                                <th class="text-center summary">전선</th>
                             {% endif %}
                             
                             {% if count_type|keyvalue:"응전" %}
@@ -152,11 +160,19 @@
                         <td class="text-center summary">{{ major_list_count }} 개</td>
                         <td class="text-center summary">{{ major_list_point_count }} 학점</td>
                         {% if count_type|keyvalue:"기전" %}
-                        <td class="text-center summary">{{ count_type|keyvalue:"기전"}} 개</td>
+                            <td class="text-center summary">{{ count_type|keyvalue:"기전"}} 개</td>
+                        {% endif %}
+                        
+                        {% if count_type|keyvalue:"전필" %}
+                        <td class="text-center summary">{{ count_type|keyvalue:"전필"}} 개</td>
                         {% endif %}
                         
                         {% if count_type|keyvalue:"선전" %} 
                             <td class="text-center summary">{{ count_type|keyvalue:"선전"}} 개</td>
+                        {% endif %}
+
+                        {% if count_type|keyvalue:"전선" %} 
+                            <td class="text-center summary">{{ count_type|keyvalue:"전선"}} 개</td>
                         {% endif %}
                         
                         {% if count_type|keyvalue:"응전" %} 

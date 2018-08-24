@@ -16,19 +16,20 @@ def subject_parser(id, pw):
     # 가상 디스플레이 셋팅
     # display = Display(visible=0, size=(800, 600))
     # display.start()
-
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "intra_crawling.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
     import django
     django.setup()
+   
 
     from webcrawler.models import Subject, Major
 
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("disable-gpu")
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('headless')
+    # options.add_argument('window-size=1920x1080')
+    # options.add_argument("disable-gpu")
 
-    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2",  chrome_options=options)
+    driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2")
+    # driver = webdriver.Chrome("/Users/k352ex/Downloads/Chromedriver2",  chrome_options=options)
     # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
@@ -195,6 +196,7 @@ def subject_parser(id, pw):
 
 
 if __name__=='__main__':
+
     id = input("인트라넷 id: ")
     pw = input("인트라넷 pw: ")
 

@@ -120,6 +120,8 @@
                         <td class="text-center p-info">
                           {% if count_type.기전 %} 
                             {{ count_type.기전}}
+                            {% elif count_type.전필 %}
+                            {{ count_type.전필 }}
                           {% else %}
                             0
                           {% endif %}
@@ -132,6 +134,8 @@
                         <td class="text-center p-info">
                           {% if count_type.선전 %} 
                             {{ count_type.선전 }}
+                          {% elif count_type.전선 %}
+                            {{ count_type.전선 }}
                           {% else %}
                             0
                           {% endif %}

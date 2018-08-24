@@ -291,12 +291,15 @@ def get_count_grade_average_point(subject):
 
     type_count = get_count_type(subject)
 
-    type_count['기전'] -= count_culsult(subject)
+    type_count['기전'] -= count_consult(subject)
+    type_count['교필'] -= count_uni_subject(subject)
+
+    print(type_count['기전'])
 
     for title, item in subject.items():
-        if item[0] == "기전":
+        if item[0] == "기전" or item[0] == "전필":
             basic_major_average_point += calc_average_point(item[3])
-        elif item[0] == "선전":
+        elif item[0] == "선전" or item[0] == "전선":
             select_major_average_point += calc_average_point(item[3])
         elif item[0] == "응전":
             apply_major_average_point += calc_average_point(item[3])
@@ -316,8 +319,19 @@ def get_count_grade_average_point(subject):
             major_necessary_average_point += calc_average_point(item[3])
 
     type_average_point = {}
-    type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
-    type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전'] else 0
+
+    if type_count['기전']:
+        type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['기전']) if type_count['기전'] else 0
+    elif type_count['전필']:
+        type_average_point['basic_major_average_point'] = (basic_major_average_point / type_count['전필']) if type_count['전필'] else 0
+    
+    print(type_average_point)
+
+    if type_count['선전']:
+        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['선전']) if type_count['선전']else 0
+    elif type_count['전선']:
+        type_average_point['select_major_average_point'] = (select_major_average_point / type_count['전선']) if type_count['전선']else 0
+    
     type_average_point['apply_major_average_point'] = (apply_major_average_point / type_count['응전']) if type_count['응전'] else 0
     type_average_point['multiply_major_average_point'] = (multiply_major_average_point / type_count['복수']) if type_count['복수'] else 0
     type_average_point['necessary_culture_average_point'] = (necessary_culture_average_point / type_count['교필']) if type_count['교필'] else 0
@@ -509,7 +523,7 @@ def get_free_choice_subject_point(subject):
 
     return int(free_choice_subject_point), (free_choice_average_point / free_choice_subject_count) if free_choice_subject_count else 0, free_choice_subject_count
 
-def count_culsult(subject):
+def count_consult(subject):
 
     """
         자기계발심층상담 과목 카운팅 함수
@@ -520,7 +534,21 @@ def count_culsult(subject):
     for title, item in subject.items():
         if "자기계발심층상담" in title:
             count = count + 1
-            
     return count
 
 
+
+def count_uni_subject(subject):
+    """
+        자기계발심층상담 과목 카운팅 함수
+    """
+
+    count = 0
+
+    for title, item in subject.items():
+        if "자기계발심층상담" in title:
+            count = count + 1
+
+        elif "대학생활과자기혁신" == title and item[3] == "P":
+            count = count + 1
+    return count

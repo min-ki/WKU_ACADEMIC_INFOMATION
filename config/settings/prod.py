@@ -3,10 +3,10 @@ from .base import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wgp_db',
-        'USER': 'min_2271',
-        'PASSWORD': 'min_2271',
-        'HOST': 'localhost',
+        'NAME': 'deploy',
+        'USER': 'wgp',
+        'PASSWORD': 'wgp12345678',
+        'HOST': 'wgp-deploy.crlzxdgbsegw.ap-northeast-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
