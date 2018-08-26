@@ -31,15 +31,18 @@ def parser(id, pw):
     # 웹정보서비스 로그인 URL
     driver.get("http://intra.wku.ac.kr/SWupis/V005/login.jsp")
 
+    print('Login Page: ', datetime.now() - start)
+
     # 로그인을 위한 id, pw 정보
     # driver.find_element_by_id('userid').send_keys(id)
     driver.find_element_by_name('userid').send_keys(id)
     # driver.find_element_by_id('passwd').send_keys(pw)
     driver.find_element_by_name('passwd').send_keys(pw)
-
+    print('id, pw 데이터 전송: ', datetime.now() - start)
     # 로그인 버튼 클릭
-    driver.find_element_by_xpath(
-        "//*[@id = 'f_login']/fieldset/dl/dd[3]/input").click()
+    driver.find_element_by_xpath("//*[@id = 'f_login']/fieldset/dl/dd[3]/input").click()
+
+    print("after click: ", datetime.now() - start)
 
     # 접속 후 Alert 창 확인
     try:

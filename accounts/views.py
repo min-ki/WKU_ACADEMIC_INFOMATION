@@ -29,7 +29,10 @@ def login(request):
             data = request.session['data']
             return redirect('home:index')
     else:
-        request.session.flush()
+        if request.session.get('data', False):
+            return redirect('home:index')
+        else:
+            request.session.flush()
     
     return render(request, 'accounts/login.html', {})
 
