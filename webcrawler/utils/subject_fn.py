@@ -341,6 +341,8 @@ def get_count_grade_average_point(subject):
     type_average_point['teach_major_average_point'] = (teach_major_average_point / type_count['교직']) if type_count['교직'] else 0
     type_average_point['major_necessary_average_point'] = (major_necessary_average_point / type_count['학필']) if type_count['학필'] else 0
 
+    print(type_count['교필'])
+    print(type_average_point['necessary_culture_average_point'])
     return type_average_point
 
 def calc_average_point(type):
@@ -540,15 +542,12 @@ def count_consult(subject):
 
 def count_uni_subject(subject):
     """
-        자기계발심층상담 과목 카운팅 함수
+        대학생활과자기혁신 과목 카운팅 함수
     """
 
     count = 0
 
     for title, item in subject.items():
-        if "자기계발심층상담" in title:
-            count = count + 1
-
-        elif "대학생활과자기혁신" == title and item[3] == "P":
+        if "대학생활과자기혁신" == title and item[3] == "P":
             count = count + 1
     return count

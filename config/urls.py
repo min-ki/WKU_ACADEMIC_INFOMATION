@@ -6,10 +6,10 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', lambda r: redirect('accounts:login'), name='root'),
-    path('admin/', admin.site.urls),
-    path('home/', include('webcrawler.urls', namespace='home')),
     path('accounts/', include('accounts.urls', namespace="accounts")),
-    path('board/', include('board.urls', namespace="board")),
+    path('home/', include('webcrawler.urls', namespace='home')),
+    path('home/board/', include('board.urls', namespace="board")),
+    path('admin/', admin.site.urls),
 
 ]
 

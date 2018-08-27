@@ -236,8 +236,9 @@ def parser(id, pw):
                 sub_info[data[2] + '(' + year + '-' + semester + ')'] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
             else:
                 sub_info[data[2]] = [data[0], data[1], data[3], data[5], year, semester, data[4]]
-            sum_of_grade_point += float(data[3])
-
+            if data[5] != 'F':
+                sum_of_grade_point += float(data[3])
+    
     print('After user grade point: ', datetime.now() - start)
 
     information.append(sub_info)  # 교과목 정보
