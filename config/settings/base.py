@@ -13,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '868rj7gh34^nki5rlb_fz$$o2igj^chlwp0(71p73hx2bl&atl'
 
-ALLOWED_HOSTS = ['*', '.ap-northeast-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['*', '.hyunta.xyz', '.ap-northeast-2.compute.amazonaws.com']
 
 # Application definition
 
