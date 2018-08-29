@@ -113,7 +113,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'board:list' %}" id="inquire">
+                        <a href="{% url 'board:list' %}" id="board">
                             <i class="lnr lnr-alarm"></i>
                             <span>문의 게시판</span>
                         </a>
@@ -172,21 +172,18 @@
         current_item.className += "active";
         /* end Navigation Active */ 
         
-        //2)
-        var url = window.location.pathname;
-        var current_name;
-
-        if (url.split('/').filter(String)[1]) {
-            current_name = url.split('/').filter(String)[1];
-        } else {
-            current_name = 'dashboard'
-        }
-
+    //2)
+    var url = window.location.pathname;
+    var current_name = url.split('/')[2];
+    
+    if(current_name == '') {
+        var current_item = document.getElementById('dashboard');
+    } else {
         var current_item = document.getElementById(current_name);
-        current_item.className += "active";
+    }
 
-        
-    $('.active').removeClass('active');
+    console.log("current: " + current_item);
+    current_item.className += "active";
 
     setTimeout(fade_out, 5000);
 

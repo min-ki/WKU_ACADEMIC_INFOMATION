@@ -1,15 +1,15 @@
 ### 학과별 과목 크롤링 파서
-
-from selenium import webdriver
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.support.ui import WebDriverWait, Select
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, UnexpectedAlertPresentException, NoSuchElementException
-from bs4 import BeautifulSoup
-import time
-import os, sys
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait, Select
+from selenium.webdriver.common.alert import Alert
+from selenium import webdriver
+
 from pyvirtualdisplay import Display
 from django.conf import settings
+from bs4 import BeautifulSoup
+import os, sys
+import time
 
 def subject_parser(id, pw):
 
@@ -17,7 +17,8 @@ def subject_parser(id, pw):
     # 가상 디스플레이 셋팅
     # display = Display(visible=0, size=(800, 600))
     # display.start()
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.dev')
     import django
     django.setup()
    
