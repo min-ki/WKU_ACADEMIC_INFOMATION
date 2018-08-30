@@ -12,7 +12,6 @@
 </div>
 
 <div class="box">
-
     {# SideBar Start #}
     <div class="sidebar" id="login_section"> 
         {% if messages %}
@@ -49,35 +48,19 @@
                     <button type="submit" id="login" class="btn btn-lg btn-primary btn-block">로그인</button>
                 </form>
             </div>
-
-            <div class="form-copyright">
-                <span>copyright&copy; 2018. <br>TeamCoding. All rights reserved</span>
-            </div>
+        </div>
+        <div class="copyright">
+            <span>copyright&copy; 2018. All rights reserved</span>
         </div>
     </div>
     {# SideBar End #}
 
-    {# Content Start #}
-    <div class="content" id="image_section">
-        <div class="content-subtitle">
-            <sub style="font-size:1.5rem;">SERVICE</sub>
-            <h3>제공되는 서비스</h3>
-        </div>
-        <div class="content-slides">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen1.png' %}" alt="1" width="100%" height="100%">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen2.png' %}" alt="2" width="100%" height="100%">
-            <img class="mySlides" src="{% static 'webcrawler/assets/img/screen3.png' %}" alt="3" width="100%" height="100%">
-        </div>
-        <div class="content-contact">
-            <sub style="font-size:1.5rem;">CONTACT</sub>
-            <h3>문의사항</h3>
-        </div>
-        <div class="abc">
-            <p>Email <span class="glyphicon glyphicon-envelope"></span> : min_2271@naver.com</p>
-            {% comment %} <p>Facbook <i class="fa fa-facebook-square"></i> :</p> {% endcomment %}
-        </div>
+    <div class="content">
+        <img class="mySlides" src="{% static 'accounts/main.jpg' %}" alt="1" width="100%" height="100%">
+        <img class="mySlides" src="{% static 'accounts/user.jpg' %}" alt="2" width="100%" height="100%">
+        <img class="mySlides" src="{% static 'accounts/list.jpg' %}" alt="3" width="100%" height="100%">
+        <img class="mySlides" src="{% static 'accounts/a.jpg' %}" alt="4" width="100%" height="100%">
     </div>
-    {# Content End #}
 </div>
  
 </div>
