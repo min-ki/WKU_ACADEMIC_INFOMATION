@@ -10,7 +10,6 @@
     <title>원광대학교 학점관리 서비스</title>
     
     <!-- VENDOR CSS -->
-
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/bootstrap/css/bootstrap.min.css' %}" >
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/font-awesome/css/font-awesome.min.css' %}">
 	<link rel="stylesheet" href="{% static 'webcrawler/assets/vendor/linearicons/style.css' %}">
@@ -31,6 +30,25 @@
     <script src="{% static 'webcrawler/assets/vendor/chartist/js/chartist.min.js' %}"></script>
     <script src="{% static 'webcrawler/assets/scripts/klorofil-common.js' %}"></script>
 
+    <!-- 애드센스 -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-2519824366016942",
+            enable_page_level_ads: true
+        });
+    </script>
+
+    <!-- 구글 애널리틱스 -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-124885118-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-124885118-1');
+    </script>
 </head>
 
 <body>
@@ -112,12 +130,12 @@
                             <span>성적 그래프</span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="{% url 'board:list' %}" id="board">
                             <i class="lnr lnr-alarm"></i>
                             <span>문의 게시판</span>
                         </a>
-                    </li> 
+                    </li>  -->
                     <li>
                         <a href="{% url 'home:about' %}" id="about">
                             <i class="lnr lnr-alarm"></i>

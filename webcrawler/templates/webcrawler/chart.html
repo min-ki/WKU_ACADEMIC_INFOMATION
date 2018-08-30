@@ -26,7 +26,8 @@
             grade = "{{ point.1 }}";
             semester = "{{ point.2 }}";
             point = "{{ point.3 }}";
-            x_labels.push(year.substring(2)+"년 "+grade+"학년 "+semester+"학기");
+            x_labels.push(grade+"학년 "+semester+"학기");
+            // x_labels.push(year.substring(2)+"년 "+grade+"학년 "+semester+"학기");
             y_series.push(point);
         {% endfor %}
 
