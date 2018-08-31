@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from webcrawler.intranet import parser
-from selenium.common.exceptions import UnexpectedAlertPresentException, NoSuchElementException
+from selenium.common.exceptions import UnexpectedAlertPresentException, NoSuchElementException, WebDriverException
 # 웹 정보 서비스 로그인
 def login(request):
     
@@ -14,13 +14,17 @@ def login(request):
                 try:
                     data = parser(request.POST['username'], request.POST['password'])
                 except UnexpectedAlertPresentException:
-                    continue
+                    print("UnexpectedAlertPresentException")
                 except NoSuchElementException:
-                    continue
+                    print("NoSuchElementException")
+                except WebDriverException:
+                    print("WebDriverException")
                 break
 
             if data == "login_fail":
                 messages.error(request, '로그인에 실패하셨습니다.')
+            elif data == "connection_fail":
+                messages.error(request, "연결에 실패하셨습니다. 다시 시도해주세요.")
             else:
                 request.session['data'] = data
                 messages.success(request, '로그인에 성공하셨습니다.')

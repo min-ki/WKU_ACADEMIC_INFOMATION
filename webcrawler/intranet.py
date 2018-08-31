@@ -24,8 +24,13 @@ def parser(id, pw):
     chrome_path = settings.CHROME_DRIVER
     
     # webdriver 정보
-    driver = webdriver.Chrome(chrome_path, chrome_options=options)
-    # driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver", chrome_options=options)
+    while(True):
+        try:
+            driver = webdriver.Chrome(chrome_path, chrome_options=options)
+        except ConnectionResetError:
+            return "connection_fail"
+        break
+
     # driver.implicitly_wait(3)
 
     # 웹정보서비스 로그인 URL
