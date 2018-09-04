@@ -224,7 +224,7 @@ def get_graduated_point(user_number, user_colleage, user_major):
         graduated_point = 136
 
     elif user_number > 12 and (user_colleage == "교학대학" or user_colleage == "인문대학" or user_colleage == "경영대학" or user_colleage == "농식품융합대학"
-                               or user_colleage == "자연과학대학" or user_colleage == "생활과학대학" or user_colleage == "사회과학대학"):
+                               or user_colleage == "자연과학대학" or user_colleage == "생활과학대학" or user_colleage == "사회과학대학" or user_major == "경찰행정학과"):
         graduated_point = 130
     elif user_number > 12 and user_major == "봉황인재학과":
         graduated_point = 120
