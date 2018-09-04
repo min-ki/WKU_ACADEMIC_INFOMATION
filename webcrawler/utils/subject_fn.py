@@ -551,3 +551,52 @@ def count_uni_subject(subject):
         if "대학생활과자기혁신" == title and item[3] == "P":
             count = count + 1
     return count
+
+
+def check_culture_suject_complete(user_number, user_colleage, user_major, culture_np, culture_sp, line_np, language_np, english_np, sw_np, culture_cp, founded_p, creative_p, free_cp):
+
+    """ 
+        # * 교양 이수과목 충족 조건 체크 함수
+        # todo: 교양 이수과목 충족 조건 체크 함수 
+        # todo: 전자융합공학과, 컴퓨터·소프트웨어공학과,디지털콘텐츠공학과
+
+        user_number : 사용자 학번 정보
+        user_colleage: 사용자 단과대학
+        user_major: 사용자 전공
+        culture_np : 교양 필수 학점
+        culture_sp : 교양 선택 학점
+        line_np : 계열 필수 학점
+        language_np : 언어 영역 학점
+        english_np : 영어 영역 학점
+        sw_np : 소프트웨어 영역 학점
+        culture_cp : 인문 소양 선택 학점
+        founded_p : 창업영역 학점
+        creative_p : 창의영역 학점
+        free_cp : 자유선택 영역 학점
+    """
+
+    user_number = int(''.join(list(user_number[2:4])))
+    is_completed = False # 충족 여부 
+
+    culture_select_point = sw_np + culture_cp + creative_p + free_cp
+
+    total_point = culture_np + line_np + language_np + \
+        english_np + sw_np + culture_cp + founded_p + creative_p + free_cp # 교양 이수학점 총 학점 (교양선택 제외)
+
+    china_necessary_section = 2
+    
+    # todo: 과목 조건 추가하기 
+    # todo: 수학1,2 필수 6학점
+    # todo: 물리1,2(실험포함) 6학점
+
+    if user_number >= 17 and (user_major == "전자융합공학과" or user_major == "컴퓨터·소프트웨어공학과" or user_major == "디지털콘텐츠공학과"):
+        if culture_np >= 5 and sw_np >= 4 and culture_cp >= 6 and founded_p >= 2 and creative_p >= 2 and language_np >= 2 and english_np >= 4 and line_np >= 12 and total_point >= 37:
+            is_completed = True
+    elif user_number == 16 and user_major == "전자융합공학과" or user_major == "컴퓨터공학과":
+        if culture_select_point >= 8 and founded_p >= 2 and language_np >= 2 and english_np >= 4 and total_point >= 33:
+            is_completed = True
+    elif user_number < 16 and user_major == "전자융햡공학과" or user_major == "컴퓨터공학과":
+        if culture_select_point >= 8 and (sw_np + culture_cp + founded_p + creative_p + free_cp) >= 8 and language_np >= 2 and english_np >= 4 and china_necessary_section >= 2 and line_up >= 12 and total_point >= 33:
+            is_completed = True
+
+    return is_completed

@@ -133,18 +133,3 @@ SESSION_SAVE_EVERY_REQUEST = True
 from django.contrib.messages import constants as messages_constants
 MESSAGE_LEVEL = messages_constants.DEBUG
 MESSAGE_TAGS = {messages_constants.ERROR: 'danger'}  # error를 danger로 출력하도록 지정
-
-# Raven Setting
-
-GIT_ROOT = ROOT_DIR
-if os.path.exists(os.path.join(GIT_ROOT, '.git')):
-    release = raven.fetch_git_sha(GIT_ROOT)
-else:
-    release = 'dev'
-
-RAVEN_CONFIG = {
-    'dsn': 'https://f2c7021d0a614494995b485eae80850f:b5e97015d7e747de9e5c7d70cbc65375@sentry.io/1271429',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    'release': release,
-}
