@@ -13,8 +13,9 @@ def parser(id, pw):
 
     start = datetime.now()
     
-    # display = Display(visible=0, size=(800, 600))
-    # display.start()
+    if not settings.DEBUG:
+        display = Display(visible=0, size=(800, 600))
+        display.start()
 
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
@@ -257,7 +258,9 @@ def parser(id, pw):
 
     driver.close() # 크롤링 끝
     driver.quit()
-    # display.stop()
+
+    if not settings.DEBUG:
+        display.stop()
 
     finish = datetime.now() - start
     print(finish)
